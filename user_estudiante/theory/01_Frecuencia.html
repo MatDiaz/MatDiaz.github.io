@@ -1,0 +1,367 @@
+<!DOCTYPE HTML>
+<!--
+	Tonos Puros Y Frecuencia
+	Diseño:
+		Photon by HTML5 UP
+		html5up.net | @ajlkn
+		Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+
+<html>
+	<head>
+		<title>Tonos Puros y Frecuencia</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />	
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body style = "background-color: black;">
+		<!-- Header -->
+	<div style = "background-color: black;
+					border: 1px solid darkorange; border-radius: 4px;">
+			 	<a href="../../index.html" style = "padding-left: 0.5%"> |  Inicio </a>
+			 	| 
+	</div>
+
+			<section id="header">
+				<div class="inner" style = "height: 80vh;">
+					<span class="image"><img src="images/sine.png" alt="" /></span>
+					<!--<span class="icon major fa-headphones"></span>-->
+					<h1><strong>Tonos Puros y Ruido</strong></h1>
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify">En el mundo del audio digital y analógico estamos rodeados de señales complejas; con el fin de entender mejor estas señales, las podemos descomponer en bandas de frecuencia o en componentes armónicos. El ingeniero de sonido debe tener amplios conocimientos acerca de los contenidos espectrales de las diferentes señales con las que trabaja
+.</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Iniciar</a></li>
+					</ul>
+				</div>
+			</section>
+
+			<section style = " position: fixed;border-radius: 4px;
+							width: 100vw; margin: auto; height: 10vh; top: 92.75%;"
+						  onmouseover = "document.getElementById('div1').style.display = 'block';";"
+						  onmouseout = "document.getElementById('div1').style.display = 'none';">
+			<div id = "div1" style = "display: none; width: 100vw; position: relative;" onmouseover="this.style.background='rgba(0, 0, 0, 0.75)'">		
+				<!--<button href = "#header"> <span class = "fa fa-arrow-circle-up scrolly"></span> </button>-->
+				<button style = "position: relative; margin-left:40%;"  onmousedown="change = -1; autoVolume()"
+																		onmouseup="autoStop();" onclick="; change-1; volumeChange();" >-</button>
+				<a id = "Volumen" style = "position: relative; "> Volumen : 100% </a> 
+				<button style = "position: relative;" onmousedown="; change = 1; autoVolume();"
+													  onmouseup="autoStop()"; onclick="; change = 1; volumeChange();">+</button>
+			</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style2" >
+				<div class="container">
+					<div class = "row 150%">
+						<header class="major">
+							<h2>Tono</h2>
+						</header>
+							<p> Desde un punto de vista no musical, el tono es el atributo relacionado con la sensación auditiva en términos de los sonidos que pueden ser ordenados en una escala, iniciando desde bajos hasta llegar a los altos. Aunque depende en gran medida de la frecuencia, también dependerá de la presión y la forma de onda.</p>
+
+							<p>Perceptualmente, los tonos bajos corresponden a frecuencias bajas y los altos a frecuencias altas; se le da varios nombres a estos atributos como “gordo” o “con cuerpo”, cuando se refiere a frecuencias bajas o “brillante” o “agudo”, al referirse a frecuencias altas.</p>
+						<ul class="actions">
+							<li><a href="#two" class="CenterButton button scrolly">Continuar</a></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Tono Puro </h2>
+							</header>
+							<p>También conocido como “sonido periódico simple”, está compuesto por una sola frecuencia y es el sonido más simple que existe, a pesar de no existir en la naturaleza. Un tono puro se genera mediante una función senoidal, con parámetros que permiten variar su amplitud, su número de oscilaciones (frecuencia) o su desfase. Se puede utilizar para generar formas de onda más complejas mediante la síntesis del sonido.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p> Pulsa para escuchar varios tonos puros con igual amplitud y diferente frecuencia.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id ="31Button" class = "small" onclick = "sineGen(31.5, this.id)"> 31.5 Hz </button> 
+								<button id ="63Button" class = "small" onclick = "sineGen(63, this.id)"> 63 Hz </button> 
+								<button id ="125Button" class = "small" onclick = "sineGen(125, this.id)"> 125 Hz </button>
+								<button id ="250Button" class = "small" onclick = "sineGen(250, this.id)"> 250 Hz </button>
+								<button id ="500Button" class = "small" onclick = "sineGen(500, this.id)"> 500 Hz </button>
+								<button id ="1000Button" class = "small" onclick = "sineGen(1000, this.id)"> 1 kHz </button> 
+								<button id ="2000Button" class = "small" onclick = "sineGen(2000, this.id)"> 2 kHz </button> 
+								<button id ="4000Button" class = "small" onclick = "sineGen(4000, this.id)"> 4 kHz </button>
+								<button id ="8000Button" class = "small" onclick = "sineGen(8000, this.id)"> 8 kHz </button>
+								<button id ="16000Button" class = "small" onclick = "sineGen(16000, this.id)"> 16 kHz </button> 
+							</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Three -->
+			<section id="three" class="main style2">
+				<div class="container">
+						<ul class="actions">
+							<li><a href="#two" class="button scrolly">Anterior</a></li>
+						</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2><strong>Frecuencia</strong></h2>
+							</header>
+							<p>Es el número de veces que se repite el ciclo de una onda en un segundo. Es el inverso del periodo (el tiempo que toma la onda en completar un ciclo) por lo que se mide en Hercios o Hertz (Hz) y se describe con la letra f. El rango de frecuencias audible para los seres humanos se encuentra entre 20 Hz y 20.000 Hz.</p> 							
+							<p>Algunas veces es necesario descomponer el rango completo de frecuencias para poder analizar o identificar los fenómenos que se puedan presentar. El oído humano es más sensible a grupos de frecuencias que a frecuencias individuales, por lo que existen las bandas de octava definidas por una frecuencia central y unos límites inferior y superior que están alrededor del 70% de esta. Están estandarizadas por la norma ISO 266.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p> Se reproducirán todas las frecuencias consecutivamente. A esto se le conoce como barrido de frecuencias, en este caso utilizando una forma de onda seno. </p>
+							<!-- <span class="image fit"><img src="images/pic01.jpg" alt="" /></span> -->
+							<ul class = "actions fit">
+								<button id = "sineSweepButton" class = "fit" onclick = "sineSweep(this.id)"> Barrido de Frecuencia </button>
+							</ul>
+						</div>
+					</div>
+						<ul class="actions">
+							<li><a href="#four" class="button scrolly">Continuar</a></li>
+						</ul>
+				</div>
+			</section>
+
+		<!-- Four -->
+			<section id="four" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Espectro</h2>
+							</header>
+							<p>Muchos de los sonidos que escuchamos en el diario vivir están conformados por múltiples frecuencias; un claro ejemplo lo vemos en la música y en los instrumentos musicales, donde encontramos sonidos complejos compuestos por frecuencias fundamentales y armónicos que varían en tiempo y amplitud.<br>
+
+							<span class="image"><img src="images/Espectrograma3D.jpg" alt=""/></span>
+							<figcaption style="color: gray;">Espectrograma en tres dimensiones. <a href="http://blog.ocad.ca/wordpress/digf6l01-fw201302-01/2013/12/research-presentation-audiovisual-communication"></br>Fuente</a> </br> </figcaption>
+
+							<figcaption style="color: gray;">Espectrograma en tres dimensiones. <a href="http://blog.ocad.ca/wordpress/digf6l01-fw201302-01/2013/12/research-presentation-audiovisual-communication"></br>Fuente</a> </br> </figcaption>
+
+							El espectro está definido por la distribución de la energía sonora en todo el rango audible de frecuencias; un sonido cualquiera se puede mostrar de esta manera. Se puede representar por medio de una gráfica donde se muestran frecuencias contra amplitud f/A o por medio de un espectrograma, que representa el cambio de frecuencias en el tiempo.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p>El espectro de un tono puro se puede representar como la energía presente en esa frecuencia únicamente. Se verá como una línea vertical, debido a que por sí solo no guarda más información espectral.</p>
+							<ul class="actions fit small">
+								<li>
+									<button id = "1000Button" class = "fit" onclick="sineGen(1000, this.id)"> Tono Puro </button>
+								</li>
+							</ul>
+							<p>El espectro de una onda cuadrada está compuesto por una frecuencia fundamental y una gran cantidad de armónicos (específicamente armónicos impares); estos armónicos son los que le dan las características del sonido a esta forma de onda. A continuación, escucharás cómo una señal con un espectro más complejo (onda cuadrada) se diferencia de un tono puro.</p>
+							<ul class="actions fit small">
+								<li>
+									<button id = "squareGenButton" class = "fit" onclick="squareGen(this.id)"> Forma de Onda Cuadrada </button>
+								</li>
+							</ul>
+						</div>
+					</div>
+						<ul class="actions">
+							<li><a href="#five" class="button scrolly">Continuar</a></li>
+						</ul>
+				</div>
+			</section>
+
+		<!-- Five -->
+			<section id="five" class="main style2">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#four" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Octava</h2>
+							</header>
+							<p>El oído del ser humano percibe los sonidos en proporciones de frecuencias. Es así como una proporción del doble de una frecuencia se percibe como un cambio de una octava en la altura, sin importar las frecuencias que se comparen. Cabe resaltar que la frecuencia determina la percepción de altura del mismo. </p>
+							<p>Se puede definir entonces una octava como la relación de frecuencias de dos a uno. Esta sensación se debe al comportamiento del oído, que percibe estos cambios de manera logarítmica.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar cuatro frecuencias relacionadas por octavas de manera ascendente. Escucharás la nota musical “La” (110Hz) y sus octavas superiores.</p>
+							<ul class="actions fit small">
+								<li>
+									<button id = "PianoA1" class = "fit" onclick = "pianoPlay('http://freesound.org/data/previews/361/361106_4334556-lq.mp3', 1, this.id)"> La 1 - 110 Hz </button>
+									<button id = "PianoA2" class = "fit" onclick = "pianoPlay('http://freesound.org/data/previews/361/361105_4334556-lq.mp3', 2, this.id)"> La 2 - 220 Hz </button>
+									<button id = "PianoA3" class = "fit" onclick = "pianoPlay('http://freesound.org/data/previews/361/361104_4334556-lq.mp3', 3, this.id)"> La 3 - 440 Hz </button>
+									<button id = "PianoA4" class = "fit" onclick = "pianoPlay('http://freesound.org/data/previews/361/361103_4334556-lq.mp3', 4, this.id)"> La 4 - 880 Hz </button>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#six" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Six -->
+			<section id="six" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#five" class="button scrolly">Anterior</a></li>
+					</ul>
+							<header class="major">
+								<h2>Ruido</h2>
+							</header>
+							<p>Se define como cualquier sonido no deseado. En la vida diaria siempre se encuentra el ruido; desde los electrodomésticos que hay en las casas, pasando por los diferentes sistemas de transporte, hasta la maquinaría de la industria.</br> En audio, se define como un tipo de señal cuyo contenido frecuencial es aleatorio. Existen dos tipos de ruido: Ruido Blanco y Ruido Rosa.</p>
+						<ul class="actions">
+							<li><a href="#seven" class="button scrolly">Continuar</a></li>
+						</ul>
+				</div>
+			</section>
+
+		<!-- seven -->
+			<section id="seven" class="main style2">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#six" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Ruido Blanco</h2>
+							</header>
+							<p>Este ruido que contiene igual energía en todo el rango de frecuencias audibles.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar ruido blanco filtrado por bandas de octava centradas en las frecuencias indicadas para cada caso.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "0WButton"  class = "fit" onclick = "whiteNoiseGen(0, this.id)"> Reproducir</button>
+								<button id = "31WButton" class = "small" onclick = "whiteNoiseGen(31.5, this.id)"> 31.5 Hz </button> 
+								<button id = "63WButton" class = "small" onclick = "whiteNoiseGen(63, this.id)"> 63 Hz </button> 
+								<button id = "125WButton" class = "small" onclick = "whiteNoiseGen(125, this.id)"> 125 Hz </button>
+								<button id = "250WButton" class = "small" onclick = "whiteNoiseGen(250, this.id)"> 250 Hz </button>
+								<button id = "500WButton" class = "small" onclick = "whiteNoiseGen(500, this.id)"> 500 Hz </button>
+								<button id = "1000WButton" class = "small" onclick = "whiteNoiseGen(1000, this.id)"> 1 kHz </button> 
+								<button id = "2000WButton" class = "small" onclick = "whiteNoiseGen(2000, this.id)"> 2 kHz </button> 
+								<button id = "4000WButton" class = "small" onclick = "whiteNoiseGen(4000, this.id)"> 4 kHz </button>
+								<button id = "8000WButton" class = "small" onclick = "whiteNoiseGen(8000, this.id)"> 8 kHz </button>
+								<button id = "16000WButton" class = "small" onclick = "whiteNoiseGen(16000, this.id)"> 16 kHz </button> 
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#eight" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- eight -->
+			<section id="eight" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#seven" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Ruido Rosa</h2>
+							</header>
+							<p>Este ruido, a diferencia del ruido blanco, cuenta con la misma energía por cada banda de octava. Esto lo hace más apropiado para procesos de ajuste o calibración de sistemas de sonido.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p>Pulsa para escuchar ruido rosa filtrado por bandas de octava centradas en las frecuencias indicadas para cada caso.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "0PButton" class = "fit" onclick = "pinkNoiseGen(0, this.id)"> Reproducir </button>
+								<button id = "31PButton" class = "small" onclick = "pinkNoiseGen(31.5, this.id)"> 31.5 Hz </button> 
+								<button id = "63PButton" class = "small" onclick = "pinkNoiseGen(63, this.id)"> 63 Hz </button> 
+								<button id = "125PButton" class = "small" onclick = "pinkNoiseGen(125, this.id)"> 125 Hz </button>
+								<button id = "250PButton" class = "small" onclick = "pinkNoiseGen(250, this.id)"> 250 Hz </button>
+								<button id = "500PButton" class = "small" onclick = "pinkNoiseGen(500, this.id)"> 500 Hz </button>
+								<button id = "1000PButton" class = "small" onclick = "pinkNoiseGen(1000, this.id)"> 1 kHz </button> 
+								<button id = "2000PButton" class = "small" onclick = "pinkNoiseGen(2000, this.id)"> 2 kHz </button> 
+								<button id = "4000PButton" class = "small" onclick = "pinkNoiseGen(4000, this.id)"> 4 kHz </button>
+								<button id = "8000PButton" class = "small" onclick = "pinkNoiseGen(8000, this.id)"> 8 kHz </button>
+								<button id = "16000PButton" class = "small" onclick = "pinkNoiseGen(16000, this.id)"> 16 kHz </button>
+								</li>
+							</ul>
+						</div>
+					</div>
+						<ul class="actions">
+							<li><a href="#nine" class="button scrolly">Continuar</a></li>
+						</ul>
+				</div>
+			</section>
+
+			<!-- nine -->
+			<section id="nine" class="main style2">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#eight" class="CenterButton button scrolly">Anterior</a></li>
+					</ul>
+					<header class="major">
+						<h2>Resumen</h2>
+					</header>
+					<div class = "row 150%">
+						<ul>
+							<li><strong>Frecuencia</strong>: Número de ciclos por segundo. Se mide en Hertz (Hz).</li>
+							<li><strong>Espectro</strong>: Muestra información sobre qué frecuencias integran un sonido y su amplitud correspondiente.</li>
+							<li><strong>Tono Puro</strong>: Sonido que se encuentra compuesto por una sola frecuencia.</li> 
+							<li><strong>Octava</strong>: Intervalo entre dos frecuencias que tienen una relación 2 a 1.</li>
+							<li><strong>Ruido</strong>: Sonido no deseado.</li>
+							<li><strong>Ruido Blanco</strong>: Ruido que tiene igual energía en todo el rango de frecuencias.</li>
+							<li><strong>Ruido Rosa</strong>: Ruido que cuenta con igual energía por banda de octava.</li>
+						</ul>
+					</div>
+					<a href="../practice/practice_one.html"><button style = "width: 100%"> Ir a Práctica: 1 - Reconocimiento de Tonos </button></a>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="http://www.usbmed.edu.co/" class="icon alt fa-graduation-cap"><span class="label">Twitter</span></a></li>
+					<li><a href="https://twitter.com/USBmed" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.facebook.com" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Universidad de San Buenaventura Medellín 2017</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/frequency.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
