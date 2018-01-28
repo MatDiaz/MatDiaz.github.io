@@ -139,7 +139,7 @@ function init()
 	var original = true;
 	var beep = true;
 	var rightStop = false;
-	var url2 = "http://freesound.org/data/previews/352/352651_4019029-lq.mp3";
+	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
 
 	createjs.Ticker.addEventListener("tick", handleTick);
 	createjs.Ticker.setFPS(60);
