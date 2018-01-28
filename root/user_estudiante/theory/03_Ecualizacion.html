@@ -1,0 +1,471 @@
+<!DOCTYPE HTML>
+<!--
+	Estimación De Cambios De Nivel
+	Diseño:
+		Photon by HTML5 UP
+		html5up.net | @ajlkn
+		Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Filtros y Ecualización</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />	
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body style = "background-color: black;">
+		<!-- Header -->
+		<div style = "background-color: black;
+				border: 1px solid darkorange; border-radius: 4px;">
+			 	<a href="../../index.html" style = "padding-left: 0.5%"> |  Inicio </a>
+			 	| 
+		</div>
+
+			<section id="header">
+				<div class="inner" style = "height: 80vh;">
+					<span class="image"><img src="images/chapter3.png" alt="" /></span>
+					<!--<span class="icon major fa-sort-amount-desc"></span>-->
+					<h1><strong>Filtros y Ecualización</strong></h1>
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify">En las diferentes aplicaciones del campo del sonido, se presenta frecuentemente la necesidad de modificar el espectro de una señal; sea por razones técnicas o artísticas. Para esto se usan los filtros y ecualizadores, que permiten aumentar, disminuir o eliminar rangos de frecuencias.</p>
+
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify" >Los ecualizadores son una de las herramientas que permiten lograr mayor separación y balance entre los diferentes elementos que componen una mezcla; y aunque los controles que lo componen no son complejos de manejar, el verdadero reto en procesos de postproducción está en decidir cómo aplicar esta herramienta haciendo uso del oído y de la experiencia.
+.</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Iniciar</a></li>
+					</ul>
+				</div>
+			</section>
+
+			<section style = " position: fixed;border-radius: 4px;
+							width: 100vw; margin: auto; height: 10vh; top: 92.75%;"
+						  onmouseover = "document.getElementById('div1').style.display = 'block';";"
+						  onmouseout = "document.getElementById('div1').style.display = 'none';">
+			<div id = "div1" style = "display: none; width: 100vw; position: relative;" onmouseover="this.style.background='rgba(0, 0, 0, 0.75)'">		
+				<!--<button href = "#header"> <span class = "fa fa-arrow-circle-up scrolly"></span> </button>-->
+				<button style = "position: relative; margin-left:40%;"  onmousedown="change = -1; autoVolume()"
+																		onmouseup="autoStop();" onclick="; change-1; volumeChange();" >-</button>
+				<a id = "Volumen" style = "position: relative; "> Volumen : 100% </a> 
+				<button style = "position: relative;" onmousedown="; change = 1; autoVolume();"
+													  onmouseup="autoStop()"; onclick="; change = 1; volumeChange();">+</button>
+			</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay3.jpg)" >
+				<div class="container">
+					<div class = "row 150%">
+						<header class="major">
+							<h2>Filtro</h2>
+						</header>
+							<p>Un filtro es un procesador que sirve para separar señales teniendo como punto de referencia una frecuencia específica. Los filtros se pueden denominar como herramientas que modifican el espectro de una señal cualquiera. También sirven para atenuar ruido o realizar un suavizado. Estos pueden ser categorizados por la manera en que modifican la señal; dependiendo del tipo de filtro será posible dejar pasar las frecuencias de interés y atenuar otras frecuencias.</p>
+						<header class="major">
+							<h2>Ecualizador</h2>
+						</header>
+							<p>Es una herramienta que usa una serie filtros de diferentes tipos para modificar el espectro de una señal en diferentes rangos de frecuencia de manera simultánea.</p>
+						<ul class="actions">
+							<li><a href="#two" class="CenterButton button scrolly">Continuar</a></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+							<header class = "major">
+								<h2> Componentes De Un Filtro </h2>
+							</header>
+							<ul>
+							<p><strong>Banda de Paso: </strong>
+								Es una banda de frecuencias a las que un filtro permite el paso. 
+							</p>
+							<p>
+								<strong>Banda de Rechazo: </strong>
+								Es una banda de frecuencias a las que un filtro no permite el paso.
+							</p>
+							<p>
+								<strong>Frecuencia de Corte: </strong>
+								Es la frecuencia a partir de la cual se realiza la modificación espectral.  También se entiende como el punto en el cual hay una caída de 3 dB por debajo de la ganancia nominal del filtro.</p>
+							<p>
+								<strong>Ancho de Banda: </strong>
+								Se define como el rango de frecuencias que comprendido entre las frecuencias de corte inferior y superior de la banda de paso. En algunos ecualizadores está definido en octavas.
+							</p>
+							<p>
+								<strong>Factor de Calidad Q: </strong>
+								Proveniente del término en inglés <i>Quality</i>, el factor de calidad o “Q” se encuentra generalmente en filtros de tipo pasa-banda, rechaza-banda y también en filtros de banda o campana; aunque se puede aplicar a cualquier otro tipo de filtro. Este parámetro define la calidad de un filtro por su capacidad de selectividad, estableciendo una relación entre la frecuencia central y el ancho de banda del filtro. Un filtro de mayor calidad es un filtro muy selectivo, en el que el ancho de banda será muy estrecho. 
+							</p>
+							</ul>
+					</div>
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Three -->
+			<section id="three" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay3.jpg)" >
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#two" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Filtro Pasa Bajos</h2>
+							</header>
+							<p>Como su nombre lo indica, permite pasar frecuencias bajas inferiores a una frecuencia de corte, impidiendo el paso de aquellas que están por encima de la misma. La atenuación está dada a partir de múltiplos de 6 dB/Octava (-6 dB/octava, -12 dB/octava, -18 dB/octava).</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar ruido rosa o una muestra de música y aplicarle un filtro pasa bajas a estas señales en tiempo real. Puedes modificar la frecuencia de corte y el factor de calidad Q. Solo debes presionar el botón “Activar” para aplicar el filtro y mover los sliders para determinar la frecuencia de corte y el Factor de Calidad.</p>
+
+							<ul class="actions fit small">
+								<li>
+								<h3>Señales</h3>
+								<button id = "RosaUno" class = "fit" onclick = "playAudio('noise', this.id);">Ruido Rosa</button>
+								<button id = "MusicaUno" class = "fit" onclick = "playAudio('audio', this.id);">Música</button>
+
+								<h3> Activar Filtro </h3>
+								<button id = "activeFilterLP" class = "fit" onclick = "activeFilter('lowpass')"> Inactivo </button>
+								<h3 id = "cutFrequencyLP">
+									Frecuencia de Corte: 20000 Hz
+								</h3>
+								<input type="range" id="freqLP" min = "20" max = "20000"  step = "20" value = "20000"  onmousemove = "freqChange('lowpass')">
+								<h3 id = "QfrequencyLP">
+									Factor de Calidad Q: 0.1
+								</h3>
+								<input type="range" id="QLP" min = "0.1" max = "1"  step = "0.01" value = "0.1" onmousemove = "QChange('lowpass')">
+								</li>		
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#four" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Four -->
+		<section id="four" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Filtro Pasa Altos </h2>
+							</header>
+						<p>Es el contrario a un filtro pasa bajos, ya que permite el paso de las frecuencias superiores a una frecuencia corte, impidiendo el paso de frecuencias que se encuentren por debajo del mismo. La atenuación está dada a partir de múltiplos de 6 dB/Octava (-6 dB/octava, -12 dB/octava, -18 dB/octava).</p>
+
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar ruido rosa o una muestra de música y aplicarle un filtro pasa altas a estas señales en tiempo real. Puedes modificar la frecuencia de corte y el factor de calidad Q. </br> Solo debes presionar el botón “Activar” para aplicar el filtro y mover los sliders para determinar la frecuencia de corte y el Factor de Calidad.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "RosaDos" class = "fit" onclick = "playAudio('noise', this.id);">Ruido Rosa</button>
+								<button id = "MusicaDos" class = "fit" onclick = "playAudio('audio', this.id);">Música</button>
+								<h3> Activar Filtro </h3>
+								<button id = "activeFilterHP" class = "fit" onclick = "activeFilter('highpass')"> Inactivo </button>
+								<h3 id = "cutFrequencyHP">
+									Frecuencia de Corte: 20 Hz
+								</h3>
+								<input type="range" id="freqHP" min = "20" max = "20000"  step = "20" value = "20" onmousemove = "freqChange('highpass')">
+								<h3 id = "QfrequencyHP">
+									Factor de Calidad Q: 0.1
+								</h3>
+								<input type="range" id="QHP" min = "0.1" max = "1"  step = "0.01" value = "0.1" onmousemove = "QChange('highpass')">
+								</li>
+							</ul>	
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#five" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Five -->
+			<section id="five" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay3.jpg)" >
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#four" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Filtro Pasa Banda</h2>
+							</header>
+							<p>Este filtro es una combinación de los dos anteriores pues permite el paso a frecuencias superiores a una primera frecuencia de corte e inferiores a una segunda.</br> Como resultado habrá una frecuencia central en el medio de ambas frecuencias de corte y será el punto donde la atenuación es mínima.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar ruido rosa o una muestra de música y aplicarle un filtro pasa banda a estas señales en tiempo real. Puedes modificar la frecuencia central y el factor de calidad Q.</br> Solo debes presionar el botón “Activar” para aplicar el filtro y mover los sliders para determinar la frecuencia central y el Factor de Calidad.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "RosaTres" class = "fit" onclick = "playAudio('noise', this.id);">Ruido Rosa</button>
+								<button id = "MusicaTres" class = "fit" onclick = "playAudio('audio', this.id);">Música</button>
+								<h3> Activar Filtro </h3>
+								<button id = "activeFilterBP" class = "fit" onclick = "activeFilter('bandpass')"> Inactivo </button>
+								<h3 id = "cutFrequencyBP">
+									Frecuencia Central: 1000 Hz
+								</h3>
+								<input type="range" id="freqBP" min = "20" max = "20000"  step = "20" value = "1000" onmousemove = "freqChange('bandpass')">
+								<h3 id = "QfrequencyBP">
+									Factor de Calidad Q: 0.1
+								</h3>
+								<input type="range" id="QBP" min = "0.1" max = "1"  step = "0.01" value = "0.1" onmousemove = "QChange('bandpass')">
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#six" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Six -->
+				<section id="six" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#five" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Filtro Rechaza Banda </h2>
+							</header>
+							<p>Es un filtro opuesto al filtro pasa banda ya no permite el paso a frecuencias superiores a una primera frecuencia de corte e inferiores a una segunda.Como resultado habrá una frecuencia central en el medio de ambas frecuencias de corte y será el punto donde la atenuación es máxima.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p>Pulsa para escuchar ruido rosa o una muestra de música y aplicarle un filtro rechaza banda a estas señales en tiempo real. Puedes modificar la frecuencia central y el factor de calidad Q.</br> Solo debes presionar el botón “Activar” para aplicar el filtro y mover los sliders para determinar la frecuencia central y el Factor de Calidad.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "RosaCuatro" class = "fit" onclick = "playAudio('noise', this.id);">Ruido Rosa</button>
+								<button id = "MusicaCuatro" class = "fit" onclick = "playAudio('audio', this.id);">Música</button>
+								<h3> Activar Filtro </h3>
+								<button id = "activeFilterBR" class = "fit" onclick = "activeFilter('bandreject')"> Inactivo </button>
+								<h3 id = "cutFrequencyBR">
+									Frecuencia Central: 1000 Hz
+								</h3>
+								<input type="range" id="freqBR" min = "20" max = "20000"  step = "20" value = "1000" onmousemove = "freqChange('bandreject')">
+								<h3 id = "QfrequencyBR">
+									Factor de Calidad Q: 0.1
+								</h3>
+								<input type="range" id="QBR" min = "0.1" max = "1"  step = "0.01" value = "0.1" onmousemove = "QChange('bandreject')">
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#seven" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Seven -->
+			<section id="seven" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay3.jpg)">
+				<div class="container"> 
+					<ul class="actions">
+						<li><a href="#six" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Filtro de banda</h2>
+							</header>
+							<p> Un filtro de banda (o <i>peak filter</i>, “filtro de pico”) actúa amplificando o atenuando una frecuencia central y sus frecuencias adyacentes. Tiene una curva de respuesta en forma de campana, por lo que también puede ser llamado de esta manera. Un filtro de banda tiene tres parámetros: frecuencia central, la ganancia y factor Q.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p>Pulsa para escuchar ruido rosa o una muestra de música y aplicarle un filtro de banda a estas señales en tiempo real. Puedes modificar la frecuencia central, el factor Q y la ganancia. </br> Solo debes presionar el botón “Activar” para aplicar el filtro y mover los sliders para determinar la frecuencia central, el Factor de Calidad y la ganancia.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "RosaCinco" class = "fit" onclick = "playAudio('noise', this.id);">Ruido Rosa</button>
+								<button id = "MusicaCinco" class = "fit" onclick = "playAudio('audio', this.id);">Música</button>
+								<h3> Activar Filtro </h3>
+								<button id = "activeFilterPeak" class = "fit" onclick = "activeFilter('peaking')"> Inactivo </button>
+								<h3 id = "cutFrequencyPeak">
+									Frecuencia Central: 1000 Hz
+								</h3>
+								<input type="range" id="freqPeak" min = "20" max = "20000"  step = "20" value = "1000" onmousemove = "freqChange('peaking')">
+								<h3 id = "QfrequencyPeak">
+									Factor de Calidad Q: 0.1
+								</h3>
+								<input type="range" id="QPeak" min = "0.1" max = "1"  step = "0.01" value = "0.1" onmousemove = "QChange('peaking')">
+								<h3 id = "gainPeak">
+									Ganancia: 0 dB
+								</h3>
+								<input type="range" id="gainPeakO" min = "-10" max = "10"  step = "0.01" onmousemove = "gainChange('peaking')">
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#eight" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Eight -->
+				<section id="eight" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#seven" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Filtro Shelving </h2>
+							</header>
+							<p>Es el más usado en aplicaciones de consumidor. Los controles de bass o treble que se encuentran en un equipo de sonido casero funcionan con filtros de este tipo. Fueron inventados por Peter Baxandall en 1940 y, a diferencia de los filtros de paso que solo cortan, estos filtros permiten también realzar un rango de frecuencias.</br>
+							El espectro de frecuencias se divide en dos bandas: un lado que no se ve afectado y el otro, que se desea atenuar o realzar.
+							</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p>Pulsa para escuchar ruido rosa o una muestra de música y aplicarle un filtro  tipo Shelving a estas señales en tiempo real. Puedes modificar la frecuencia central y el factor de calidad Q. </br> Solo debes presionar el botón “Activar” para aplicar el filtro y mover los sliders para determinar la frecuencia central y la ganancia.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "RosaSeis" class = "fit" onclick = "playAudio('noise', this.id);">Ruido Rosa</button>
+								<button id = "MusicaSeis" class = "fit" onclick = "playAudio('audio', this.id);">Música</button>
+								<h3> Activar Filtro </h3>
+								<button id = "activeFilterShel" class = "fit" onclick = "activeFilter('shelving')"> Inactivo </button>
+								<h3> Tipo de Filtro </h3>
+								<button id = "shelvingTypeButton" class = "fit" onclick = "setShelvingType()" > Treble </button>
+								<h3 id = "cutFrequencyShel">
+									Frecuencia de Corte: 1000 Hz
+								</h3>
+								<input type="range" id="freqShel" min = "20" max = "20000"  step = "20" value = "1000" onmousemove = "freqChange('shelving')">
+								<h3 id = "QfrequencyShel">
+									Ganancia: 0 dB
+								</h3>
+								<input type="range" id="gainShel" min = "-10" max = "10"  step = "0.01" value = "0" onmousemove = "gainChange('shelving')">
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#nine" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Nine -->
+			<section id="nine" class="main style2 special" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay3.jpg)">
+				<div class="container">
+				<ul class="actions">
+						<li><a href="#eight" class="button scrolly">Anterior</a></li>
+					</ul>
+					<header class="major">
+						<h2>Tipos de Ecualizador</h2>
+					</header>
+					<p>En el este ejemplo se tienen tres tipos de audio: tono puro, muestra de voz y muestra de música. En cada tipo de audio se tendrá la posibilidad de variar el nivel.</p>
+					<div class="row 150%">
+						<div class="4u 12u$(medium)">
+							<span class="image fit"><img src="images/2Gain.jpg" alt="" /></span>
+							<figcaption> EQ III - Avid Technology. Ecualizador parámetrico encontrado en el digirack de Pro Tools </figcaption>
+							<h3>Ecualizador Paramétrico</h3>
+							<p>En 1972, George Massenburg presentó el ecualizador paramétrico en una convención de la Audio Engineering Society (AES). Este permite realzar o atenuar diferentes bandas de frecuencia de manera que pueda variarse la frecuencia central, la constante de atenuación o realce y el factor Q. Algunos desarrolladores denominan el factor Q como “ancho de banda”, cabe aclarar que esta puede ser una especificación engañosa, pues el factor Q y el ancho de banda son inversamente proporcionales; para que la especificación sea correcta, el ancho de banda debe estar representado en octavas.</p>
+						</div>
+						<div class="4u 12u$(medium)">
+							<span class="image fit"><img src="images/graphEQ.jpg" alt="" /></span>
+							<figcaption>iEQ-31 - dBX. Ecualizador gráfico de 31 bandas, en versión de <i>rack.</i></figcaption>
+							<h3>Ecualizador Gráfico</h3>
+							<p>Suelen encontrarse como un conjunto de faders que controlan la ganancia de un filtro de campana con frecuencia central y factor Q fijos. El rango de frecuencias suele estar dividido en 1/3 de octava. Dependiendo de la aplicación, abarcarán o no todo el rango de frecuencias. Son utilizados generalmente en algunos procesos de calibración, control de feedback en sonido en vivo y ejercicios de entrenamiento auditivo.</p>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<span class="image fit"><img src="images/paraGrpahEQ.jpg" alt="" /></span>
+							<figcaption> Q4 Paragraphic Equalizer - Waves Audio. Ecualizador paragráfico de tres bandas, en versión plug-in. </figcaption>
+							<h3>Ecualizador Paragráfico</h3>
+							<p>Un ecualizador paragráfico es un procesador que posee características de los ecualizadores gráficos y los paramétricos. Se caracteriza por que las frecuencias centrales de sus filtros son ajustables mediante un ligero barrido en lugar de estar fijas conforme a lo establecido por la ISO u otras preferencias de fábrica. Pueden tener o no un factor Q ajustable y conservan los controles de ganancia deslizantes que suministren la imagen de la curva de su respuesta ajustada.</p>
+
+							<p>Para aplicaciones de calibración o corrección, funcionan de manera similar a los gráficos; pero con la gran ventaja de poder variar la frecuencia central de sus filtros para hacerla coincidir con la frecuencia exacta que genera problemas o descompensaciones en el sistema o recinto.</p>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#ten" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Ten -->
+			<section id="ten" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#nine" class="CenterButton button scrolly">Anterior</a></li>
+					</ul>
+					<header class="major">
+						<h2>Resumen</h2>
+					</header>
+					<div class = "row 150%">
+						<ul>
+							<li><strong>Filtro:</strong> Es un procesador que sirve para separar señales en el dominio de la frecuencia con base en una frecuencia especifica. </li>
+
+							<li><strong>Filtro  Pasa  Bajos:</strong> Permite el paso a frecuencias que se encuentran por debajo de una frecuencia de corte, impidiendo el paso de frecuencias que están por encima de la misma. </li>
+
+							<li><strong>Filtro  Pasa  Altos:</strong> Permite el paso a frecuencias que se encuentran por encima de una frecuencia de corte, impidiendo el paso de frecuencias que se encuentren por debajo de la misma.</li>
+
+							<Li><strong>Filtro Pasa Banda:</strong> Este filtro deja pasar solamente las frecuencias que están por encima de una primera frecuencia de corte y por debajo de una segunda.</Li>
+
+							<li><strong>Filtro  Rechaza  Banda:</strong> No permite el paso a las frecuencias que están por encima de una primera frecuencia de corte y por debajo de una segunda.</li>
+
+							<li><strong>Filtro  de Camapana:</strong> Permite realzar o atenuar una frecuencia específica y sus frecuencias adyacentes.</li>
+
+							<li><strong>Filtro tipo Shelving:</strong> Filtro que permite atenuar o realzar un rango de frecuencias a partir de una frecuencia de corte.</li>
+
+							<li><strong>Ecualizador:</strong> Un procesador compuesto de filtros que busca modificar el espectro de una señal. Existen tres tipos principalmente: Paramétrico, Gráfico y Paragráfico.</li>
+						</ul>
+					</div>
+					<a href="../practice/practice_three.html"><button style = "width: 100%"> Ir a Práctica: 3 - Reconocimiento de Filtros </button></a>
+					<a href="../practice/practice_four.html"><button style = "width: 100%"> Ir a Práctica: 4 - Realces y Cortes </button></a>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="http://www.usbmed.edu.co/" class="icon alt fa-graduation-cap"><span class="label">Twitter</span></a></li>
+					<li><a href="https://twitter.com/USBmed" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.facebook.com/usbmed" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Universidad de San Buenaventura Medellín 2017s</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/eq.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+
+<!-- http://www.disca.upv.es/adomenec/IASPA/tema4/ES-Filtros.html -->
+</html>

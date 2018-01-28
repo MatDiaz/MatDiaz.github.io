@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<!--
+	Estimación De Cambios De Nivel
+	Diseño:
+		Photon by HTML5 UP
+		html5up.net | @ajlkn
+		Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Distorsión</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />	
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body style = "background-color: black;">
+		<!-- Header -->
+		<div style = "background-color: black;
+					border: 1px solid darkorange; border-radius: 4px;">
+			 	<a href="../../index.html" style = "padding-left: 0.5%"> |  Inicio </a>
+			 	| <a> Acerca <span class = "fa fa-question-circle-o" style = "color: #666"> </span></a>
+		</div>
+
+			<section id="header">
+				<div class="inner">
+					<!--<span class="image"><img src="images/chapter3.png" alt="" /></span>-->
+					<span class="icon major fa fa-fire" style="font-size: 1.2em;"></span>
+					<h1><strong>Distorsión</strong></h1>
+					<p>
+						Se considera distorsión al cambio o alteración producido sobre la forma de onda de una señal.   Normalmente la distorsión es un efecto no deseado, sin embargo dependiendo de la naturaleza de la señal y el tipo de distorsión, puede ser usado musicalmente en diferentes géneros, especialmente en instrumentos como la guitarra.  
+					</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Iniciar</a></li>
+					</ul>
+				</div>
+			</section>
+
+			<section style = " position: fixed;border-radius: 4px;
+							width: 100vw; margin: auto; height: 10vh; top: 92.75%;"
+						  onmouseover = "document.getElementById('div1').style.display = 'block';";"
+						  onmouseout = "document.getElementById('div1').style.display = 'none';">
+			<div id = "div1" style = "display: none; width: 100vw; position: relative;" onmouseover="this.style.background='rgba(0, 0, 0, 0.75)'">		
+				<!--<button href = "#header"> <span class = "fa fa-arrow-circle-up scrolly"></span> </button>-->
+				<button style = "position: relative; margin-left:40%;"  onmousedown="change = -1; autoVolume()"
+																		onmouseup="autoStop();" onclick="; change-1; volumeChange();" >-</button>
+				<a id = "Volumen" style = "position: relative; "> Volumen : 100% </a> 
+				<button style = "position: relative;" onmousedown="; change = 1; autoVolume();"
+													  onmouseup="autoStop()"; onclick="; change = 1; volumeChange();">+</button>
+			</div>
+			</section>
+
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay7.jpg)" >
+				<div class="container">
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Distorsión</h2>
+							</header>
+							<p>
+								La distorsión es el producto de la no linealidad en sistemas de amplificación cuando se sobrepasan los límites de amplitud que el mismo es capaz de procesar; en un sistema análogo el rango de operación lineal dependerá del voltaje de alimentación y la arquitectura del circuito de amplificación, mientras que en un sistema digital dicho rango estará limitado por la cantidad de bits destinados a los procesos de conversión ADC y DCA.  El sobrepasar los límites de linealidad produce una deformación o recorte de la señal denominada clipping. 
+							</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Se reproduce un tono puro con frecuencia de 1KHz sin distorsión; luego se presenta el mismo tono normalizado en nivel luego de ser sometido a clipping generando niveles de distorsión perceptibles.</p>
+							<ul class="actions fit small">
+								<li>
+								<button class = "fit" onclick = "playAudio('noise');">Reproducir Tono Puro</button>
+								<button class = "fit" onclick = "playAudio('noise');">Reproducir Tono Puro con Distorsión</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#two" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<section id="two" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Tipos de Distorsión </h2>
+							</header>
+							<ul>
+								<p>
+									Los tipos de distorsión se pueden clasificar la cantidad de clipping que realicen. 
+								</p>
+								<li>
+									<strong>Soft Clipping: </strong> se caracteriza por tener una transición suave que deforma la onda gradualmente conforme esta supera el límite de linealidad produciendo una distorsión suave que da un sonido cálido. La distorsión overdrive presente en procesadores de efectos y pedales de guitarra, es un ejemplo de tipo de distorsión producida por un soft clipping 
+								</li>
+								<li>
+									<strong>Hard Clipping: </strong> se caracteriza por una transición rápida que produce un cambio abrupto entre la zona de amplificación lineal y no lineal generando un recorte de la señal que se percibe como un efecto de distorsión fuerte con un sonido de carácter agresivo y ruidoso con alto contenido de armónicos en frecuencias altas. Ejemplos de este tipo de hard cliping son los denominados efectos de distorsión heavy o fuzz presentes en amplificadores y pedales de efectos para guitarra.
+								</li>
+							</ul>
+
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>
+								Se reproduce una señal de guitarra sin distorsión, luego se presenta la misma señal sometida a una distorsión suave o soft clipping y a una distorsión fuerte o hard clipping.
+							</p>
+							<ul class="actions fit small">
+								<li>
+								<button class = "fit" onclick = "playAudio('noise');">Guitarra Sin Distorsión</button>
+								<button class = "fit" onclick = "playAudio('noise');">Guitarra Soft Clipping</button>
+								<button class = "fit" onclick = "playAudio('noise');">Guitarra Hard Clipping</button>
+								</li>
+							</ul>	
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Three -->
+			<section id="three" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay7.jpg)" >
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#two" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+							<header class="major">
+								<h2>Distorsión Armónica Total THD:</h2>
+							</header>
+							<p>
+								Es una medida de la cantidad de distorsión producida por un dispositivo  al ingresar una señal de frecuencia y nivel conocido; normalmente El THD se especifica como un porcentaje haciendo referencia a la suma o contribución de todos los componentes introducidos por el dispositivo diferentes a la señal de prueba.</br></br>
+								La mayoría de dispositivos de audio en la actualidad poseen THD menores al 0.1% lo cual representa niveles muy bajos de distorsión que resultan imperceptibles. Por otro lado existen dispositivos que producen altos niveles de distorsión para ser usados como efectos sonoros con objetivos artísticos. </br> </br> 
+								Otro parámetro que se suele confundir con la distorsión armónica total es la denominada distorsión del tercer armónico; la confusión se da  debido a que ambas se pueden abreviar de la misma forma como THD.  La distorsión del tercer armónico se suele usar  dado que este suele ser el armónico de mayor nivel,  es un parámetro usual para caracterizar la calidad de los equipos basados en cinta magnética.
+							</p>
+					</div>
+					<ul class="actions">
+						<li><a href="#four" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Four -->
+		<section id="four" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2>Distorsión Armónica Total THD:</h2>
+							</header>
+							<p> 
+								Para determinar el nivel de distorsión THD que agrega un dispositivo se necesita realizar una medición que consiste en excitar el dispositivo con una señal de prueba comúnmente un tono puro de 1kHz para luego realizar a la señal de salida, un proceso de análisis espectral basado en una transformada rápida de Fourier y determinar los armónicos o componentes añadidos y su nivel.</br> </br>
+
+								<strong> Distorsión armónica total + ruido  THD+N: </strong>  es otra especificación común de distorsión que además de cuantificar los armónicos añadidos, tiene en cuenta el nivel de ruido producido por el dispositivo bajo prueba.  Los Analizadores de distorsión utilizan un filtro tipo notch para eliminar la frecuencia fundamental o de excitación para luego medir la señal residual que contiene los armónicos producidos más cualquier otra señal aleatoria añadida (ruido).  El THD+N es un parámetro que siempre será mayor que el THD razón por la que no es común encontrarlo en especificaciones de equipos comerciales.
+							</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>
+							Se reproduce una señal de audio con contenido musical sin distorsión, posteriormente se reproduce la misma señal con niveles de distorsión THD de 1, 2, 4,8 y 12%. Se repite para una señal de Voz.
+							</p>
+							<ul class="actions fit small">
+								<li>
+								<h3> Señal Musical </h3>
+								<button class = "small" onclick = "playAudio('noise');"> THD 0 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 1 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 2 %</button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 4 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 8 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 12 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 15 % </button>
+								</li>
+
+								<li>
+								<h3> Voz </h3>
+								<button class = "small" onclick = "playAudio('noise');"> THD 0 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 1 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 2 %</button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 4 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 8 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 12 % </button>
+								<button class = "small" onclick = "playAudio('noise');"> THD 15 % </button>
+								</li>
+							</ul>	
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#five" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Three -->
+			<section id="five" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay7.jpg)" >
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#four" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+							<header class="major">
+								<h2>Resumen</h2>
+							</header>
+							<ul>
+								<li><strong>Distorsión: </strong> Se considera distorsión al cambio o alteración producido sobre la forma de onda de una señal. </li>
+								<li><strong><i>Soft Clipping: </i></strong> Se caracteriza por tener una transición suave que deforma la onda gradualmente conforme esta supera el límite de linealidad produciendo una distorsión suave que da un sonido cálido. </li>
+								<li><strong><i>Hard Clipping: </i></strong>se caracteriza por una transición rápida que produce un cambio abrupto entre la zona de amplificación lineal y no lineal. </li>
+								<li><strong><i>THD: </i></strong> Es una medida de la cantidad de distorsión producida por un dispositivo al ingresar una señal de frecuencia y nivel conocido. </li>
+							</ul>
+					</div>
+					<ul class="actions">
+						<li><a href="#footer" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="http://www.usbmed.edu.co/" class="icon alt fa-graduation-cap"><span class="label">Twitter</span></a></li>
+					<li><a href="https://twitter.com/USBmed" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.facebook.com/usbmed" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Universidad de San Buenaventura Medellín 2016</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/comp.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

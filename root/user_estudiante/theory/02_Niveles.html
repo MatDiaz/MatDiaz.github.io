@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<!--
+	Estimación De Cambios De Nivel
+	Diseño:
+		Photon by HTML5 UP
+		html5up.net | @ajlkn
+		Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Cambios de Nivel</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />	
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body style = "background-color: black;">
+		<!-- Header -->
+		<div style = "background-color: black;
+					border: 1px solid darkorange; border-radius: 4px;">
+			 <a href="../../index.html" style = "padding-left: 0.5em"> Inicio </a>
+			 | 
+		</div>
+
+			<section id="header">
+				<div class="inner" style = "height: 80vh;">
+					<!--<span class="image"><img src="images/levels.png" alt="" /></span>-->
+					<span class="icon major fa-sort-amount-desc"></span>
+					<h1><strong>Cambios de Nivel</strong></h1>
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify">En el mundo del audio y del sonido, se presentan ocasiones en las que necesitamos identificar los cambios de nivel que se presentan entre sonidos. Lo que pocos saben es que el oído humano se comporta de diferente manera dependiendo de las frecuencias y los niveles de los sonidos que se escuchan, es por esto que Fletcher y Munson realizaron una investigación en 1933 con el fin de tener una idea de cómo los seres humanos perciben los sonidos a diferentes niveles de intensidad, teniendo en cuenta fenómenos como la sonoridad y el enmascaramiento.</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Iniciar</a></li>
+					</ul>
+				</div>
+			</section>
+
+			<section style = " position: fixed;border-radius: 4px;
+							width: 100vw; margin: auto; height: 10vh; top: 92.75%;"
+						  onmouseover = "document.getElementById('div1').style.display = 'block';";"
+						  onmouseout = "document.getElementById('div1').style.display = 'none';">
+			<div id = "div1" style = "display: none; width: 100vw; position: relative;" onmouseover="this.style.background='rgba(0, 0, 0, 0.75)'">		
+				<!--<button href = "#header"> <span class = "fa fa-arrow-circle-up scrolly"></span> </button>-->
+				<button style = "position: relative; margin-left:40%;"  onmousedown="change = -1; autoVolume()"
+																		onmouseup="autoStop();"onclick="; change-1; volumeChange();">-</button>
+				<a id = "Volumen" style = "position: relative; "> Volumen : 100% </a> 
+				<button style = "position: relative;" onmousedown="; change = 1; autoVolume();"
+													  onmouseup="autoStop()"onclick="; change+1; volumeChange();">+</button>
+			</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay2.jpg)" >
+				<div class="container">
+					<div class = "row 150%">
+						<header class="major">
+							<h2>Decibel</h2>
+						</header>
+							<p> Un decibel (dB) parte de la relación logarítmica entre dos valores. El término decibel proviene de la multiplicación de diez veces esta relación. Es utilizado en aplicaciones de audio y sonido debido al comportamiento logarítmico del oído de los seres humanos. Además, sirve para representar amplios rangos de valores, como el del espectro de frecuencias.</p>
+						<header class="major">
+							<h2>Logaritmo</h2>
+						</header>
+							<p>Es utilizado con el fin de simplificar procesos matemáticos, pues pueden simplificar grandes escalas numéricas. Es el exponente al que hay que elevar una base determinada para obtener un número.</p>
+						<ul class="actions">
+							<li><a href="#two" class="CenterButton button scrolly">Continuar</a></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+		<!-- Two -->
+			<section id="two" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Presión Sonora </h2>
+							</header>
+							<p>Hace referencia a una variación sobre la presión atmosférica, a causa de un sonido. La unidad de medida internacional utilizada para medir la presión es el Pascal y se representa <i>Pa</i>. Cabe resaltar que las variaciones de presión generadas por el sonido son mínimas a comparación de la presión atmosférica. El oído rango de audición abarca desde 20 <i>μPa</i> hasta 20 <i>Pa</i>.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p> Para obtener el nivel de presión sonora en términos de los decibeles se define primero una presión de referencia que es el sonido mínimo que se puede escuchar: <i>Presión de Referencia = 0,00002 Pa = 20 μPa</i> </p>
+							<p>Luego, se utiliza la siguiente formula con el fin de encontrar los niveles de presión sonora (NPS) o también conocido como Sound Preassure Level (SPL), donde Presión será igual a la Presión de Referencia:</br> <i>Nivel de Presión Sonora (dB)=20Log10 ((Presión Sonora)/(Presión de Referencia))</i></p>
+							<p>Dando como resultado:</br>
+
+							<i>Nivel de Presión Sonora (dB) = 20Log10 (1) = 0 dB</i></br>
+
+							Ahora utilicemos el máximo de presión sonora del rango auditivo, <i>20 Pa.</i></br>
+							<i>Nivel de Presión Sonora (dB) = 20Log10 ((20 Pa)/(0,00002 Pa)) = 120 dB</i>
+							</p>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#three" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Three -->
+			<section id="three" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay2.jpg)" >
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#two" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class = "row 150%">
+						<header class="major">
+							<h2>Decibel</h2>
+						</header>
+							<p>Como hemos visto, el oído es sensible a un amplio rango de sonidos, desde el más suave hasta el más fuerte. Pero dentro de este rango, ¿qué tan sensible es el oído a pequeños cambios de intensidad? </p>
+
+							<p>Cambios de 5 dB son audibles dependiendo de las circunstancias, pero ¿es igual para todos los sonidos? Detectar estas diferencias dependerá de la frecuencia y también del nivel del sonido. </p> 
+
+							<p>Un tono de 1 kHz, a niveles muy bajos, tendrá 3 dB como el mínimo cambio detectable para el oído, pero en niveles altos el oído puede detectar cambios hasta de 0.25 dB. A un nivel muy bajo, un tono de 35 Hz requiere un cambio de 9 dB para ser detectable. Para el rango de frecuencias medias, el mínimo cambio detectable por el oído es de 2 dB.</p>
+					</div>
+					<ul class="actions">
+							<li><a href="#four" class="CenterButton button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Four -->
+			<section id="four" class="main style1 special">
+				<div class="container">
+				<ul class="actions">
+						<li><a href="#three" class="button scrolly">Anterior</a></li>
+					</ul>
+					<header class="major">
+						<h2>Cambios de Nivel</h2>
+					</header>
+					<p>En este ejemplo se tienen tres audios diferentes: un tono puro, una muestra de voz y una muestra de música. Para cada tipo de audio tendrás la posibilidad de variar el nivel.</p>
+					<div class="row 150%">
+						<div class="4u 12u$(medium)">
+							<span class="image fit"><img src="images/voicechapter2.png" alt="" /></span>
+							<h3>Ejemplo de Voz</h3>
+							<p>Pulsa para escuchar la grabación de voz en su nivel original o modificado según el valor indicado.</p>
+							<ul class="actions fit small">
+								<li>
+									<button id = "VozM10dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-10, 'audio', url1, this.id)">- 10 dB</button>
+									<button id = "VozM6dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-6, 'audio', url1, this.id)">- 6 dB</button>
+									<button id = "VozM2dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-2, 'audio', url1, this.id)">- 2 dB</button>
+									<button id = "Voz0dB" class = "fit" onclick = "audioLevels(1, 'audio', url1, this.id)"> Muestra de Voz</button>
+									<button id = "Voz2dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(2, 'audio', url1, this.id)">+ 2 dB</button>
+									<button id = "Voz6dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(6, 'audio', url1, this.id)">+ 6 dB</button>
+									<button id = "Voz10dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(10, 'audio', url1, this.id)">+ 10 dB</button>
+								</li>
+							</ul>
+						</div>
+						<div class="4u 12u$(medium)">
+							<span class="image fit"><img src="images/sinechapter2.png" alt="" /></span>
+							<h3>Ejemplo de Onda Seno</h3>
+							<p>Pulsa para escuchar un tono puro en su nivel original o modificado según el valor indicado.</p>
+							<ul class="actions fit small">
+								<li>
+									<button id = "SenoM10dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-10, 'sine', null, this.id)">- 10 dB</button>
+									<button id = "SenoM6dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-6, 'sine', null, this.id)">- 6 dB</button>
+									<button id = "SenoM2dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-2, 'sine', null, this.id)">- 2 dB</button>
+									<button id = "Seno0dB" class = "fit" onclick = "audioLevels(1, 'sine', null, this.id)">Onda Seno</button>
+									<button id = "Seno2dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(2, 'sine', null, this.id)">+ 2 dB</button>
+									<button id = "Seno6dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(6, 'sine', null, this.id)">+ 6 dB</button>
+									<button id = "Seno10dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(10, 'sine', null, this.id)">+ 10 dB</button>
+								</li>
+							</ul>
+						</div>
+						<div class="4u$ 12u$(medium)">
+							<span class="image fit"><img src="images/voicechapter2.png" alt="" /></span>
+							<h3>Ejemplo de Música</h3>
+							<p>Pulsa para escuchar la pista musical en su nivel original o modificado según el valor indicado.</p>
+							<ul class="actions fit small">
+								<li>
+									<button id = "AudioM10dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-10, 'audio', url2, this.id)">- 10 dB</button>
+									<button id = "AudioM6dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-6, 'audio', url2, this.id)">- 6 dB</button>
+									<button id = "AudioM2dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(-2, 'audio', url2, this.id)">- 2 dB</button>
+									<button id = "Audio0dB" class = "fit" onclick = "audioLevels(1, 'audio', url2, this.id)" >Muestra de Música</button>
+									<button id = "Audio2dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(2, 'audio', url2, this.id)">+ 2 dB</button>
+									<button id = "Audio6dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(6, 'audio', url2, this.id)">+ 6 dB</button>
+									<button id = "Audio10dB" class = "fit" style = "text-transform: none" onclick = "audioLevels(10, 'audio', url2, this.id)">+ 10 dB</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#five" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Five -->
+			<section id="five" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay2.jpg)" >
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#four" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Sonoridad</h2>
+							</header>
+							<p>Es la intensidad percibida de un sonido y se encuentra relacionada con su amplitud y frecuencia. Esta sensación obedece a la manera en cómo trabaja el oído, ya que es más sensible para ciertas bandas de frecuencia. Las curvas de Fletcher y Munson nacen como producto de una investigación que busca tener una predicción de este comportamiento no lineal del oído humano.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar la diferencia en sonoridad entre dos tonos puros. Un tono de 125 Hz y uno de 1 kHz. El primero será menos sonoro que el segundo, a pesar de tener ambos la misma amplitud.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "SonoridadButton" class = "fit" onclick = "sonDiff(true, this.id)">Diferencias de Sonoridad</button>
+								</li>		
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#six" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- Six -->
+				<section id="six" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#five" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class = "major">
+								<h2> Curvas de Fletcher y Munson </h2>
+							</header>
+							<p>El experimento realizado en 1933 consistía en lo siguiente: Primero, un usuario debe escuchar un tono de referencia -1kHz- con nivel de presión sonora conocido. A continuación, el usuario escucha un tono cuya frecuencia es diferente y cuya amplitud es modificable. El objetivo es que se modifique la amplitud de este segundo tono de manera que su intensidad percibida sea igual a la del tono de referencia. Se medía el nivel de presión sonora del tono resultante y se repetía el proceso para varias frecuencias. Este experimento se realizó con varias personas.</br>
+							Como resultado, se obtuvieron las curvas de igual sonoridad que hoy son referencia en el campo de la acústica y la psicoacústica.</p>
+							<span class="image"><img src="images/FletcherMunson.jpg" alt=""/></span>
+							<figcaption style="color: gray;">Curvas de Fletcher y Munson. <a href="https://www.britannica.com/science/Fletcher-Munson-curve"></br>Fuente</a> </br></br> </figcaption>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+							<header class = "major">
+								<h2> Ejemplo </h2>
+							</header>
+							<p>Pulsa para escuchar dos tonos puros (125Hz y 1kHz) con igual sonoridad. Para percibir ambos tonos a igual intensidad, el tono de 125Hz necesita una amplitud mayor.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "DiffSonoridad" class = "fit" onclick = "sonDiff(false, this.id)">Igual Sonoridad</button>
+								</li>		
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#seven" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+		<!-- seven -->
+			<section id="seven" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay2.jpg)">
+				<div class="container"> 
+					<ul class="actions">
+						<li><a href="#six" class="button scrolly">Anterior</a></li>
+					</ul>
+					<div class="row 150%">
+						<div class="6u 12u$(medium)">
+							<header class="major">
+								<h2>Enmascaramiento</h2>
+							</header>
+							<p>Se da cuando un sonido oculta o enmascara otro sonido y es muy común en muchas situaciones de la vida diaria. Por ejemplo, una conversación entre dos personas en la que el sonido del tráfico impida entender lo que dice alguna de ellas; o un grupo musical en donde algunos instrumentos no permiten percibir el sonido generado por otros.</p>
+
+							<p>
+							Cabe resaltar que esto es un fenómeno psicoacústico, propio del oído y no del sonido. El enmascaramiento se da por la manera en que es excitada la membrana basilar por varios tipos de tonos puros con diferentes frecuencias al mismo tiempo.</p>
+						</div>
+						<div class="6u$ 12u$(medium) important(medium)">
+						<header class = "major">
+							<h2> Ejemplo </h2>
+						</header>
+							<p>Pulsa para escuchar cómo una señal de ruido rosa, al ir aumentando en amplitud, puede enmascarar un tono puro.</p>
+							<ul class="actions fit small">
+								<li>
+								<button id = "maskingButton" class = "fit" onclick = "masking(this.id)">Enmascaramiento</button> 
+								</li>
+							</ul>
+						</div>
+					</div>
+					<ul class="actions">
+						<li><a href="#eight" class="button scrolly">Continuar</a></li>
+					</ul>
+				</div>
+			</section>
+
+			<!-- nine -->
+			<section id="eight" class="main style1">
+				<div class="container">
+					<ul class="actions">
+						<li><a href="#seven" class="CenterButton button scrolly">Anterior</a></li>
+					</ul>
+					<header class="major">
+						<h2>Resumen</h2>
+					</header>
+					<div class = "row 150%">
+						<ul>
+							<li><strong>Decibel:</strong> Es la proporción logarítmica entre dos valores.</li>
+							<li><strong>Presión Sonora:</strong> Hace referencia al aumento de presión sobre la presión atmosférica. Se mide en Pascal (Pa).</li>
+							<li><strong>Sonoridad:</strong> Es la intensidad percibida de un sonido.</li>
+							<li><strong>Curvas de Fletcher y Munson:</strong> Muestran cómo el oído percibe la intensidad de un sonido con relación a su frecuencia y amplitud.</li>
+							<li><strong>Enmascaramiento:</strong> Es cuando un sonido oculta a otro sonido.</li>
+						</ul>
+					</div>
+					<a href="../practice/practice_two.html"><button style = "width: 100%"> Ir a Práctica: 2 - Cambios de Nivel </button></a>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="http://www.usbmed.edu.co/" class="icon alt fa-graduation-cap"><span class="label">Twitter</span></a></li>
+					<li><a href="https://twitter.com/USBmed" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.facebook.com/usbmed" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Universidad de San Buenaventura Medellín 2017</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/levels.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+
+</html>
