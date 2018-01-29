@@ -169,8 +169,8 @@ var audioActive = false;
 var activeLevel = 0;
 var activeType = null;
 var activeUrl = null;
-var url1 = 'http://freesound.org/data/previews/256/256994_2522406-lq.mp3';
-var url2 = 'http://freesound.org/data/previews/347/347848_4019029-lq.mp3';
+var url1 = 'https://freesound.org/data/previews/256/256994_2522406-lq.mp3';
+var url2 = 'https://freesound.org/data/previews/347/347848_4019029-lq.mp3';
 
 function audioLevels(level, type, url, elementId)
 {	

@@ -168,7 +168,7 @@ function autoStop()
 var audioActive = false;
 var filterActive = false;
 
-var url1 = "http://freesound.org/data/previews/174/174589_2188371-lq.mp3";
+var url1 = "https://freesound.org/data/previews/174/174589_2188371-lq.mp3";
 var newSound = new addSound();
 
 var audioOneActive = false;

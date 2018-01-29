@@ -118,13 +118,13 @@ var exampleFiveGainSide = audioCtx.createGain();
 // ------------------------------------------------------------------------------------------------------------------------------
 var change;
 
-var url1 = "http://freesound.org/data/previews/277/277325_4548252-lq.mp3"; // Default Sound
-var url2Drums = "http://freesound.org/data/previews/106/106552_1826123-lq.mp3"; //Bateria Limpia
-var url2DrumsReverb = "http://www.freesound.org/data/previews/395/395785_6522111-lq.mp3"; // Bateria Reverb
-var url3Loop = "http://www.freesound.org/data/previews/395/395784_6522111-lq.mp3"; // Loop Electronico Completo
-var url4LoopMid = "http://www.freesound.org/data/previews/395/395783_6522111-lq.mp3"; // Loop Electronico Mid
-var url4LoopSide = "http://www.freesound.org/data/previews/395/395786_6522111-lq.mp3"; // Loop Electronico Side
-var urlSumaSenos = "http://www.freesound.org/data/previews/395/395782_6522111-lq.mp3"; // Suma de Senos
+var url1 = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3"; // Default Sound
+var url2Drums = "https://freesound.org/data/previews/106/106552_1826123-lq.mp3"; //Bateria Limpia
+var url2DrumsReverb = "https://www.freesound.org/data/previews/395/395785_6522111-lq.mp3"; // Bateria Reverb
+var url3Loop = "https://www.freesound.org/data/previews/395/395784_6522111-lq.mp3"; // Loop Electronico Completo
+var url4LoopMid = "https://www.freesound.org/data/previews/395/395783_6522111-lq.mp3"; // Loop Electronico Mid
+var url4LoopSide = "https://www.freesound.org/data/previews/395/395786_6522111-lq.mp3"; // Loop Electronico Side
+var urlSumaSenos = "https://www.freesound.org/data/previews/395/395782_6522111-lq.mp3"; // Suma de Senos
 
 
 var addSound = function(url)
@@ -134,9 +134,9 @@ var addSound = function(url)
 
 var bufferLoader;
 
-bufferLoader = new BufferLoader(audioCtx, ["http://freesound.org/data/previews/106/106552_1826123-lq.mp3", 
-	"http://freesound.org/data/previews/395/395785_6522111-lq.mp3", "http://freesound.org/data/previews/395/395784_6522111-lq.mp3",
-	"http://freesound.org/data/previews/395/395783_6522111-lq.mp3", "http://freesound.org/data/previews/395/395786_6522111-lq.mp3"], finishedLoading);
+bufferLoader = new BufferLoader(audioCtx, ["https://freesound.org/data/previews/106/106552_1826123-lq.mp3", 
+	"https://freesound.org/data/previews/395/395785_6522111-lq.mp3", "https://freesound.org/data/previews/395/395784_6522111-lq.mp3",
+	"https://freesound.org/data/previews/395/395783_6522111-lq.mp3", "https://freesound.org/data/previews/395/395786_6522111-lq.mp3"], finishedLoading);
 bufferLoader.load();
 
 var source1 = audioCtx.createBufferSource();

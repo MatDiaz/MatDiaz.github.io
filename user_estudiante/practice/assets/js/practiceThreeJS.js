@@ -12,11 +12,11 @@ var player = function() // player constructor
 	this.Wrong = 0;
 	this.level = "Fácil";
 	this.timer = 20;
-	this.url  = "http://freesound.org/data/previews/277/277325_4548252-lq.mp3";
-	this.urlList = ["http://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
-	"http://freesound.org/data/previews/325/325407_4548252-lq.mp3",
-	"http://freesound.org/data/previews/350/350877_2305278-lq.mp3",
-	"http://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
+	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
+	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
+	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
+	"https://freesound.org/data/previews/350/350877_2305278-lq.mp3",
+	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
 }
 
 player.prototype.rightAnswer = function() // Answer counter
@@ -167,7 +167,7 @@ function init()
 	var rightStop = false;
 	var buttonActiveMedium = false;
 	var buttonActiveHard = false;
-	var url2 = "http://freesound.org/data/previews/352/352651_4019029-lq.mp3";
+	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
 
 	createjs.Ticker.addEventListener("tick", handleTick);
 	createjs.Ticker.setFPS(60); // Canvas update frequency

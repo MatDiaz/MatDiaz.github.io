@@ -43,7 +43,7 @@ var audioLevelFilter = audioCtx.createGain(); // Audio Filter Level
 // --------------------------------------------------------------------------------------------
 var change;
 
-var url1 = "http://freesound.org/data/previews/277/277325_4548252-lq.mp3";
+var url1 = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 
 var addSound = function(url)
 {
