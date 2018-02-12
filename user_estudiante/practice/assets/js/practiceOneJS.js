@@ -19,8 +19,8 @@ var player = function()
 player.prototype.rightAnswer = function() 
 {	
 	this.Correct++;
-	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 15;}
-	else if (this.Correct >= 20){this.level = "Avanzado"; this.timer = 10}
+	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 15;}
+	else if (this.Correct >= 40){this.level = "Avanzado"; this.timer = 10}
 }
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -724,8 +724,9 @@ function timedFunction() // This function is called when the counter starts
 				frequencyText.y = ((225 / 2) + 75) - (frequencyText.getBounds().height/1.2);
 				pause = false;
 				rightStop = true;
-				gameControl.generateIconigta(newPlayer.level);
+				gameControl.generateIconigta(newPlayer.level); 
 				stopPlaying();
+				gameOscillator.frequency.value = gameControl.toneGuess;
 			}
 
 			if (rightStop)
