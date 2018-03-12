@@ -22,8 +22,8 @@ var player = function() // player constructor
 player.prototype.rightAnswer = function() // Answer counter
 {	
 	this.Correct++;
-	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 15}
-	else if (this.Correct >= 20){this.level = "Avanzado"; this.timer = 10}
+	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 20}
+	else if (this.Correct >= 20){this.level = "Avanzado"; this.timer = 20}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -54,7 +54,7 @@ var gameOscillatorControl = function() // Game Object Constructor
 	// This will be the incognitas to use in game, they'll change according to the game
 	this.frequencyListA = [-10, 0, 10]; // Easy Level
 	this.frequencyListB = [-4, -6, -10, 0, 10, 6, 4]; // Medium Level
-	this.frequencyListC = [-1, -2, -4, -6, -10, 0, 10, 6, 4, 1]; // Hard Level
+	this.frequencyListC = [-2, -4, -6, -10, 0, 10, 6, 4, 2]; // Hard Level
 	this.Guess = this.frequencyListA[Math.floor(Math.random() * 3)]; // Initialize an icongnita
 }
 
@@ -62,7 +62,9 @@ gameOscillatorControl.prototype.generateIconigta = function (level)
 {	
 	if (level == "Fácil") { this.Guess = this.frequencyListA[Math.floor(Math.random() * 3)]}
 	else if (level == "Intermedio") { this.Guess = this.frequencyListB[Math.floor(Math.random() * 7)] }
-	else if (level = "Avanzado") { this.Guess = this.frequencyListC[Math.floor(Math.random() * 8)] }
+	else if (level = "Avanzado") { this.Guess = this.frequencyListC[Math.floor(Math.random() * 9)] }
+
+		console.log(this.Guess)
 };
 
 gameOscillatorControl.prototype.controlGain = function (change)
@@ -290,18 +292,22 @@ function init()
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
 
+	var modifier;
+	var separator;
+
+	modifier = 16;
+	separator = 100;
+
 	// Create Buttons
-	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 26, 325, stage, "-1 dB", buttonFont, "white");
-	bButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + 81), 325, stage, "- 2 dB",  buttonFont, "white");
-	cButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (81*2)), 325, stage, "- 4 dB",  buttonFont, "white");
-	dButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (81*3)), 325, stage, "- 6 dB",  buttonFont, "white");
-	eButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (26 + (81*4)), 325, stage, "- 10 dB",  buttonFont, "white");
-	fButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (26 + (81*5)), 325, stage, "0 dB",  buttonFont, "white");
-	gButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (26 + (81*6)), 325, stage, "+ 10 dB",  buttonFont, "white");
-	hButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (81*7)), 325, stage, "+ 6 dB",  buttonFont, "white");
-	iButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (81*8)), 325, stage, "+ 4 dB",  buttonFont, "white");
-	jButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (81*9)), 325, stage, "+ 2 dB",  buttonFont, "white");
-	kButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (81*10)), 325, stage, "+ 1 dB",  buttonFont, "white");
+	bButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + separator*0), 325, stage, "- 2 dB",  buttonFont, "white");
+	cButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 1)), 325, stage, "- 4 dB",  buttonFont, "white");
+	dButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 2)), 325, stage, "- 6 dB",  buttonFont, "white");
+	eButton = new newButton(buttonHeight + modifier, buttonWidth, "darkorange", buttonStroke, (26 + (separator * 3)), 325, stage, "- 10 dB",  buttonFont, "white");
+	fButton = new newButton(buttonHeight + modifier, buttonWidth, "darkorange", buttonStroke, (26 + (separator * 4)), 325, stage, "0 dB",  buttonFont, "white");
+	gButton = new newButton(buttonHeight + modifier, buttonWidth, "darkorange", buttonStroke, (26 + (separator * 5)), 325, stage, "+ 10 dB",  buttonFont, "white");
+	hButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 6)), 325, stage, "+ 6 dB",  buttonFont, "white");
+	iButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 7)), 325, stage, "+ 4 dB",  buttonFont, "white");
+	jButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 8)), 325, stage, "+ 2 dB",  buttonFont, "white");
 	playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
 	changeButton = new newButton((buttonHeight + 110), buttonWidth, "orange", "orange", (940 / 2) - 94, 255, stage, "Escuchas: Original", textFont, "white");
 	stage.enableMouseOver(); // Enable pointer over buttons
@@ -324,14 +330,14 @@ function init()
 	eButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		eButton.createButton.graphics.clear();
-		eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	eButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		eButton.createButton.graphics.clear();
-		eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -346,14 +352,14 @@ function init()
 	fButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		fButton.createButton.graphics.clear();
-		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	fButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		fButton.createButton.graphics.clear();
-		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -368,14 +374,14 @@ function init()
 	gButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		gButton.createButton.graphics.clear();
-		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	gButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		gButton.createButton.graphics.clear();
-		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -397,20 +403,20 @@ function activateButtonsMediumLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // =====================================================================================================================================================
 	cButton.createButton.graphics.clear();
-	cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+	cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 	stage.update();
 
 	cButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		cButton.createButton.graphics.clear();
-		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	cButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		cButton.createButton.graphics.clear();
-		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -422,20 +428,20 @@ function activateButtonsMediumLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	dButton.createButton.graphics.clear();
-	dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+	dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 	stage.update();
 
 	dButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		dButton.createButton.graphics.clear();
-		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	dButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		dButton.createButton.graphics.clear();
-		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -447,20 +453,20 @@ function activateButtonsMediumLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	hButton.createButton.graphics.clear();
-	hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+	hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 	stage.update();
 
 	hButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		hButton.createButton.graphics.clear();
-		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	hButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		hButton.createButton.graphics.clear();
-		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -472,20 +478,20 @@ function activateButtonsMediumLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	iButton.createButton.graphics.clear();
-	iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+	iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 	stage.update();	
 
 	iButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		iButton.createButton.graphics.clear();
-		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	iButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		iButton.createButton.graphics.clear();
-		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -502,20 +508,20 @@ function activateButtonsHardLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	jButton.createButton.graphics.clear();
-	jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+	jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 	stage.update();	
 
 	jButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		jButton.createButton.graphics.clear();
-		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	jButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		jButton.createButton.graphics.clear();
-		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
@@ -524,72 +530,25 @@ function activateButtonsHardLevel()
 		updateFrequencyText("+ 2 dB", compareFrequency(2));
 	});
 
-// 															Button 11
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	kButton.createButton.graphics.clear();
-	kButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-	stage.update();
 
-	kButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		kButton.createButton.graphics.clear();
-		kButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	kButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		kButton.createButton.graphics.clear();
-		kButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	kButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("+ 1 dB", compareFrequency(1));
-	});
-
-	aButton.createButton.graphics.clear();
-	aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-	stage.update();
-
-	aButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		aButton.createButton.graphics.clear();
-		aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	aButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		aButton.createButton.graphics.clear();
-		aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	aButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("- 1 dB", compareFrequency(-1));
-	});
 // 																Button 2								
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	bButton.createButton.graphics.clear();
-	bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+	bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 	stage.update();
 
 	bButton.newContainer.addEventListener("mouseover", function(event)
 	{	
 		bButton.createButton.graphics.clear();
-		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	});
 
 	bButton.newContainer.addEventListener("mouseout", function(event)
 	{	
 		bButton.createButton.graphics.clear();
-		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
+		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
 		stage.update();
 	});
 
