@@ -14,11 +14,13 @@ var player = function()
 	this.Wrong = 0;
 	this.level = "Fácil";
 	this.timer = 20;
+	this.subCounter = 0;
 }
 
 player.prototype.rightAnswer = function() 
 {	
 	this.Correct++;
+	this.subCounter++;
 	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 15;}
 	else if (this.Correct >= 40){this.level = "Avanzado"; this.timer = 10}
 }
@@ -220,6 +222,10 @@ function init()
 	// Clase para dibujar botones
 	var newButton = function(buttonHeight, buttonWidth, buttonStroke, buttonFill, x, y, canvasStage, text, font, color)
 	{	
+		this.buttonHeight = buttonHeight;
+		this.buttonWidth = buttonWidth;
+		this.buttonFill = buttonFill;
+
 		this.newContainer = new createjs.Container(); this.newContainer.setBounds(x, y, buttonHeight, buttonWidth);
 		this.createButton = new createjs.Shape();
 		this.createButton.graphics.beginStroke(buttonStroke).beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
@@ -232,6 +238,41 @@ function init()
 		this.newContainer.addChild(this.createButton, this.buttonText);
 		stage.addChild(this.newContainer);
 	}
+
+	newButton.prototype.changeColor = function()
+	{	
+		var childOne = this.newContainer.getChildAt(0);
+		var buttonHeight = this.buttonHeight;
+		var buttonWidth = this.buttonWidth;
+		var buttonFill = this.buttonFill;
+
+		childOne.graphics.clear();
+		childOne.graphics.beginStroke("darkorange").beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		stage.update();
+	}
+
+	newButton.prototype.addListeners = function()
+	{	
+		var childOne = this.newContainer.getChildAt(0);
+		var buttonHeight = this.buttonHeight;
+		var buttonWidth = this.buttonWidth;
+		var buttonFill = this.buttonFill;
+
+		this.newContainer.on("mouseover", function(event)
+		{
+			childOne.graphics.clear();
+			childOne.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			stage.update();		
+		});
+
+		this.newContainer.addEventListener("mouseout", function(event)
+		{	
+			childOne.graphics.clear();
+			childOne.graphics.beginStroke("darkorange").beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			stage.update();
+		});
+	}
+
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -247,19 +288,24 @@ function init()
 	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195);
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195);
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
+	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
 
 	// Create Buttons
 	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 25, 325, stage, "31 Hz", buttonFont, "white");
 	bButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 90), 325, stage, "63 Hz",  buttonFont, "white");
 	cButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 180), 325, stage, "125 Hz",  buttonFont, "white");
-	dButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (25 + 270), 325, stage, "250 Hz",  buttonFont, "white");
-	eButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (25 + 360), 325, stage, "500 Hz",  buttonFont, "white");
-	fButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (25 + 450), 325, stage, "1 kHz",  buttonFont, "white");
-	gButton = new newButton(buttonHeight, buttonWidth, "darkorange", buttonStroke, (25 + 540), 325, stage, "2 kHz",  buttonFont, "white");
+	dButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 270), 325, stage, "250 Hz",  buttonFont, "white");
+	eButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 360), 325, stage, "500 Hz",  buttonFont, "white");
+	fButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 450), 325, stage, "1 kHz",  buttonFont, "white");
+	gButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 540), 325, stage, "2 kHz",  buttonFont, "white");
 	hButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 630), 325, stage, "4 kHz",  buttonFont, "white");
 	iButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 720), 325, stage, "8 kHz",  buttonFont, "white");
 	jButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 810), 325, stage, "16 kHz",  buttonFont, "white");
-	playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 235, stage, "Iniciar", textFont, "white");
+
+	initAdvanced = new newButton((buttonHeight + 40), buttonWidth, "orange", "buttonStroke", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
+	initMedium = new newButton((buttonHeight + 40), buttonWidth, "orange", "buttonStroke", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
+	initEasy = new newButton((buttonHeight + 40), buttonWidth, "orange", "buttonStroke", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
+
 	stage.enableMouseOver();
 	stage.update();
 
@@ -272,48 +318,21 @@ function init()
 // =====================================================================================================================================================
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
+function activateButtonsEasy()
+{
 
-// 															  		 BUTTON F
-// =====================================================================================================================================================
-// =====================================================================================================================================================
-	
-	fButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		fButton.createButton.graphics.clear();
-		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	fButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		fButton.createButton.graphics.clear();
-		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
+	fButton.addListeners();
+	fButton.changeColor();
 	fButton.newContainer.addEventListener("click", function(event)
 	{
 		updateFrequencyText("1000 Hz", compareFrequency(1000));
-
 	});
 // 															  		 BUTTON G
 // =====================================================================================================================================================
 // =====================================================================================================================================================
 	
-	gButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		gButton.createButton.graphics.clear();
-		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	gButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		gButton.createButton.graphics.clear();
-		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
+	gButton.addListeners();
+	gButton.changeColor();
 	gButton.newContainer.addEventListener("click", function(event)
 	{
 		updateFrequencyText("2000 Hz", compareFrequency(2000));
@@ -322,101 +341,46 @@ function init()
 // 															  		 BUTTON D
 // =====================================================================================================================================================
 // =====================================================================================================================================================
-
-	
-	dButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		dButton.createButton.graphics.clear();
-		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	dButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		dButton.createButton.graphics.clear();
-		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
+	dButton.addListeners();
+	dButton.changeColor();
 	dButton.newContainer.addEventListener("click", function(event)
 	{
 		updateFrequencyText("250 Hz", compareFrequency(250));
 	});
 
-	eButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			eButton.createButton.graphics.clear();
-			eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
 
-		eButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			eButton.createButton.graphics.clear();
-			eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
-		eButton.newContainer.addEventListener("click", function(event)
-		{
-			updateFrequencyText("500 Hz", compareFrequency(500));
-		});
+	eButton.addListeners();
+	eButton.changeColor();
+	eButton.newContainer.addEventListener("click", function(event)
+	{
+		updateFrequencyText("500 Hz", compareFrequency(500));
+	});
+}
 
 // =====================================================================================================================================================
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // 															  ACTIVATE BUTTONS FUNCTIONS
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // =====================================================================================================================================================
+	
+
 
 	function activateButtonsMediumLevel()
 	{	
 	  //												    	  Button C
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		cButton.createButton.graphics.clear();
-		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();		
-
-		cButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			cButton.createButton.graphics.clear();
-			cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
-
-		cButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			cButton.createButton.graphics.clear();
-			cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
+		cButton.addListeners();
+		cButton.changeColor();
 		cButton.newContainer.addEventListener("click", function(event)
 		{
 			updateFrequencyText("125 Hz", compareFrequency(125));
 		});
-
 	//														  Button I
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		iButton.createButton.graphics.clear();
-		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-
-		iButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			iButton.createButton.graphics.clear();
-			iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
-
-		iButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			iButton.createButton.graphics.clear();
-			iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
+		iButton.addListeners();
+		iButton.changeColor();
 		iButton.newContainer.addEventListener("click", function(event)
 		{
 			updateFrequencyText("8000 Hz", compareFrequency(8000));
@@ -425,24 +389,8 @@ function init()
 	//														  Button H
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		hButton.createButton.graphics.clear();
-		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-
-		hButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			hButton.createButton.graphics.clear();
-			hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
-
-		hButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			hButton.createButton.graphics.clear();
-			hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
+		hButton.addListeners();
+		hButton.changeColor();
 		hButton.newContainer.addEventListener("click", function(event)
 		{
 			updateFrequencyText("4000 Hz", compareFrequency(4000));
@@ -455,24 +403,8 @@ function activateButtonsHardLevel()
 	//														  Button A
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		aButton.createButton.graphics.clear();
-		aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-
-		aButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			aButton.createButton.graphics.clear();
-			aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
-
-		aButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			aButton.createButton.graphics.clear();
-			aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
+		aButton.addListeners();
+		aButton.changeColor();
 		aButton.newContainer.addEventListener("click", function(event)
 		{
 			updateFrequencyText("31 Hz", compareFrequency(31));
@@ -481,24 +413,8 @@ function activateButtonsHardLevel()
 	//														  Button B
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		bButton.createButton.graphics.clear();
-		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-
-		bButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			bButton.createButton.graphics.clear();
-			bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
-
-		bButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			bButton.createButton.graphics.clear();
-			bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
+		bButton.addListeners();
+		bButton.changeColor();
 		bButton.newContainer.addEventListener("click", function(event)
 		{
 			updateFrequencyText("63 Hz", compareFrequency(63));
@@ -507,24 +423,8 @@ function activateButtonsHardLevel()
 	//														  Button J
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		jButton.createButton.graphics.clear();
-		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-
-		jButton.newContainer.addEventListener("mouseover", function(event)
-		{	
-			jButton.createButton.graphics.clear();
-			jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.update();
-		});
-
-		jButton.newContainer.addEventListener("mouseout", function(event)
-		{	
-			jButton.createButton.graphics.clear();
-			jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);;
-			stage.update();
-		});
-
+		jButton.addListeners();
+		jButton.changeColor();
 		jButton.newContainer.addEventListener("click", function(event)
 		{
 			updateFrequencyText("16000 Hz", compareFrequency(16000));
@@ -536,30 +436,80 @@ function activateButtonsHardLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // =====================================================================================================================================================
 
+	initEasy.addListeners();
+	initMedium.addListeners();
+	initAdvanced.addListeners();
 
+	initEasy.newContainer.addEventListener("click", function(event)
+	{
+		playButtonStart("Easy");
+	});
+
+	initMedium.newContainer.addEventListener("click", function(event)
+	{
+		playButtonStart("Medium");
+	})
+
+	initAdvanced.newContainer.addEventListener("click", function(event)
+	{
+		playButtonStart("Advanced");
+	})
 
 // 														   PLAY BUTTON
 // =====================================================================================================================================================
 // =====================================================================================================================================================
+	function playButtonStart(startLevelUpdate)
+	{	
+		playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 230, stage, "Iniciar", textFont, "white");
+		playButton.addListeners();
 
-	playButton.newContainer.addEventListener("mouseover", function(event)
-	{
-		playButton.createButton.graphics.clear();
-		playButton.createButton.graphics.beginStroke("darkorange").beginFill("darkorange").drawRoundRect(0, 0, (buttonHeight + 40), buttonWidth, 10, 90, 10, 90);
-		stage.update();		
-	});
+		playButton.newContainer.addEventListener("click", stopPlaying);
 
-	playButton.newContainer.addEventListener("mouseout", function(event)
-	{
-		playButton.createButton.graphics.clear();
-		playButton.createButton.graphics.beginStroke("orange").beginFill("orange").drawRoundRect(0, 0, (buttonHeight + 40), buttonWidth, 10, 90, 10, 90);;
+		if (startLevelUpdate == "Easy")
+		{
+			activateButtonsEasy();
+		}
+		else if (startLevelUpdate == "Medium")
+		{
+			activateButtonsEasy();
+			activateButtonsMediumLevel();
+			newPlayer.Correct = 20;
+			newPlayer.level = "Intermedio";
+			buttonActiveMedium = true;
+		}
+		else
+		{
+			activateButtonsEasy();
+			activateButtonsMediumLevel();
+			activateButtonsHardLevel();	
+			newPlayer.Correct = 40;
+			newPlayer.level = "Avanzado";
+			buttonActiveHard = true;
+		}
+
+		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
+		levelText.createText.text = "Nivel: " + newPlayer.level;
+		// gameControl.generateIconigta(newPlayer.level)
+		gameOscillator.frequency.value = gameControl.toneGuess;
+
+		initEasy.newContainer.removeAllChildren();
+		initMedium.newContainer.removeAllChildren();
+		initAdvanced.newContainer.removeAllChildren();
+
+		stage.removeChild(initText.createText);
+
 		stage.update();
-	});
 
-	playButton.newContainer.addEventListener("click", stopPlaying);
+		delete initEasy;
+		delete initMedium;
+		delete initAdvanced;
+	}
+// 														   PLAY BUTTON
+// =====================================================================================================================================================
+// =====================================================================================================================================================
 
 	function stopPlaying()
-	{
+	{	
 		if (oneTime)	
 		{	
 			time = newPlayer.timer;
@@ -683,7 +633,7 @@ function activateButtonsHardLevel()
 
 			rightStop = true; // Stop timer because of a right answer
 
-			rightText.createText.text = "Aciertos: " + newPlayer.Correct.toString();
+			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
 			levelText.createText.text = "Nivel: " + newPlayer.level;
 			gameControl.generateIconigta(newPlayer.level)
 			gameOscillator.frequency.value = gameControl.toneGuess;
