@@ -12,6 +12,7 @@ var player = function() // player constructor
 	this.Wrong = 0;
 	this.level = "Fácil";
 	this.timer = 20;
+	this.subCounter = 0;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
@@ -21,9 +22,10 @@ var player = function() // player constructor
 
 player.prototype.rightAnswer = function() // Answer counter
 {	
+	this.subCounter++;
 	this.Correct++;
 	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 20}
-	else if (this.Correct >= 20){this.level = "Avanzado"; this.timer = 20}
+	else if (this.Correct >= 30){this.level = "Avanzado"; this.timer = 20}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -261,6 +263,10 @@ function init()
 
 	var newButton = function(buttonHeight, buttonWidth, buttonStroke, buttonFill, x, y, canvasStage, text, font, color)
 	{	
+		this.buttonHeight = buttonHeight;
+		this.buttonWidth = buttonWidth;
+		this.buttonFill = buttonFill;
+
 		this.newContainer = new createjs.Container(); this.newContainer.setBounds(x, y, buttonHeight, buttonWidth); //
 		this.createButton = new createjs.Shape(); // 
 		this.createButton.graphics.beginStroke(buttonStroke).beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90); //
@@ -274,7 +280,39 @@ function init()
 		stage.addChild(this.newContainer); // 
 	}
 
+	newButton.prototype.changeColor = function()
+	{	
+		var childOne = this.newContainer.getChildAt(0);
+		var buttonHeight = this.buttonHeight;
+		var buttonWidth = this.buttonWidth;
+		var buttonFill = this.buttonFill;
 
+		childOne.graphics.clear();
+		childOne.graphics.beginStroke("darkorange").beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+		stage.update();
+	}
+
+	newButton.prototype.addListeners = function(fillColor)
+	{	
+		var childOne = this.newContainer.getChildAt(0);
+		var buttonHeight = this.buttonHeight;
+		var buttonWidth = this.buttonWidth;
+		var buttonFill = this.buttonFill;
+
+		this.newContainer.on("mouseover", function(event)
+		{
+			childOne.graphics.clear();
+			childOne.graphics.beginStroke("darkorange").beginFill(fillColor).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			stage.update();		
+		});
+
+		this.newContainer.addEventListener("mouseout", function(event)
+		{	
+			childOne.graphics.clear();
+			childOne.graphics.beginStroke("darkorange").beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			stage.update();
+		});
+	}
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -291,6 +329,7 @@ function init()
 	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195); // Right Answer count Text
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
+	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
 
 	var modifier;
 	var separator;
@@ -302,14 +341,17 @@ function init()
 	bButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + separator*0), 325, stage, "- 2 dB",  buttonFont, "white");
 	cButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 1)), 325, stage, "- 4 dB",  buttonFont, "white");
 	dButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 2)), 325, stage, "- 6 dB",  buttonFont, "white");
-	eButton = new newButton(buttonHeight + modifier, buttonWidth, "darkorange", buttonStroke, (26 + (separator * 3)), 325, stage, "- 10 dB",  buttonFont, "white");
-	fButton = new newButton(buttonHeight + modifier, buttonWidth, "darkorange", buttonStroke, (26 + (separator * 4)), 325, stage, "0 dB",  buttonFont, "white");
-	gButton = new newButton(buttonHeight + modifier, buttonWidth, "darkorange", buttonStroke, (26 + (separator * 5)), 325, stage, "+ 10 dB",  buttonFont, "white");
+	eButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 3)), 325, stage, "- 10 dB",  buttonFont, "white");
+	fButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 4)), 325, stage, "0 dB",  buttonFont, "white");
+	gButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 5)), 325, stage, "+ 10 dB",  buttonFont, "white");
 	hButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 6)), 325, stage, "+ 6 dB",  buttonFont, "white");
 	iButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 7)), 325, stage, "+ 4 dB",  buttonFont, "white");
 	jButton = new newButton(buttonHeight + modifier, buttonWidth, "gray", buttonStroke, (26 + (separator * 8)), 325, stage, "+ 2 dB",  buttonFont, "white");
-	playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
-	changeButton = new newButton((buttonHeight + 110), buttonWidth, "orange", "orange", (940 / 2) - 94, 255, stage, "Escuchas: Original", textFont, "white");
+
+	initAdvanced = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
+	initMedium = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
+	initEasy = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
+
 	stage.enableMouseOver(); // Enable pointer over buttons
 	stage.update();
 
@@ -322,268 +364,184 @@ function init()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 
+	initEasy.addListeners("darkorange");
+	initMedium.addListeners("darkorange");
+	initAdvanced.addListeners("darkorange");
 
-// 															  BUTTON E
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	eButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		eButton.createButton.graphics.clear();
-		eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	eButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		eButton.createButton.graphics.clear();
-		eButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	eButton.newContainer.addEventListener("click", function(event)
+	initEasy.newContainer.addEventListener("click", function(event)
 	{
-		updateFrequencyText("- 10 dB", compareFrequency(-10));
-	});
-// 															  Button 6
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	fButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		fButton.createButton.graphics.clear();
-		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
+		playButtonStart("Easy");
 	});
 
-	fButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		fButton.createButton.graphics.clear();
-		fButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	fButton.newContainer.addEventListener("click", function(event)
+	initMedium.newContainer.addEventListener("click", function(event)
 	{
-		updateFrequencyText("0 dB", compareFrequency(0));
-	});
-// 															  Button 7
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	gButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		gButton.createButton.graphics.clear();
-		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
+		playButtonStart("Medium");
 	});
 
-	gButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		gButton.createButton.graphics.clear();
-		gButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	gButton.newContainer.addEventListener("click", function(event)
+	initAdvanced.newContainer.addEventListener("click", function(event)
 	{
-		updateFrequencyText("+ 10 dB", compareFrequency(10));
+		playButtonStart("Advanced");
 	});
 
 
+	function activateButtonEasyLevel()
+	{	
+		// E Button
+		eButton.addListeners("rgba(64, 64, 64, 0.9)");
+		eButton.changeColor();
+
+		eButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("- 10 dB", compareFrequency(-10));
+		});	
+		
+		// F Button
+		fButton.addListeners("rgba(64, 64, 64, 0.9)");
+		fButton.changeColor();
+
+		fButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("0 dB", compareFrequency(0));
+		});
+		
+		// G Button
+		gButton.addListeners("rgba(64, 64, 64, 0.9)");
+		gButton.changeColor();
+
+		gButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("+ 10 dB", compareFrequency(10));
+		});
+	}
 // =====================================================================================================================================================
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // 															  ACTIVATE BUTTONS FUNCTIONS
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // =====================================================================================================================================================
-function activateButtonsMediumLevel()
-{
-// 																Button 3
-// =====================================================================================================================================================
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// =====================================================================================================================================================
-	cButton.createButton.graphics.clear();
-	cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-	stage.update();
-
-	cButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		cButton.createButton.graphics.clear();
-		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	cButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		cButton.createButton.graphics.clear();
-		cButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	cButton.newContainer.addEventListener("click", function(event)
+	function activateButtonsMediumLevel()
 	{
-		updateFrequencyText("- 4 dB", compareFrequency(-4));
-	});
-// 																Button 4
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	dButton.createButton.graphics.clear();
-	dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-	stage.update();
+		// C Button
+		cButton.addListeners("rgba(64, 64, 64, 0.9)");
+		cButton.changeColor();	
 
-	dButton.newContainer.addEventListener("mouseover", function(event)
+		cButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("- 4 dB", compareFrequency(-4));
+		});
+
+		// D Button
+		dButton.addListeners("rgba(64, 64, 64, 0.9)");
+		dButton.changeColor();	
+
+		dButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("- 6 dB", compareFrequency(-6));
+		});
+
+		// H Button
+		hButton.addListeners("rgba(64, 64, 64, 0.9)");
+		hButton.changeColor();
+
+		hButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("+ 6 dB", compareFrequency(6));
+		});
+
+		// I Button
+		iButton.addListeners("rgba(64, 64, 64, 0.9)");
+		iButton.changeColor();
+		
+		iButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("+ 4 dB", compareFrequency(4));
+		});
+	}
+
+	function activateButtonsHardLevel()
 	{	
-		dButton.createButton.graphics.clear();
-		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
+		// J Button
+		jButton.addListeners("rgba(64, 64, 64, 0.9)");
+		jButton.changeColor();
 
-	dButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		dButton.createButton.graphics.clear();
-		dButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	dButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("- 6 dB", compareFrequency(-6));
-	});
-// 															Button 8
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	hButton.createButton.graphics.clear();
-	hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-	stage.update();
-
-	hButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		hButton.createButton.graphics.clear();
-		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	hButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		hButton.createButton.graphics.clear();
-		hButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	hButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("+ 6 dB", compareFrequency(6));
-	});
-// 															Button 9
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	iButton.createButton.graphics.clear();
-	iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-	stage.update();	
-
-	iButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		iButton.createButton.graphics.clear();
-		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	iButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		iButton.createButton.graphics.clear();
-		iButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	iButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("+ 4 dB", compareFrequency(4));
-	});
-}
-
-function activateButtonsHardLevel()
-{
-	// 															Button 10
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	
-	jButton.createButton.graphics.clear();
-	jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-	stage.update();	
-
-	jButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		jButton.createButton.graphics.clear();
-		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	jButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		jButton.createButton.graphics.clear();
-		jButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	jButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("+ 2 dB", compareFrequency(2));
-	});
+		jButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("+ 2 dB", compareFrequency(2));
+		});
 
 
-// 																Button 2								
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	bButton.createButton.graphics.clear();
-	bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-	stage.update();
+		// B Button
+		bButton.addListeners("rgba(64, 64, 64, 0.9)");
+		bButton.changeColor();
 
-	bButton.newContainer.addEventListener("mouseover", function(event)
-	{	
-		bButton.createButton.graphics.clear();
-		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
+		bButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("- 2 dB", compareFrequency(-2));
+		});
 
-	bButton.newContainer.addEventListener("mouseout", function(event)
-	{	
-		bButton.createButton.graphics.clear();
-		bButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight + modifier, buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	bButton.newContainer.addEventListener("click", function(event)
-	{
-		updateFrequencyText("- 2 dB", compareFrequency(-2));
-	});
-
-}
+	}
 
 // =====================================================================================================================================================
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // 															  ACTIVATE BUTTONS FUNCTION - END
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // =====================================================================================================================================================
+	function playButtonStart(startLevelUpdate)
+	{	
+		playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
 
+		changeButton = new newButton((buttonHeight + 110), buttonWidth, "orange", "orange", (940 / 2) - 94, 255, stage, "Escuchas: Original", textFont, "white");
+
+		playButton.addListeners("darkorange");
+
+		changeButton.addListeners("darkorange");
+
+		playButton.newContainer.addEventListener("click", stopPlaying);
+
+		changeButton.newContainer.addEventListener("click", changeMessage);
+
+		if (startLevelUpdate == "Easy")
+		{
+			activateButtonEasyLevel();
+		}
+		else if (startLevelUpdate == "Medium")
+		{
+			activateButtonEasyLevel();
+			activateButtonsMediumLevel();
+			newPlayer.Correct = 10;
+			newPlayer.level = "Intermedio";
+			buttonActiveMedium = true;
+		}
+		else
+		{
+			activateButtonEasyLevel();
+			activateButtonsMediumLevel();
+			activateButtonsHardLevel();	
+			newPlayer.Correct = 30;
+			newPlayer.level = "Avanzado";
+			buttonActiveHard = true;
+		}
+
+		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
+		levelText.createText.text = "Nivel: " + newPlayer.level;
+		// gameControl.generateIconigta(newPlayer.level)
+		// gameOscillator.frequency.value = gameControl.toneGuess;
+
+		initEasy.newContainer.removeAllChildren();
+		initMedium.newContainer.removeAllChildren();
+		initAdvanced.newContainer.removeAllChildren();
+
+		stage.removeChild(initText.createText);
+
+		stage.update();
+
+		delete initEasy;
+		delete initMedium;
+		delete initAdvanced;
+	}
 
 // 														   Change Button
 // =====================================================================================================================================================
 // =====================================================================================================================================================
-	changeButton.newContainer.addEventListener("mouseover", function(event)
-	{
-		changeButton.createButton.graphics.clear();
-		changeButton.createButton.graphics.beginStroke("orange").beginFill("darkorange").drawRoundRect(0, 0, (buttonHeight + 110), buttonWidth, 10, 90, 10, 90);
-		stage.update();		
-	});
-
-	changeButton.newContainer.addEventListener("mouseout", function(event)
-	{
-		changeButton.createButton.graphics.clear();
-		changeButton.createButton.graphics.beginStroke("orange").beginFill("orange").drawRoundRect(0, 0, (buttonHeight + 110), buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	changeButton.newContainer.addEventListener("click", changeMessage);
 
 	function changeMessage()
 	{
@@ -612,22 +570,6 @@ function activateButtonsHardLevel()
 // 														   Play Button
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-	playButton.newContainer.addEventListener("mouseover", function(event)
-	{
-		playButton.createButton.graphics.clear();
-		playButton.createButton.graphics.beginStroke("darkorange").beginFill("darkorange").drawRoundRect(0, 0, (buttonHeight + 40), buttonWidth, 10, 90, 10, 90);
-		stage.update();		
-	});
-
-	playButton.newContainer.addEventListener("mouseout", function(event)
-	{
-		playButton.createButton.graphics.clear();
-		playButton.createButton.graphics.beginStroke("orange").beginFill("orange").drawRoundRect(0, 0, (buttonHeight + 40), buttonWidth, 10, 90, 10, 90);;
-		stage.update();
-	});
-
-	playButton.newContainer.addEventListener("click", stopPlaying);
 
 	function stopPlaying()
 	{
@@ -740,7 +682,7 @@ function activateButtonsHardLevel()
 			correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
 			correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
 
-			rightText.createText.text = "Aciertos: " + newPlayer.Correct.toString(); // update right answers
+			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString(); // update right answers
 			levelText.createText.text = "Nivel: " + newPlayer.level; // update difficulty text
 			gameControl.generateIconigta(newPlayer.level) // generate new incognita
 
