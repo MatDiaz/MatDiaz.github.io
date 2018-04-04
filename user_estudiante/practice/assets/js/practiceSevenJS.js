@@ -9,10 +9,10 @@
 var player = function() // player constructor
 {	// Variable Initialization
 	this.Correct = 0; 
-	this.subCounter = 0;
 	this.Wrong = 0;
 	this.level = "Fácil";
 	this.timer = 20;
+	this.subCounter = 0;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
@@ -22,9 +22,10 @@ var player = function() // player constructor
 
 player.prototype.rightAnswer = function() // Answer counter
 {	
+	this.subCounter++;
 	this.Correct++;
-	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 20}
-	else if (this.Correct >= 40){this.level = "Avanzado"; this.timer = 10}
+	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 20}
+	else if (this.Correct >= 30){this.level = "Avanzado"; this.timer = 20}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -36,18 +37,22 @@ player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Ma
 // --------------------------------------------------------------------------------------------
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-var controlLevel = audioCtx.createGain();
-	controlLevel.gain.value = 1;
-	controlLevel.connect(audioCtx.destination);
-
 var controlFilterLevel = audioCtx.createGain();
 	controlFilterLevel.gain.value = 0;
 	controlFilterLevel.connect(audioCtx.destination);
 
+var controlLevel = audioCtx.createGain();
+	controlLevel.gain.value = 1;
+	controlLevel.connect(audioCtx.destination);
+
 var gameFilter = audioCtx.createBiquadFilter();
+	gameFilter.type = "peaking";
+	gameFilter.frequency.value = 1000;
+	gameFilter.gain.value = 10;
 	gameFilter.connect(controlFilterLevel);
 
-var isDecoded = false;
+var buttonActiveMedium = false;
+var buttonActiveHard = false;
 
 // Create Analyzer
 var analyser = audioCtx.createAnalyser();
@@ -55,17 +60,17 @@ var analyser = audioCtx.createAnalyser();
 var gameControlClass = function() // Game Object Constructor
 {	
 	// This will be the incognitas to use in game, they'll change according to the game
-	this.answerListA = ["PasaBajas", "PasaAltas", "PasaBandas"]; // Easy Level
-	this.answerListB = ["PasaBajas", "PasaAltas", "PasaBandas", "RechazaBandas", "Peaking", "Dip"]; // Medium Level
-	this.answerListC = ["PasaBajas", "PasaAltas", "PasaBandas", "RechazaBandas", "Peaking", "Dip", "HighShelf", "LowShelf"]; // Hard Level
-	this.Guess = this.answerListA[Math.floor(Math.random() * 2)]; // Initialize an icongnita
+	this.answerListA = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Easy Level
+	this.answerListB = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Medium Level
+	this.answerListC = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Hard Level
+	this.Guess = this.answerListA[Math.floor(Math.random() * 10)]; // Initialize an icongnita
 }
 
 gameControlClass.prototype.generateIconigta = function (level) 
 {	
-	if (level == "Fácil") { this.Guess = this.answerListA[Math.floor(Math.random() * 3)]}
-	else if (level == "Intermedio") { this.Guess = this.answerListB[Math.floor(Math.random() * 6)] }
-	else if (level = "Avanzado") { this.Guess = this.answerListC[Math.floor(Math.random() * 8)] }
+	if (level == "Fácil") { this.Guess = this.answerListA[Math.floor(Math.random() * 10)]}
+	else if (level == "Intermedio") { this.Guess = this.answerListB[Math.floor(Math.random() * 10)] }
+	else if (level = "Avanzado") { this.Guess = this.answerListC[Math.floor(Math.random() * 10)] }
 };
 
 gameControlClass.prototype.controlGain = function (change)
@@ -79,8 +84,6 @@ var addSound = function(){}
 
 addSound.prototype.startSound = function(playerUrl)
 {	
-	isDecoded = false;
-	
 	source = audioCtx.createBufferSource();
 
 	request = new XMLHttpRequest();
@@ -103,13 +106,10 @@ addSound.prototype.startSound = function(playerUrl)
 		source.connect(controlLevel);
 		source.connect(gameFilter);
 		source.connect(analyser);
-		isDecoded = true;
 	},
-
 
 	function(e){"Error with decoding audio data" + e.err});	
 	}
-
 	// Setup Analyzer parameters
 	analyser.fftSize = 4096; // fft size (this is not the case to use fft, but it still matters)
 	this.bufferLength = analyser.frequencyBinCount; // Get analyzer length
@@ -139,7 +139,7 @@ addSound.prototype.startSound = function(playerUrl)
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 
 function init()
-{
+{	
 // 																		 Object Creation
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,9 +166,8 @@ function init()
 	var original = true;
 	var beep = true;
 	var rightStop = false;
-	var buttonActiveMedium = false;
-	var buttonActiveHard = false;
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
+	var gainModifier = 10;
 
 	createjs.Ticker.addEventListener("tick", handleTick);
 	createjs.Ticker.setFPS(60); // Canvas update frequency
@@ -210,14 +209,14 @@ function init()
 	
 	// Background
 	var background = new createjs.Shape();
-		background.graphics.beginFill("rgba(0, 0, 0, 0.90)").drawRoundRect(0, 0, 940, 425, 10, 90, 10, 90);
+		background.graphics.beginFill("rgba(0, 0, 0, 0.90)").drawRoundRect(0, 0, 940, 385, 10, 90, 10, 90);
 
 	// Second Rectangle Over
 	var actionCanvas = new createjs.Shape();
 		actionCanvas.graphics.beginStroke("darkorange").beginFill("rgba(32, 32, 32, 0.75)").drawRoundRect(25, 75, 890, 225, 10, 90, 10, 90);
 
 	// Title
-	var title = new createjs.Text("RECONOCIMIENTO DE FILTROS", "300 24pt Source Sans Pro", "white");
+	var title = new createjs.Text("REALCES Y CORTES", "300 24pt Source Sans Pro", "white");
 		title.x = stage.canvas.width / 2 - (title.getBounds().width / 2);
 		title.y = (title.getBounds().height / 2);
 
@@ -231,12 +230,11 @@ function init()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	// Button Properties
-	var buttonHeight = 215; // Button Height
+	var buttonHeight = 74; // Button Height
 	var buttonWidth = 35; // Button Width
 	var buttonStroke = "black"; // Button Color
 	var buttonFont = "300 13pt Source Sans Pro"; // Font-> .Font Weight. Font Size. Font Family
 	var textFont = "300 14pt Source Sans Pro"; // Font-> .Font Weight. Font Size. Font Family
-
 
 	// Class for make texts
 	// text = Text to display
@@ -262,7 +260,7 @@ function init()
 	// canvasStage = createJS Stage
 	// Text = text to display in button
 	// font = font family of button
-	// color = text color
+	// color = text ccolor
 
 	var newButton = function(buttonHeight, buttonWidth, buttonStroke, buttonFill, x, y, canvasStage, text, font, color)
 	{	
@@ -332,24 +330,43 @@ function init()
 	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195); // Right Answer count Text
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
-	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
+	initText = new newText(" Elige un modo ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
+
+	var modifier;
+	var separator;
+
+	modifier = 16;
+	separator = 100;
 
 	// Create Buttons
-	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 26, 325, stage, "Pasa Bajas", buttonFont, "white");
-	bButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + 225), 325, stage, "Pasa Altas",  buttonFont, "white");
-	cButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (225*2)), 325, stage, "Pasa Bandas",  buttonFont, "white");
-	dButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (225*3)), 325, stage, "Rechaza Bandas",  buttonFont, "white");
-	eButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 26, 370, stage, "Peaking",  buttonFont, "white");
-	fButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + 225), 370, stage, "Dip",  buttonFont, "white");
-	gButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (225 * 2)), 370, stage, "High-shelf",  buttonFont, "white");
-	hButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (26 + (225 * 3)), 370, stage, "Low-shelf",  buttonFont, "white");
+	modeAButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Realces", textFont, "white");
+	modeBButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Cortes", textFont, "white");
 
-	initAdvanced = new newButton(114, buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
-	initMedium = new newButton(114, buttonWidth, "orange", "orange", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
-	initEasy = new newButton(114, buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
+	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 25, 325, stage, "31 Hz", buttonFont, "white");
+	bButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 90), 325, stage, "63 Hz",  buttonFont, "white");
+	cButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 180), 325, stage, "125 Hz",  buttonFont, "white");
+	dButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 270), 325, stage, "250 Hz",  buttonFont, "white");
+	eButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 360), 325, stage, "500 Hz",  buttonFont, "white");
+	fButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 450), 325, stage, "1 kHz",  buttonFont, "white");
+	gButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 540), 325, stage, "2 kHz",  buttonFont, "white");
+	hButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 630), 325, stage, "4 kHz",  buttonFont, "white");
+	iButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 720), 325, stage, "8 kHz",  buttonFont, "white");
+	jButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 810), 325, stage, "16 kHz",  buttonFont, "white");
 
 	stage.enableMouseOver(); // Enable pointer over buttons
 	stage.update();
+
+	modeAButton.addListeners("darkorange");
+	modeBButton.addListeners("darkorange");
+
+	modeAButton.newContainer.addEventListener("click", function(event)
+	{
+		levelSelectionButtons("Realces");
+	});
+	modeBButton.newContainer.addEventListener("click", function(event)
+	{
+		levelSelectionButtons("Cortes");
+	});
 
 // 															    MOUSE/KEYBOARD EVENTS
 // =====================================================================================================================================================
@@ -360,163 +377,152 @@ function init()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	
-	initEasy.addListeners("darkorange");
-	initMedium.addListeners("darkorange");
-	initAdvanced.addListeners("darkorange");
-
-	initEasy.newContainer.addEventListener("click", function(event)
-	{
-		playButtonStart("Easy");
-	});
-
-	initMedium.newContainer.addEventListener("click", function(event)
-	{
-		playButtonStart("Medium");
-	});
-
-	initAdvanced.newContainer.addEventListener("click", function(event)
-	{
-		playButtonStart("Advanced");
-	});
-
-
-
-	function activateButtonEasyLevel()
-	{	
+// =====================================================================================================================================================
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// 															  ACTIVATE BUTTONS FUNCTIONS
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// =====================================================================================================================================================
+	function activateButtons()
+	{ 	
 		// A Button
 		aButton.addListeners("rgba(64, 64, 64, 0.9)");
-		aButton.changeColor();	
+		aButton.changeColor();
 
 		aButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Pasa Bajas", compareAnswer("PasaBajas"));
-		});
+			updateFrequencyText("31.5 Hz", compareFrequency(31.5));
+		});	
 
 		// B Button
 		bButton.addListeners("rgba(64, 64, 64, 0.9)");
-
-		bButton.changeColor();	
+		bButton.changeColor();
 
 		bButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Pasa Altas", compareAnswer("PasaAltas"));
+			updateFrequencyText("63 Hz", compareFrequency(63));
 		});
+
 		// C Button
 		cButton.addListeners("rgba(64, 64, 64, 0.9)");
 		cButton.changeColor();	
 
 		cButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Pasa Bandas", compareAnswer("PasaBandas"));
+			updateFrequencyText("125 Hz", compareFrequency(125));
 		});
-	}
 
-	function activateButtonsMediumLevel()
-	{
-		
-	// 																BUTTON D
-	// =====================================================================================================================================================
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+		// D Button
 		dButton.addListeners("rgba(64, 64, 64, 0.9)");
 		dButton.changeColor();	
 
 		dButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Rechaza Bandas", compareAnswer("RechazaBandas"));
+			updateFrequencyText("250 Hz", compareFrequency(250));
 		});
-	// 															  BUTTON E
-	// =====================================================================================================================================================
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
-		eButton.addListeners("rgba(64, 64, 64, 0.9)");	
-		eButton.changeColor();	
+
+		//E Button
+		eButton.addListeners("rgba(64, 64, 64, 0.9)");
+		eButton.changeColor();
 
 		eButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Peaking", compareAnswer("Peaking"));
-		});
-
+			updateFrequencyText("500 Hz", compareFrequency(500));
+		});	
+		
+		// F Button
 		fButton.addListeners("rgba(64, 64, 64, 0.9)");
-		fButton.changeColor();	
+		fButton.changeColor();
 
 		fButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Dip", compareAnswer("Dip"));
+			updateFrequencyText("1000 Hz", compareFrequency(1000));
 		});
-	}
-
-	function activateButtonsHardLevel()
-	{
-	// 															  BUTTON G
-	// =====================================================================================================================================================
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+		
+		// G Button
 		gButton.addListeners("rgba(64, 64, 64, 0.9)");
-		gButton.changeColor();	
+		gButton.changeColor();
 
 		gButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("High-shelf", compareAnswer("HighShelf"));
+			updateFrequencyText("2000 Hz", compareFrequency(2000));
 		});
-	// 															Button 8
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	// -----------------------------------------------------------------------------------------------------------------------------------------------------
+		
+		// H Button
 		hButton.addListeners("rgba(64, 64, 64, 0.9)");
-		hButton.changeColor();	
+		hButton.changeColor();
 
 		hButton.newContainer.addEventListener("click", function(event)
 		{
-			updateAnswerText("Low-shelf", compareAnswer("LowShelf"));
+			updateFrequencyText("4000 Hz", compareFrequency(4000));
 		});
+
+		// I Button
+		iButton.addListeners("rgba(64, 64, 64, 0.9)");
+		iButton.changeColor();
+		
+		iButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("8000 Hz", compareFrequency(8000));
+		});
+
+		// J Button
+		jButton.addListeners("rgba(64, 64, 64, 0.9)");
+		jButton.changeColor();
+
+		jButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("16000 Hz", compareFrequency(16000));
+		});	
+
 	}
 
 
-// 														   Change Button
+// =====================================================================================================================================================
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
-// ----------------------------------------------------------------------------------------------------------------------------------------------------
-
-	function playButtonStart(startLevelUpdate)
+// 															  ACTIVATE BUTTONS FUNCTION - END
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// =====================================================================================================================================================
+	function playButtonStart(startLevelUpdate, modeUpdate)
 	{	
+		playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
+		changeButton = new newButton((buttonHeight + 110), buttonWidth, "orange", "orange", (940 / 2) - 94, 255, stage, "Escuchas: Original", textFont, "white");
 
-		playButton = new newButton(115, buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
-
-		changeButton = new newButton((buttonHeight ), buttonWidth, "orange", "orange", (940 / 2) - 110, 255, stage, "Escuchas: Original", textFont, "white");
+		modeText = new newText("Modo: " + modeUpdate, textFont, "darkorange", stage, (25*10), (75*1.25));
 
 		playButton.addListeners("darkorange");
-
 		changeButton.addListeners("darkorange");
 
 		playButton.newContainer.addEventListener("click", stopPlaying);
-
 		changeButton.newContainer.addEventListener("click", changeMessage);
 
 		if (startLevelUpdate == "Easy")
 		{
-			activateButtonEasyLevel();
+			activateButtons();
+			gainModifier = 10;
 		}
 		else if (startLevelUpdate == "Medium")
 		{
-			activateButtonEasyLevel();
-			activateButtonsMediumLevel();
-			newPlayer.Correct = 20;
+			activateButtons();
+			newPlayer.Correct = 10;
 			newPlayer.level = "Intermedio";
 			buttonActiveMedium = true;
+			gainModifier = 6;
 		}
 		else
 		{
-			activateButtonEasyLevel();
-			activateButtonsMediumLevel();
-			activateButtonsHardLevel();	
-			newPlayer.Correct = 40;
+			activateButtons();
+			newPlayer.Correct = 30;
 			newPlayer.level = "Avanzado";
 			buttonActiveHard = true;
+			gainModifier = 3;
 		}
+		if (modeUpdate == "Cortes") {gainModifier *= -1;}
 
+		gameFilter.gain.value = gainModifier;
+
+		gainText = new newText("Ganancia: " + gainModifier.toString() + " dB", textFont, "darkorange", stage, (25*28), (75*1.25));
 		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
 		levelText.createText.text = "Nivel: " + newPlayer.level;
-		// gameControl.generateIconigta(newPlayer.level)
-		// gameOscillator.frequency.value = gameControl.toneGuess;
 
 		initEasy.newContainer.removeAllChildren();
 		initMedium.newContainer.removeAllChildren();
@@ -526,13 +532,51 @@ function init()
 
 		stage.update();
 
+		delete initText;
 		delete initEasy;
 		delete initMedium;
 		delete initAdvanced;
 	}
 
+	function levelSelectionButtons(gameMode)
+	{	
+		initText.createText.text = "Elige un nivel";
+
+		initAdvanced = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
+		initMedium = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
+		initEasy = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
+
+		initEasy.addListeners("darkorange");
+		initMedium.addListeners("darkorange");
+		initAdvanced.addListeners("darkorange");
+
+		initEasy.newContainer.addEventListener("click", function(event)
+		{
+			playButtonStart("Easy", gameMode);
+		});
+
+		initMedium.newContainer.addEventListener("click", function(event)
+		{
+			playButtonStart("Medium", gameMode);
+		});
+
+		initAdvanced.newContainer.addEventListener("click", function(event)
+		{
+			playButtonStart("Advanced", gameMode);
+		});
+
+		modeAButton.newContainer.removeAllChildren();
+		modeBButton.newContainer.removeAllChildren();
+
+		delete modeAButton;
+		delete modeBButton;
+	}// 														   Change Button
+// =====================================================================================================================================================
+// =====================================================================================================================================================
+
 	function changeMessage()
 	{
+
 		if (!original)
 		{	
 			changeButton.buttonText.text = "Escuchas: Original";
@@ -600,79 +644,7 @@ function init()
 // 														   Update Functions
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------------------------------------------- 
-	function updateFilter()
-	{	
-		var maximo;
-		var minimo;
-		var maxQ;
-		var minQ;
-		var maxGain = 0;
-		var minGain = 0;
-
-		if (gameControl.Guess == "PasaBajas")
-		{
-			gameFilter.type = "lowpass";
-			maximo = 4000;
-			minimo = 60;
-		}
-		else if (gameControl.Guess == "PasaAltas")
-		{
-			gameFilter.type = "highpass";
-			maximo = 10000;
-			minimo = 1000;
-		}
-		else if (gameControl.Guess == "PasaBandas")
-		{
-			gameFilter.type = "bandpass";
-			maximo = 2000;
-			minimo = 500;
-		}
-		else if (gameControl.Guess == "RechazaBandas")
-		{
-			gameFilter.type = "notch";
-			maximo = 8000;
-			minimo = 1000;
-		}
-		else if (gameControl.Guess == "Peaking" || gameControl.Guess == "Dip")
-		{
-			gameFilter.type = "peaking";
-			maximo = 4000;
-			minimo = 500;
-			if (gameControl.Guess == "Peaking")
-			{
-				maxGain = 12;
-				minGain = 3;
-			}
-			else if (gameControl.Guess == "Dip")
-			{
-				maxGain = -10;
-				minGain = -20;
-			}
-		}
-		else if (gameControl.Guess = "HighShelf")
-		{
-			gameFilter.type = "highshelf";
-			maximo = 10000;
-			minimo = 5000;
-			maxGain = 12;
-			minGain = 3;
-		}
-		else if (gameControl.Guess = "LowShelf")
-		{
-			gameFilter.type = "lowshelf";
-			maximo = 400;
-			minimo = 40;
-			maxGain = 20;
-			minGain = 10;
-		}
-
-		gameFilter.frequency.value = Math.floor(Math.random() * (maximo - minimo) + minimo);
-		gameFilter.gain.value = Math.floor(Math.random() * (maxGain - minGain) + minGain);
-		console.log(gameFilter.type);
-		console.log(gameFilter.frequency);
-	}
-
-	function updateAnswerText(newFreq, newColor) // Called when the answer button is clicked 
+	function updateFrequencyText(newFreq, newColor) // Called when the answer is right 
 	{
 		answerText.text = newFreq;
 		answerText.color = newColor
@@ -680,10 +652,10 @@ function init()
 		answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2) - 13;
 		stage.update();
 
+		// ==========================================================================================================================
+
 		if (newPlayer.level == "Intermedio" && !buttonActiveMedium)
 		{
-			activateButtonsMediumLevel(); 
-
 			setTimeout(function()
 			{
 				correctText.createText.text = "Nivel"; // Change displayText
@@ -698,12 +670,13 @@ function init()
 			}, 250)
 
 			buttonActiveMedium = true;
+
+			gameFilter.gain.value = (gainModifier/gainModifier) * 6;
+
 		}
 
 		if (newPlayer.level == "Avanzado" && !buttonActiveHard)
 		{
-			activateButtonsHardLevel(); 
-
 			setTimeout(function()
 			{
 				correctText.createText.text = "Nivel"; // Change displayText
@@ -718,10 +691,12 @@ function init()
 			}, 250)
 			
 			buttonActiveHard = true;
+
+			gameFilter.gain.value = (gainModifier/gainModifier) * 3;
 		}
 	}
 
-	function compareAnswer(newValue) // Called when any answer button is pressed
+	function compareFrequency(newValue) // Called when any answer button is pressed
 	{	
 		var color;
 
@@ -743,13 +718,13 @@ function init()
 			levelText.createText.text = "Nivel: " + newPlayer.level; // update difficulty text
 			gameControl.generateIconigta(newPlayer.level) // generate new incognita
 
-			updateFilter(); // right answer was made, update new filter with random parameters
+			gameFilter.frequency.value = gameControl.Guess;
 
-			newPlayer.generateURL(); // randomly generate new URL to play song
-			rightStop = true; // Stop timer because of a right answer
+			newPlayer.generateURL();
+			rightStop = true;
 
 			time = newPlayer.timer; // Reset Timer
-			updateTimeText(); // Update timer text
+			updateTimeText();
 			original = false; // Reset comparison button flag
 			changeMessage(); // Reset comparison button
 
@@ -788,15 +763,15 @@ function init()
 			if (time <= 1)
 			{	
 				time = newPlayer.timer;
-				compareAnswer("Time")
-				answerText.text = "R. " + gameControl.Guess.toString();
+				compareFrequency("Time")
+				answerText.text = "R. " + gameControl.Guess.toString() + " dB";
 				answerText.color = "red";
 				answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
 				answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2);
 				pause = false;
 				rightStop = true;
 				gameControl.generateIconigta(newPlayer.level);
-				updateFilter();
+				gameFilter.frequency.value = gameControl.Guess;
 				stopPlaying();
 			}
 
@@ -809,11 +784,8 @@ function init()
 				return;
 			}
 
-			if (isDecoded)
-			{
-				time--; //Decreases Time
-				updateTimeText();
-			}
+			time--; //Decreases Time
+			updateTimeText();
 
 		}, 1000);
 	}

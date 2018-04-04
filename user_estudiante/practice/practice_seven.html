@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<!--
+	Photon by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Práctica 7: Realces y Cortes</title>
+		<meta charset="utf-8" />
+		<script type="text/javascript"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<script type="text/javascript" src = "assets/js/practiceSevenJS.js">
+		</script>
+
+	</head>
+	<body onload = "init();"> 
+
+<div style = "background-color: black;
+					border: 1px solid darkorange; border-radius: 4px;">
+			 	<a href="../../index.html" style = "padding-left: 0.5%"> |  Inicio </a>
+			 	| 
+	</div>
+		<!-- Header -->
+			<section id="header">
+				<div class="inner">
+					<span class="icon major fa fa-bar-chart" style="font-size: 1.2em;"></span>
+					<h1><strong>Práctica 7</strong></h1>
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;">A continuanción se encuentra la práctica 7, correspondiente a procesos dinámicos. El objetivo será reconocer el audio que mas perdida tenga por compresión. Para esto tendrás que presionar el botón <i>reproducir</i> para escuchar el audio, luego presiona el botón que se encuentra debajo para escuchar las diferencias de la compresión que se aplica entre la muestra A y la muestra B. 
+
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;"> A cada nivel de dificultad se reducirá la cantidad de compresión que se aplica y además tendrás un tiempo limite para responder cada ejercicio, si se termina este tiempo, se contará como un error y se generará una incógnita nueva.</br>
+					</p>
+					<p>
+					<h3>Niveles de Dificultad</h3>
+						<strong>Fácil: </strong> - Entre 10 y 15 dB de reducción de ganancia.</br>
+						<strong>Intermedio: </strong> - Entre 5 y 10 dB de reducción de ganancia.</br>
+						<strong>Avanzado: </strong> - Entre 1 y 3 dB de reducción de ganancia.</br>
+					</p>
+					<ul class="actions">
+						<li><a href="#one" class="button scrolly">Iniciar</a></li>
+					</ul>
+				</div>
+			</section>
+
+		<!-- One -->
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlaypract5.jpg)">
+				<div class="container"><script type="text/javascript" src="assets/js/phaser.min.js"></script>
+						<canvas id = "levelApp" width = "940" height = "425" style = "padding: 0; margin: auto; display: block;"></canvas>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<section id="footer">
+				<ul class="icons">
+					<li><a href="https://www.usbmed.edu.co/" class="icon alt fa-graduation-cap"><span class="label">Twitter</span></a></li>
+					<li><a href="https://twitter.com/USBmed" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="https://www.facebook.com" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Universidad de San Buenaventura Medellín 2016</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+				</ul>		
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script> <!-- CREATEJS -->
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
