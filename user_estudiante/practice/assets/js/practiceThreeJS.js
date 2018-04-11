@@ -23,6 +23,7 @@ var player = function() // player constructor
 player.prototype.rightAnswer = function() // Answer counter
 {	
 	this.Correct++;
+	this.subCounter++;
 	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 20}
 	else if (this.Correct >= 40){this.level = "Avanzado"; this.timer = 10}
 };
@@ -379,8 +380,6 @@ function init()
 		playButtonStart("Advanced");
 	});
 
-
-
 	function activateButtonEasyLevel()
 	{	
 		// A Button
@@ -612,20 +611,23 @@ function init()
 		if (gameControl.Guess == "PasaBajas")
 		{
 			gameFilter.type = "lowpass";
-			maximo = 4000;
+			gameFilter.Q = 0.7;
+			maximo = 2000;
 			minimo = 60;
 		}
 		else if (gameControl.Guess == "PasaAltas")
 		{
 			gameFilter.type = "highpass";
+			gameFilter.Q = 0.7;
 			maximo = 10000;
-			minimo = 1000;
+			minimo = 2000;
 		}
 		else if (gameControl.Guess == "PasaBandas")
 		{
 			gameFilter.type = "bandpass";
-			maximo = 2000;
-			minimo = 500;
+			gameFilter.Q = 0.8;
+			maximo = 3000;
+			minimo = 1000;
 		}
 		else if (gameControl.Guess == "RechazaBandas")
 		{
@@ -636,17 +638,18 @@ function init()
 		else if (gameControl.Guess == "Peaking" || gameControl.Guess == "Dip")
 		{
 			gameFilter.type = "peaking";
+			gameFilter.Q = 2.5;
 			maximo = 4000;
 			minimo = 500;
 			if (gameControl.Guess == "Peaking")
 			{
-				maxGain = 12;
-				minGain = 3;
+				maxGain = 15;
+				minGain = 10;
 			}
 			else if (gameControl.Guess == "Dip")
 			{
 				maxGain = -10;
-				minGain = -20;
+				minGain = -15;
 			}
 		}
 		else if (gameControl.Guess = "HighShelf")
