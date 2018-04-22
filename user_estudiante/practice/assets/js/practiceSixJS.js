@@ -65,6 +65,11 @@ var compressorControlTwo = audioCtx.createDynamicsCompressor();
 	compressorControlTwo.release.value = 0.25;
 	compressorControlTwo.connect(compressorLevelTwo);
 
+function activateAudio()
+{
+	audioCtx.resume();
+}
+
 // Create Analyzer
 var analyser = audioCtx.createAnalyser();
 

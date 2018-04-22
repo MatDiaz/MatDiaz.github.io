@@ -42,8 +42,12 @@ var controlFilterLevel = audioCtx.createGain();
 	controlFilterLevel.connect(audioCtx.destination);
 
 var controlLevel = audioCtx.createGain();
-	controlLevel.gain.value = 1;
+	controlLevel.gain.value = 0;
 	controlLevel.connect(audioCtx.destination);
+
+var beepLevel = audioCtx.createGain();
+	beepLevel.gain.value = 0;
+	beepLevel.connect(audioCtx.destination);
 
 var gameFilter = audioCtx.createBiquadFilter();
 	gameFilter.type = "peaking";
@@ -57,6 +61,36 @@ var buttonActiveHard = false;
 // Create Analyzer
 var analyser = audioCtx.createAnalyser();
 
+var pinkNoise = audioCtx.createScriptProcessor (512, 1, 1);
+	var b0, b1, b2, b3, b4, b5, b6;
+	b0 = b1 = b2 = b3 = b4 = b5 = b6 = 0;
+	pinkNoise.onaudioprocess = function (e)
+	{
+		var pinkOutput = e.outputBuffer.getChannelData(0);
+		for (var i = 0; i < pinkOutput.length; i++)
+		{
+			var white = Math.random() * 2 - 1;
+			b0 = 0.99886 * b0 + white * 0.0555179;
+			b1 = 0.99332 * b1 + white * 0.0750759;
+			b2 = 0.96900 * b2 + white * 0.1538520;
+			b3 = 0.86650 * b3 + white * 0.3104856;
+			b4 = 0.55000 * b4 + white * 0.5329522;
+			b5 = -0.7616 * b5 - white * 0.0168980;
+			pinkOutput[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+			pinkOutput[i] *= 0.1
+			b6 = white * 0.115926;
+		}
+	}; // Pink Noise
+
+pinkNoise.connect(controlLevel);
+pinkNoise.connect(gameFilter);
+pinkNoise.connect(analyser);
+
+function activateAudio()
+{
+	audioCtx.resume();
+}
+  
 var gameControlClass = function() // Game Object Constructor
 {	
 	// This will be the incognitas to use in game, they'll change according to the game
@@ -101,11 +135,8 @@ addSound.prototype.startSound = function(playerUrl)
 		this.myBuffer = buffer;
 		this.songLength = buffer.duration;
 		source.buffer = this.myBuffer;
-		source.loop = true;
-
-		source.connect(controlLevel);
-		source.connect(gameFilter);
-		source.connect(analyser);
+		source.loop = false;
+		source.connect(beepLevel);
 	},
 
 	function(e){"Error with decoding audio data" + e.err});	
@@ -596,6 +627,7 @@ function init()
 			controlFilterLevel.gain.value = 1;
 			original = false;
 		}
+
 		stage.update();
 	}
 
@@ -604,7 +636,7 @@ function init()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 
 	function stopPlaying()
-	{
+	{	
 		if (oneTime)	
 		{	
 			time = newPlayer.timer;
@@ -618,7 +650,11 @@ function init()
 			playButton.buttonText.text = "Reproducir";
 			playButton.buttonText.x = (playButton.newContainer.getBounds().width / 2) - (playButton.buttonText.getBounds().width / 2);
 			playButton.buttonText.y = (playButton.newContainer.getBounds().height / 2)- (playButton.buttonText.getBounds().height / 2) * 1.5;
-			soundOne.stopSound(); // Stop sound from audio object
+
+			controlLevel.gain.value = 0;
+			controlFilterLevel.gain.value = 0;
+
+			// soundOne.stopSound(); // Stop sound from audio object
 
 			pause = true;			
 		}
@@ -633,7 +669,10 @@ function init()
 			playButton.buttonText.text = "Detener";
 			playButton.buttonText.x = (playButton.newContainer.getBounds().width / 2) - (playButton.buttonText.getBounds().width / 2);
 			playButton.buttonText.y = (playButton.newContainer.getBounds().height / 2)- (playButton.buttonText.getBounds().height / 2) * 1.5;
-			soundOne.startSound(newPlayer.url);
+
+			if (original) {controlLevel.gain.value = 1;}
+			else {controlFilterLevel.gain.value = 1;}
+			soundOne.startSound(url2);
 			soundOne.drawThis();
 
 			pause = false;
@@ -650,7 +689,6 @@ function init()
 		answerText.color = newColor
 		answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
 		answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2) - 13;
-		stage.update();
 
 		// ==========================================================================================================================
 
@@ -673,6 +711,10 @@ function init()
 
 			gameFilter.gain.value = (gainModifier/gainModifier) * 6;
 
+			var actualGain = gameFilter.gain.value;
+			console.log(actualGain);
+			gainText.createText.text = ("Ganancia: " + actualGain.toString() + " dB");
+
 		}
 
 		if (newPlayer.level == "Avanzado" && !buttonActiveHard)
@@ -693,7 +735,13 @@ function init()
 			buttonActiveHard = true;
 
 			gameFilter.gain.value = (gainModifier/gainModifier) * 3;
+
+			var actualGain = gameFilter.gain.value;
+			console.log(actualGain);
+			gainText.createText.text = ("Ganancia: " + actualGain.toString() + " dB");
 		}
+
+		stage.update();
 	}
 
 	function compareFrequency(newValue) // Called when any answer button is pressed
@@ -703,11 +751,14 @@ function init()
 		if (newValue == gameControl.Guess) // Right Answer!
 		{	
 			newPlayer.rightAnswer(); // Add to right answer counter
-			stopPlaying(); // Call function to stop playing sound
 
+			beepLevel.gain.value = 1;
 			soundOne.startSound(url2); // Play beep sound
 			beep = true; // Beep is playing
-			setTimeout (function(){if(beep){soundOne.stopSound()} beep = false;}, 750); // Stop beep
+			setTimeout (function(){
+				if(beep){soundOne.stopSound()} 
+				beep = false;
+				beepLevel.gain.value = 0;}, 750); // Stop beep
 
 			correctText.createText.text = "¡Correcto!"; // Change displayText
 			correctText.createText.color = "darkorange"; // Change displayText color
@@ -727,6 +778,7 @@ function init()
 			updateTimeText();
 			original = false; // Reset comparison button flag
 			changeMessage(); // Reset comparison button
+			stopPlaying(); // Call function to stop playing sound
 
 			stage.update();
 
@@ -759,7 +811,6 @@ function init()
 
 		var alpha = setInterval(function()
 		{	
-
 			if (time <= 1)
 			{	
 				time = newPlayer.timer;

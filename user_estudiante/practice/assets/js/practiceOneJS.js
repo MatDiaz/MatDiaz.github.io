@@ -49,6 +49,11 @@ var beepLevelControl = audioCtx.createGain();
 	beepLevelControl.gain.value = 1;
 	beepLevelControl.connect(audioCtx.destination);
 
+function activateAudio()
+{
+	audioCtx.resume();
+}
+
 var buttonActiveMedium = false;
 var buttonActiveHard = false;
 

@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Práctica 2: Cambios de Niveles</title>
+		<title>Práctica 7: Realces y Cortes (Ruido) </title>
 		<meta charset="utf-8" />
 		<script type="text/javascript"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,43 +14,42 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<script type="text/javascript" src = "assets/js/practiceTwoJS.js">
+		<script type="text/javascript" src = "assets/js/practiceSevenJS.js">
 		</script>
 
 	</head>
 	<body onload = "init();"> 
 
-	<div style = "background-color: black;
-				border: 1px solid darkorange; border-radius: 4px;">
+<div style = "background-color: black;
+					border: 1px solid darkorange; border-radius: 4px;">
 			 	<a href="../../index.html" style = "padding-left: 0.5%"> |  Inicio </a>
 			 	| 
-		</div>
-
+	</div>
 		<!-- Header -->
 			<section id="header">
 				<div class="inner">
-					<!--<span class="image"><img src="images/sine.png" alt="" /></span>-->
-					<span class="icon major fa-sort-amount-desc"></span>
-					<h1><strong>Práctica 2</strong></h1>
-					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify">A continuanción se encuentra la práctica 2, correspondiente a diferencias de nivel. El objetivo será reconocer el cambio de nivel aplicado a cada ejercicio. Para esto tendrás que presionar el botón <i>reproducir</i> para escuchar el audio, luego presiona el botón que se encuentra debajo para escuchar las diferencias de nivel. <i>Original</i> reproducirá el audio sin cambios y <i>Modificado</i> reproducirá el audio con el cambio de nivel respectivo.</p>
-					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify"> A cada nivel de dificultad se le irán sumando mas cambios de nivel a reconocer y además tendrás un tiempo limite para responder cada ejercicio, si se termina este tiempo, se contará como un error y se generará una incógnita nueva.</br>
+					<span class="icon major fas fa-braille" style="font-size: 1.2em;"></span>
+					<h1><strong>Práctica 7 (Ruido) </strong></h1>
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;">Es una época oscura para la Rebelión. Aunque la Estrella de la Muerte ha sido destruida, las tropas imperiales han obligado a las fuerzas rebeldes a dejar sus bases secretas y las han perseguido a través de la galaxia. [...] En una fuga de la temida Flota Imperial, un grupo de guerreros rebeldes liderado por Luke Skywalker ha establecido una nueva base secreta en la remota tierra congelada de Hoth. [...] Darth Vader, Señor del mal, Obsesionado con encontrar al joven Skywalker, ha despachado al lejano espacio miles de sondas a control remoto... 
+
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;"> A cada nivel de dificultad se reducirá la cantidad de compresión que se aplica y además tendrás un tiempo limite para responder cada ejercicio, si se termina este tiempo, se contará como un error y se generará una incógnita nueva.</br>
 					</p>
 					<p>
 					<h3>Niveles de Dificultad</h3>
-						<strong>Fácil: </strong> -10 dB, 0 dB, + 10 dB. 60 segundos por ejercicio.</br>
-						<strong>Intermedio: </strong> -4 dB, -6 dB, -10 dB, 0 db, + 10 dB, + 6dB, +4 dB. 30 segundos por ejercicio.</br>
-						<strong>Avanzado: </strong> -1 dB, -2 dB, -4 dB, -6 dB, -10 dB, 0 db, + 10 dB, + 6dB, +4 dB, + 2dB, + 1 dB. 15 segundos por ejercicio.</br>
+						<strong>Fácil: </strong> 10 bandas de octava - 10 dB ganancia/atenuación.</br>
+						<strong>Intermedio: </strong> 10 bandas de octava - 6 dB ganancia/atenuación.</br>
+						<strong>Avanzado: </strong> 10 bandas de octava - 3 dB ganancia/atenuación.</br>
 					</p>
 					<ul class="actions">
-						<li><a href="#one" class="button scrolly" onclick = "activateAudio()">Iniciar</a></li>
+						<li><a id="buttonStart" href="#one" class="button scrolly" onclick = "activateAudio()" >Iniciar</a></li>
 					</ul>
 				</div>
 			</section>
 
 		<!-- One -->
-			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlaypract2.jpg)">
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlaypract5.jpg)">
 				<div class="container"><script type="text/javascript" src="assets/js/phaser.min.js"></script>
-						<canvas id = "levelApp" width = "940" height = "385" style = "padding: 0; margin: auto; display: block;"></canvas>
+						<canvas id = "levelApp" width = "940" height = "425" style = "padding: 0; margin: auto; display: block;"></canvas>
 				</div>
 			</section>
 
@@ -60,7 +59,7 @@
 					<li><a href="https://www.usbmed.edu.co/" class="icon alt fa-graduation-cap"><span class="label">Twitter</span></a></li>
 					<li><a href="https://twitter.com/USBmed" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
 					<li><a href="https://www.facebook.com" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-					<li><a href="https://www.facebook.com/usbmed/" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
 				<ul class="copyright">
 					<li>&copy; Universidad de San Buenaventura Medellín 2018</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>

@@ -51,6 +51,11 @@ var panControl = audioCtx.createStereoPanner();
 // Create Analyzer
 var analyser = audioCtx.createAnalyser();
 
+function activateAudio()
+{
+	audioCtx.resume();
+}
+
 var gameControlClass = function() // Game Object Constructor
 {	
 	this.Guess = null;

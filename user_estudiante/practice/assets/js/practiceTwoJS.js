@@ -51,6 +51,11 @@ var buttonActiveHard = false;
 // Create Analyzer
 var analyser = audioCtx.createAnalyser();
 
+function activateAudio()
+{
+	audioCtx.resume();
+}
+
 var gameOscillatorControl = function() // Game Object Constructor
 {	
 	// This will be the incognitas to use in game, they'll change according to the game

@@ -1,4 +1,4 @@
-//							  	   Realces y Cortes	 							    		//
+//							  Reconocimiento de Frecuencias 							    //
 //				** Aplicacion Web De Entrenamiento Auditivo Técnico ** 						//		
 //				**            Para Ingenieros de Sonido. 			**						//
 // -----------------------------------------------------------------------------------------//
@@ -12,6 +12,7 @@ var player = function() // player constructor
 	this.Wrong = 0;
 	this.level = "Fácil";
 	this.timer = 20;
+	this.subCounter = 0;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
@@ -21,9 +22,10 @@ var player = function() // player constructor
 
 player.prototype.rightAnswer = function() // Answer counter
 {	
+	this.subCounter++;
 	this.Correct++;
-	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 15}
-	else if (this.Correct >= 20){this.level = "Avanzado"; this.timer = 10}
+	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 20}
+	else if (this.Correct >= 30){this.level = "Avanzado"; this.timer = 20}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -35,67 +37,45 @@ player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Ma
 // --------------------------------------------------------------------------------------------
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-var controlLevel = audioCtx.createGain();
-	controlLevel.gain.value = 1;
-	controlLevel.connect(audioCtx.destination);
-
 var controlFilterLevel = audioCtx.createGain();
 	controlFilterLevel.gain.value = 0;
 	controlFilterLevel.connect(audioCtx.destination);
 
-var gameFilter = audioCtx.createBiquadFilter();
-	gameFilter.connect(controlFilterLevel);
-	gameFilter.Q.value = 5;
-	gameFilter.type = "peaking"
+var controlLevel = audioCtx.createGain();
+	controlLevel.gain.value = 1;
+	controlLevel.connect(audioCtx.destination);
 
-var isDecoded = false;
+var gameFilter = audioCtx.createBiquadFilter();
+	gameFilter.type = "peaking";
+	gameFilter.frequency.value = 1000;
+	gameFilter.gain.value = 10;
+	gameFilter.connect(controlFilterLevel);
+
+var buttonActiveMedium = false;
+var buttonActiveHard = false;
 
 // Create Analyzer
 var analyser = audioCtx.createAnalyser();
+
+var gameControlClass = function() // Game Object Constructor
+{	
+	// This will be the incognitas to use in game, they'll change according to the game
+	this.answerListA = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Easy Level
+	this.answerListB = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Medium Level
+	this.answerListC = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Hard Level
+	this.Guess = this.answerListA[Math.floor(Math.random() * 10)]; // Initialize an icongnita
+}
 
 function activateAudio()
 {
 	audioCtx.resume();
 }
 
-var gameControlClass = function() // Game Object Constructor
-{	
-	this.Guess = [];
-
-	// This will be the incognitas to use in game, they'll change according to the game
-	this.answerListA = ["Peaking", 100, 8000, 12, 18]; // Easy Level
-	this.answerListB = ["Dip", 100, 8000, -12, -18]; // Medium Level
-	this.answerListC = ["Peaking", "Dip", 40, 10000, 6, 10]; // Hard Level
-
-	// Initialize an icongnita
-	this.Guess[0] = this.answerListA[0];
-	this.Guess[1] = Math.random() * (this.answerListA[2] - this.answerListA[1]) + this.answerListA[1];
-	this.Guess[2] = Math.random() * (this.answerListA[4] - this.answerListA[3]) + this.answerListA[3];
-}
-
 gameControlClass.prototype.generateIconigta = function (level) 
 {	
-	if (level == "Fácil") 
-	{ 
-		this.Guess[0] = this.answerListA[0];
-		this.Guess[1] = Math.random() * (this.answerListA[2] - this.answerListA[1]) + this.answerListA[1];
-		this.Guess[2] = Math.random() * (this.answerListA[4] - this.answerListA[3]) + this.answerListA[3];		
-	}
-	else if (level == "Intermedio") 
-	{ 
-		this.Guess[0] = this.answerListB[0];
-		this.Guess[1] = Math.random() * (this.answerListB[2] - this.answerListB[1]) + this.answerListB[1];
-		this.Guess[2] = Math.random() * (this.answerListB[4] - this.answerListB[3]) + this.answerListB[3];		 
-	}
-	else if (level = "Avanzado") 
-	{ 
-		this.Guess[0] = Math.random() * (this.answerListC[1] - this.answerListC[0]) + this.answerListC[0];
-		this.Guess[1] = Math.random() * (this.answerListC[3] - this.answerListC[2]) + this.answerListC[2];
-		this.Guess[2] = Math.random() * (this.answerListC[5] - this.answerListC[4]) + this.answerListC[4];		  
-	}
-
-	console.log(this.Guess[1])
-	console.log(this.Guess[2])
+	if (level == "Fácil") { this.Guess = this.answerListA[Math.floor(Math.random() * 10)]}
+	else if (level == "Intermedio") { this.Guess = this.answerListB[Math.floor(Math.random() * 10)] }
+	else if (level = "Avanzado") { this.Guess = this.answerListC[Math.floor(Math.random() * 10)] }
 };
 
 gameControlClass.prototype.controlGain = function (change)
@@ -105,15 +85,10 @@ gameControlClass.prototype.controlGain = function (change)
 	return this.gainValue;
 };
 
-// --------------------------------------------------------------------------------------------
-// --------------------------------------------------------------------------------------------
-
 var addSound = function(){}
 
 addSound.prototype.startSound = function(playerUrl)
 {	
-	isDecoded = false;
-
 	source = audioCtx.createBufferSource();
 
 	request = new XMLHttpRequest();
@@ -136,12 +111,10 @@ addSound.prototype.startSound = function(playerUrl)
 		source.connect(controlLevel);
 		source.connect(gameFilter);
 		source.connect(analyser);
-		isDecoded = true;
 	},
 
 	function(e){"Error with decoding audio data" + e.err});	
 	}
-
 	// Setup Analyzer parameters
 	analyser.fftSize = 4096; // fft size (this is not the case to use fft, but it still matters)
 	this.bufferLength = analyser.frequencyBinCount; // Get analyzer length
@@ -164,31 +137,14 @@ addSound.prototype.startSound = function(playerUrl)
 		analyser.getByteTimeDomainData(this.dataArray);
 	}
 
-	function createLogSpace(init, finish, number, multiplier)
-	{	
-		var logSpaceVector = [];
-
-		var increment = (finish - init) / (number - 1);
-
-		var summ = init;
-
-		logSpaceVector[0] = multiplier * (Math.pow(10, init));
-
-		for (var i = 1; i < number ; i++) 
-		{	
-			summ += increment;
-
-			logSpaceVector[i] = multiplier * (Math.pow(10, summ));
-		}
-
-		return logSpaceVector;
-	}
+	// Create Audio Player
+	var soundOne = new addSound();
 // 																		 Create JS init
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 
 function init()
-{
+{	
 // 																		 Object Creation
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,15 +159,6 @@ function init()
 
 	// Drawning Line
 	var line = new createjs.Shape();
-
-	// Create logspace button
-	var logSpaceFrequencies = createLogSpace(1, 4, 890, 2);
-
-	// Track Mouse Position
-	var posX;
-
-	// Update and initialize filter
-	updateFilter();
 // 																		 Variable Initialization
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
@@ -224,10 +171,8 @@ function init()
 	var original = true;
 	var beep = true;
 	var rightStop = false;
-	var playBarActive = false;
-	var buttonActiveMedium = false;
-	var buttonActiveHard = false;
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
+	var gainModifier = 10;
 
 	createjs.Ticker.addEventListener("tick", handleTick);
 	createjs.Ticker.setFPS(60); // Canvas update frequency
@@ -290,12 +235,11 @@ function init()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	// Button Properties
-	var buttonHeight = 890; // Button Height
+	var buttonHeight = 74; // Button Height
 	var buttonWidth = 35; // Button Width
 	var buttonStroke = "black"; // Button Color
 	var buttonFont = "300 13pt Source Sans Pro"; // Font-> .Font Weight. Font Size. Font Family
 	var textFont = "300 14pt Source Sans Pro"; // Font-> .Font Weight. Font Size. Font Family
-
 
 	// Class for make texts
 	// text = Text to display
@@ -312,7 +256,7 @@ function init()
 		stage.addChild(this.createText); //
 	}
 
-	// Class for making buttons
+	// Clase for making buttons
 	// buttonHeight = button Height
 	// buttonWidth = button Width
 	// buttonStroke = button line stroke
@@ -321,10 +265,14 @@ function init()
 	// canvasStage = createJS Stage
 	// Text = text to display in button
 	// font = font family of button
-	// color = text color
+	// color = text ccolor
 
 	var newButton = function(buttonHeight, buttonWidth, buttonStroke, buttonFill, x, y, canvasStage, text, font, color)
 	{	
+		this.buttonHeight = buttonHeight;
+		this.buttonWidth = buttonWidth;
+		this.buttonFill = buttonFill;
+
 		this.newContainer = new createjs.Container(); this.newContainer.setBounds(x, y, buttonHeight, buttonWidth); //
 		this.createButton = new createjs.Shape(); // 
 		this.createButton.graphics.beginStroke(buttonStroke).beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90); //
@@ -338,14 +286,39 @@ function init()
 		stage.addChild(this.newContainer); // 
 	}
 
-	newButton.prototype.updateText = function(newText)
-	{
-		this.buttonText.text = newText;
-		this.buttonText.x = (this.newContainer.getBounds().width / 2) - (this.buttonText.getBounds().width / 2); //
-		this.buttonText.y = (this.newContainer.getBounds().height / 2)- (this.buttonText.getBounds().height / 2)*1.5; //
+	newButton.prototype.changeColor = function()
+	{	
+		var childOne = this.newContainer.getChildAt(0);
+		var buttonHeight = this.buttonHeight;
+		var buttonWidth = this.buttonWidth;
+		var buttonFill = this.buttonFill;
+
+		childOne.graphics.clear();
+		childOne.graphics.beginStroke("darkorange").beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
 		stage.update();
 	}
 
+	newButton.prototype.addListeners = function(fillColor)
+	{	
+		var childOne = this.newContainer.getChildAt(0);
+		var buttonHeight = this.buttonHeight;
+		var buttonWidth = this.buttonWidth;
+		var buttonFill = this.buttonFill;
+
+		this.newContainer.on("mouseover", function(event)
+		{
+			childOne.graphics.clear();
+			childOne.graphics.beginStroke("darkorange").beginFill(fillColor).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			stage.update();		
+		});
+
+		this.newContainer.addEventListener("mouseout", function(event)
+		{	
+			childOne.graphics.clear();
+			childOne.graphics.beginStroke("darkorange").beginFill(buttonFill).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			stage.update();
+		});
+	}
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -362,89 +335,253 @@ function init()
 	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195); // Right Answer count Text
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
+	initText = new newText(" Elige un modo ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
+
+	var modifier;
+	var separator;
+
+	modifier = 16;
+	separator = 100;
 
 	// Create Buttons
-	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 26, 325, stage, "FRECUENCIA", buttonFont, "white");
-	playButton = new newButton(115, buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
-	changeButton = new newButton(185, buttonWidth, "orange", "orange", (940 / 2) - 95, 255, stage, "Escuchas: Original", textFont, "white");
+	modeAButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Realces", textFont, "white");
+	modeBButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Cortes", textFont, "white");
+
+	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 25, 325, stage, "31 Hz", buttonFont, "white");
+	bButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 90), 325, stage, "63 Hz",  buttonFont, "white");
+	cButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 180), 325, stage, "125 Hz",  buttonFont, "white");
+	dButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 270), 325, stage, "250 Hz",  buttonFont, "white");
+	eButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 360), 325, stage, "500 Hz",  buttonFont, "white");
+	fButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 450), 325, stage, "1 kHz",  buttonFont, "white");
+	gButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 540), 325, stage, "2 kHz",  buttonFont, "white");
+	hButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 630), 325, stage, "4 kHz",  buttonFont, "white");
+	iButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 720), 325, stage, "8 kHz",  buttonFont, "white");
+	jButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 810), 325, stage, "16 kHz",  buttonFont, "white");
+
 	stage.enableMouseOver(); // Enable pointer over buttons
 	stage.update();
-// 														  Mouse/Keyboard Events
-// 																Button 1
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	var listenFunction = function(event)
-	{	
-		posX = Math.round(event.stageX);
 
-		if (posX < 915 && posX > 25)
-		{	
-			var newText = (Math.round(logSpaceFrequencies[posX - 25])).toString() + " Hz";
-			aButton.updateText(newText);
-		} 
-	};
+	modeAButton.addListeners("darkorange");
+	modeBButton.addListeners("darkorange");
 
-	var mouseOutBar = function(event)
+	modeAButton.newContainer.addEventListener("click", function(event)
 	{
-		aButton.createButton.graphics.clear();
-		aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		aButton.updateText("FRECUENCIA");
-		stage.removeEventListener("stagemousemove", listenFunction, false);
-		stage.update();
-	}
-
-		var mouseInBar = function(event)
-		{
-			aButton.createButton.graphics.clear();
-			aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.3)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-			stage.addEventListener("stagemousemove", listenFunction, false);
-			stage.update();
-		}
-
-		var clickFunction = function(event)
-		{
-			updateAnswerText("~ " + (Math.round(logSpaceFrequencies[posX - 25])).toString() + " Hz", compareAnswer(Math.round(logSpaceFrequencies[posX - 25])));
-		}
-
-	function activatePlayBar()
-	{	
-		aButton.createButton.graphics.clear();
-		aButton.createButton.graphics.beginStroke("darkorange").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		aButton.newContainer.addEventListener("mouseover", mouseInBar);
-		aButton.newContainer.addEventListener("mouseout", mouseOutBar);
-		aButton.newContainer.addEventListener("click", clickFunction);	
-	}
-
-	function playBarOff()
+		levelSelectionButtons("Realces");
+	});
+	modeBButton.newContainer.addEventListener("click", function(event)
 	{
-		mouseOutBar();
-		aButton.createButton.graphics.clear();
-		aButton.createButton.graphics.beginStroke("gray").beginFill("rgba(0, 0, 0, 0.5)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
-		aButton.newContainer.removeEventListener("mouseover", mouseInBar, false);
-		aButton.newContainer.removeEventListener("mouseout", mouseOutBar, false);
-		aButton.newContainer.removeEventListener("click", clickFunction, false);
-	}
-// 														   Change Button
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
-	changeButton.newContainer.addEventListener("mouseover", function(event)
-	{
-		changeButton.createButton.graphics.clear();
-		changeButton.createButton.graphics.beginStroke("darkorange").beginFill("darkorange").drawRoundRect(0, 0, 185, buttonWidth, 10, 90, 10, 90);
-		stage.update();		
+		levelSelectionButtons("Cortes");
 	});
 
-	changeButton.newContainer.addEventListener("mouseout", function(event)
-	{
-		changeButton.createButton.graphics.clear();
-		changeButton.createButton.graphics.beginStroke("orange").beginFill("orange").drawRoundRect(0, 0, 185, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
+// 															    MOUSE/KEYBOARD EVENTS
+// =====================================================================================================================================================
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// 															  		INIT BUTTONS
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// =====================================================================================================================================================
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+	
+// =====================================================================================================================================================
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// 															  ACTIVATE BUTTONS FUNCTIONS
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// =====================================================================================================================================================
+	function activateButtons()
+	{ 	
+		// A Button
+		aButton.addListeners("rgba(64, 64, 64, 0.9)");
+		aButton.changeColor();
 
-	changeButton.newContainer.addEventListener("click", changeMessage);
+		aButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("31.5 Hz", compareFrequency(31.5));
+		});	
+
+		// B Button
+		bButton.addListeners("rgba(64, 64, 64, 0.9)");
+		bButton.changeColor();
+
+		bButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("63 Hz", compareFrequency(63));
+		});
+
+		// C Button
+		cButton.addListeners("rgba(64, 64, 64, 0.9)");
+		cButton.changeColor();	
+
+		cButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("125 Hz", compareFrequency(125));
+		});
+
+		// D Button
+		dButton.addListeners("rgba(64, 64, 64, 0.9)");
+		dButton.changeColor();	
+
+		dButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("250 Hz", compareFrequency(250));
+		});
+
+		//E Button
+		eButton.addListeners("rgba(64, 64, 64, 0.9)");
+		eButton.changeColor();
+
+		eButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("500 Hz", compareFrequency(500));
+		});	
+		
+		// F Button
+		fButton.addListeners("rgba(64, 64, 64, 0.9)");
+		fButton.changeColor();
+
+		fButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("1000 Hz", compareFrequency(1000));
+		});
+		
+		// G Button
+		gButton.addListeners("rgba(64, 64, 64, 0.9)");
+		gButton.changeColor();
+
+		gButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("2000 Hz", compareFrequency(2000));
+		});
+		
+		// H Button
+		hButton.addListeners("rgba(64, 64, 64, 0.9)");
+		hButton.changeColor();
+
+		hButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("4000 Hz", compareFrequency(4000));
+		});
+
+		// I Button
+		iButton.addListeners("rgba(64, 64, 64, 0.9)");
+		iButton.changeColor();
+		
+		iButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("8000 Hz", compareFrequency(8000));
+		});
+
+		// J Button
+		jButton.addListeners("rgba(64, 64, 64, 0.9)");
+		jButton.changeColor();
+
+		jButton.newContainer.addEventListener("click", function(event)
+		{
+			updateFrequencyText("16000 Hz", compareFrequency(16000));
+		});	
+
+	}
+
+
+// =====================================================================================================================================================
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// 															  ACTIVATE BUTTONS FUNCTION - END
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+// =====================================================================================================================================================
+	function playButtonStart(startLevelUpdate, modeUpdate)
+	{	
+		playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 215, stage, "Iniciar", textFont, "white");
+		changeButton = new newButton((buttonHeight + 110), buttonWidth, "orange", "orange", (940 / 2) - 94, 255, stage, "Escuchas: Original", textFont, "white");
+
+		modeText = new newText("Modo: " + modeUpdate, textFont, "darkorange", stage, (25*10), (75*1.25));
+
+		playButton.addListeners("darkorange");
+		changeButton.addListeners("darkorange");
+
+		playButton.newContainer.addEventListener("click", stopPlaying);
+		changeButton.newContainer.addEventListener("click", changeMessage);
+
+		if (startLevelUpdate == "Easy")
+		{
+			activateButtons();
+			gainModifier = 10;
+		}
+		else if (startLevelUpdate == "Medium")
+		{
+			activateButtons();
+			newPlayer.Correct = 10;
+			newPlayer.level = "Intermedio";
+			buttonActiveMedium = true;
+			gainModifier = 6;
+		}
+		else
+		{
+			activateButtons();
+			newPlayer.Correct = 30;
+			newPlayer.level = "Avanzado";
+			buttonActiveHard = true;
+			gainModifier = 3;
+		}
+		if (modeUpdate == "Cortes") {gainModifier *= -1;}
+
+		gameFilter.gain.value = gainModifier;
+
+		gainText = new newText("Ganancia: " + gainModifier.toString() + " dB", textFont, "darkorange", stage, (25*28), (75*1.25));
+		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
+		levelText.createText.text = "Nivel: " + newPlayer.level;
+
+		initEasy.newContainer.removeAllChildren();
+		initMedium.newContainer.removeAllChildren();
+		initAdvanced.newContainer.removeAllChildren();
+
+		stage.removeChild(initText.createText);
+
+		stage.update();
+
+		delete initText;
+		delete initEasy;
+		delete initMedium;
+		delete initAdvanced;
+	}
+
+	function levelSelectionButtons(gameMode)
+	{	
+		initText.createText.text = "Elige un nivel";
+
+		initAdvanced = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
+		initMedium = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
+		initEasy = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
+
+		initEasy.addListeners("darkorange");
+		initMedium.addListeners("darkorange");
+		initAdvanced.addListeners("darkorange");
+
+		initEasy.newContainer.addEventListener("click", function(event)
+		{
+			playButtonStart("Easy", gameMode);
+		});
+
+		initMedium.newContainer.addEventListener("click", function(event)
+		{
+			playButtonStart("Medium", gameMode);
+		});
+
+		initAdvanced.newContainer.addEventListener("click", function(event)
+		{
+			playButtonStart("Advanced", gameMode);
+		});
+
+		modeAButton.newContainer.removeAllChildren();
+		modeBButton.newContainer.removeAllChildren();
+
+		delete modeAButton;
+		delete modeBButton;
+	}// 														   Change Button
+// =====================================================================================================================================================
+// =====================================================================================================================================================
 
 	function changeMessage()
 	{
+
 		if (!original)
 		{	
 			changeButton.buttonText.text = "Escuchas: Original";
@@ -466,41 +603,13 @@ function init()
 		}
 		stage.update();
 	}
+
 // 														   Play Button
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-	playButton.newContainer.addEventListener("mouseover", function(event)
-	{
-		playButton.createButton.graphics.clear();
-		playButton.createButton.graphics.beginStroke("darkorange").beginFill("darkorange").drawRoundRect(0, 0, 115, buttonWidth, 10, 90, 10, 90);
-		stage.update();		
-	});
-
-	playButton.newContainer.addEventListener("mouseout", function(event)
-	{
-		playButton.createButton.graphics.clear();
-		playButton.createButton.graphics.beginStroke("orange").beginFill("orange").drawRoundRect(0, 0, 115, buttonWidth, 10, 90, 10, 90);
-		stage.update();
-	});
-
-	playButton.newContainer.addEventListener("click", stopPlaying);
-
-
 	function stopPlaying()
-	{	
-
-		if (!playBarActive)
-		{
-			activatePlayBar();
-			playBarActive = true;
-		}
-		else if (playBarActive)
-		{
-			playBarOff();
-			playBarActive = false;
-		}
-
+	{
 		if (oneTime)	
 		{	
 			time = newPlayer.timer;
@@ -515,7 +624,8 @@ function init()
 			playButton.buttonText.x = (playButton.newContainer.getBounds().width / 2) - (playButton.buttonText.getBounds().width / 2);
 			playButton.buttonText.y = (playButton.newContainer.getBounds().height / 2)- (playButton.buttonText.getBounds().height / 2) * 1.5;
 			soundOne.stopSound(); // Stop sound from audio object
-			pause = true;
+
+			pause = true;			
 		}
 		else 
 		{	
@@ -530,6 +640,7 @@ function init()
 			playButton.buttonText.y = (playButton.newContainer.getBounds().height / 2)- (playButton.buttonText.getBounds().height / 2) * 1.5;
 			soundOne.startSound(newPlayer.url);
 			soundOne.drawThis();
+
 			pause = false;
 		}
 
@@ -538,63 +649,87 @@ function init()
 // 														   Update Functions
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------------------------------------------- 
-	function updateFilter()
-	{	
-		 var gainChange;
+	function updateFrequencyText(newFreq, newColor) // Called when the answer is right 
+	{
+		answerText.text = newFreq;
+		answerText.color = newColor
+		answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
+		answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2) - 13;
+		stage.update();
 
-		 if (gameControl.Guess[0] == "Peaking"){ gainChange = 1 }
-		 else { gainChange = -1; }
+		// ==========================================================================================================================
 
-		 gameFilter.frequency.value = gameControl.Guess[1];
+		if (newPlayer.level == "Intermedio" && !buttonActiveMedium)
+		{
+			setTimeout(function()
+			{
+				correctText.createText.text = "Nivel"; // Change displayText
+				correctText.createText.color = "darkorange"; // Change displayText color
+				correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
+				correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
 
-		 gameFilter.gain.value = gameControl.Guess[2];
+				answerText.text = "Intermedio";
+				answerText.color = "darkorange";
+				answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
+				answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2);
+			}, 250)
+
+			buttonActiveMedium = true;
+
+			gameFilter.gain.value = (gainModifier/gainModifier) * 6;
+
+		}
+
+		if (newPlayer.level == "Avanzado" && !buttonActiveHard)
+		{
+			setTimeout(function()
+			{
+				correctText.createText.text = "Nivel"; // Change displayText
+				correctText.createText.color = "darkorange"; // Change displayText color
+				correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
+				correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
+
+				answerText.text = "Avanzado";
+				answerText.color = "darkorange";
+				answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
+				answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2);
+			}, 250)
+			
+			buttonActiveHard = true;
+
+			gameFilter.gain.value = (gainModifier/gainModifier) * 3;
+		}
 	}
 
-	function compareAnswer(newValue) // Called when any answer button is pressed
+	function compareFrequency(newValue) // Called when any answer button is pressed
 	{	
 		var color;
 
-		if (newValue < gameControl.Guess[1] * 1.25 && newValue > gameControl.Guess[1] * 0.75) // Right Answer!
+		if (newValue == gameControl.Guess) // Right Answer!
 		{	
 			newPlayer.rightAnswer(); // Add to right answer counter
 			stopPlaying(); // Call function to stop playing sound
+
 			soundOne.startSound(url2); // Play beep sound
 			beep = true; // Beep is playing
 			setTimeout (function(){if(beep){soundOne.stopSound()} beep = false;}, 750); // Stop beep
 
-			updateCorrectText("!Correcto!", "darkorange");
+			correctText.createText.text = "¡Correcto!"; // Change displayText
+			correctText.createText.color = "darkorange"; // Change displayText color
+			correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
+			correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
 
-			rightText.createText.text = "Aciertos: " + newPlayer.Correct.toString(); // update right answers
+			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString(); // update right answers
 			levelText.createText.text = "Nivel: " + newPlayer.level; // update difficulty text
 			gameControl.generateIconigta(newPlayer.level) // generate new incognita
-			gameControl.Guess[1];
-			updateFilter(); // right answer was made, update new filter with random parameters
 
-			newPlayer.generateURL(); // randomly generate new URL to play song
-			rightStop = true; // Stop timer because of a right answer
+			gameFilter.frequency.value = gameControl.Guess;
+
+			newPlayer.generateURL();
+			rightStop = true;
 
 			time = newPlayer.timer; // Reset Timer
-			updateTimeText(); // Update timer text
-			original = false; // Reset comparison button flag
-			changeMessage(); // Reset comparison button
-
-			stage.update();
-
-			return color = "darkorange" // Return right answer color
-		}
-
-		else if (newValue < gameControl.Guess[1] * 2 && newValue > gameControl.Guess[1] * 0.5) // Close to right Answer
-		{
-			stopPlaying(); // Call function to stop playing sound
-			soundOne.startSound(url2); // Play beep sound
-			beep = true; // Beep is playing
-			setTimeout (function(){if(beep){soundOne.stopSound()} beep = false;}, 750); // Stop beep
-
-			updateCorrectText("!Cerca!", "darkorange");
-
-			rightStop = true; // Stop timer because of a right answer
-			time = newPlayer.timer; // Reset Timer
-			updateTimeText(); // Update timer text
+			updateTimeText();
 			original = false; // Reset comparison button flag
 			changeMessage(); // Reset comparison button
 
@@ -617,59 +752,6 @@ function init()
 		}
 	}
 
-	function updateAnswerText(newFreq, newColor) // Called when the answer button is clicked 
-	{
-		answerText.text = newFreq;
-		answerText.color = newColor
-		answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
-		answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2) - 13;
-		stage.update();
-
-		if (newPlayer.level == "Intermedio" && !buttonActiveMedium)
-		{
-			setTimeout(function()
-			{
-				correctText.createText.text = "Nivel"; // Change displayText
-				correctText.createText.color = "darkorange"; // Change displayText color
-				correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
-				correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
-
-				answerText.text = "Intermedio";
-				answerText.color = "darkorange";
-				answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
-				answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2);
-			}, 250)
-
-			buttonActiveMedium = true;
-		}
-
-		if (newPlayer.level == "Avanzado" && !buttonActiveHard)
-		{
-			setTimeout(function()
-			{
-				correctText.createText.text = "Nivel"; // Change displayText
-				correctText.createText.color = "darkorange"; // Change displayText color
-				correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
-				correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
-
-				answerText.text = "Avanzado";
-				answerText.color = "darkorange";
-				answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
-				answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2);
-			}, 250)
-			
-			buttonActiveHard = true;
-		}
-	}
-
-	function updateCorrectText(newText, newColor) // This is called as well
-	{
-		correctText.createText.text = newText;
-		correctText.createText.color = newColor;
-		correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
-		correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
-	}
-
 	function updateTimeText()
 	{
 		timeText.createText.text = "Tiempo: " + time;
@@ -685,18 +767,18 @@ function init()
 			if (time <= 1)
 			{	
 				time = newPlayer.timer;
-				compareAnswer("Time")
-				answerText.text = "R. ~" + Math.round(gameControl.Guess[1]).toString() + " Hz";
+				compareFrequency("Time")
+				answerText.text = "R. " + gameControl.Guess.toString() + " dB";
 				answerText.color = "red";
 				answerText.x = (stage.canvas.width / 2) - (answerText.getBounds().width / 2);
 				answerText.y = ((225 / 2) + 75) - (answerText.getBounds().height/1.2);
 				pause = false;
 				rightStop = true;
-				playBarActive = true;
 				gameControl.generateIconigta(newPlayer.level);
-				updateFilter();
+				gameFilter.frequency.value = gameControl.Guess;
 				stopPlaying();
 			}
+
 			if (rightStop)
 			{	
 				clearInterval(alpha); 
@@ -705,11 +787,10 @@ function init()
 				updateTimeText();
 				return;
 			}
-			if (isDecoded)
-			{
-				time--; //Decreases Time
-				updateTimeText();
-			}
+
+			time--; //Decreases Time
+			updateTimeText();
+
 		}, 1000);
 	}
 }

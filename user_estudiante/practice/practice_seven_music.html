@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Práctica 7: Realces y Cortes</title>
+		<title>Práctica 7: Realces y Cortes (Música) </title>
 		<meta charset="utf-8" />
 		<script type="text/javascript"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,7 +14,7 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<script type="text/javascript" src = "assets/js/practiceSevenJS.js">
+		<script type="text/javascript" src = "assets/js/practiceSevenJS_Music.js">
 		</script>
 
 	</head>
@@ -28,20 +28,20 @@
 		<!-- Header -->
 			<section id="header">
 				<div class="inner">
-					<span class="icon major fa fa-bar-chart" style="font-size: 1.2em;"></span>
-					<h1><strong>Práctica 7</strong></h1>
-					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;">A continuanción se encuentra la práctica 7, correspondiente a procesos dinámicos. El objetivo será reconocer el audio que mas perdida tenga por compresión. Para esto tendrás que presionar el botón <i>reproducir</i> para escuchar el audio, luego presiona el botón que se encuentra debajo para escuchar las diferencias de la compresión que se aplica entre la muestra A y la muestra B. 
+					<span class="icon major fas fa-braille" style="font-size: 1.2em;"></span>
+					<h1><strong>Práctica 7 (Música) </strong></h1>
+					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;">Es una época oscura para la Rebelión. Aunque la Estrella de la Muerte ha sido destruida, las tropas imperiales han obligado a las fuerzas rebeldes a dejar sus bases secretas y las han perseguido a través de la galaxia. [...] En una fuga de la temida Flota Imperial, un grupo de guerreros rebeldes liderado por Luke Skywalker ha establecido una nueva base secreta en la remota tierra congelada de Hoth. [...] Darth Vader, Señor del mal, Obsesionado con encontrar al joven Skywalker, ha despachado al lejano espacio miles de sondas a control remoto... 
 
 					<p style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;"> A cada nivel de dificultad se reducirá la cantidad de compresión que se aplica y además tendrás un tiempo limite para responder cada ejercicio, si se termina este tiempo, se contará como un error y se generará una incógnita nueva.</br>
 					</p>
 					<p>
 					<h3>Niveles de Dificultad</h3>
-						<strong>Fácil: </strong> - Entre 10 y 15 dB de reducción de ganancia.</br>
-						<strong>Intermedio: </strong> - Entre 5 y 10 dB de reducción de ganancia.</br>
-						<strong>Avanzado: </strong> - Entre 1 y 3 dB de reducción de ganancia.</br>
+						<strong>Fácil: </strong> 10 bandas de octava - 10 dB ganancia/atenuación.</br>
+						<strong>Intermedio: </strong> 10 bandas de octava - 6 dB ganancia/atenuación.</br>
+						<strong>Avanzado: </strong> 10 bandas de octava - 3 dB ganancia/atenuación.</br>
 					</p>
 					<ul class="actions">
-						<li><a href="#one" class="button scrolly">Iniciar</a></li>
+						<li><a id="buttonStart" href="#one" class="button scrolly" onclick = "activateAudio()" >Iniciar</a></li>
 					</ul>
 				</div>
 			</section>
@@ -62,7 +62,7 @@
 					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
 				<ul class="copyright">
-					<li>&copy; Universidad de San Buenaventura Medellín 2016</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+					<li>&copy; Universidad de San Buenaventura Medellín 2018</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
 				</ul>		
 			</section>
 
