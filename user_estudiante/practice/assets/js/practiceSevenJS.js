@@ -535,7 +535,7 @@ function init()
 		else if (startLevelUpdate == "Medium")
 		{
 			activateButtons();
-			newPlayer.Correct = 10;
+			newPlayer.Correct = 20;
 			newPlayer.level = "Intermedio";
 			buttonActiveMedium = true;
 			gainModifier = 6;

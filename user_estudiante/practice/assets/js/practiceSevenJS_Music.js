@@ -16,7 +16,7 @@ var player = function() // player constructor
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
-	"https://freesound.org/data/previews/350/350877_2305278-lq.mp3",
+	"https://freesound.org/data/previews/395/395785_6522111-lq.mp3",
 	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
 }
 
@@ -24,7 +24,7 @@ player.prototype.rightAnswer = function() // Answer counter
 {	
 	this.subCounter++;
 	this.Correct++;
-	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 20}
+	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 20}
 	else if (this.Correct >= 30){this.level = "Avanzado"; this.timer = 20}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
@@ -504,14 +504,17 @@ function init()
 		{
 			activateButtons();
 			gainModifier = 10;
+			gameControl.generateIconigta("Fácil");
+			console.log(gameControl.Guess)
 		}
 		else if (startLevelUpdate == "Medium")
 		{
 			activateButtons();
-			newPlayer.Correct = 10;
+			newPlayer.Correct = 20;
 			newPlayer.level = "Intermedio";
 			buttonActiveMedium = true;
 			gainModifier = 6;
+			gameControl.generateIconigta("Intermedio");
 		}
 		else
 		{
@@ -520,10 +523,12 @@ function init()
 			newPlayer.level = "Avanzado";
 			buttonActiveHard = true;
 			gainModifier = 3;
+			gameControl.generateIconigta("Avanzado");
 		}
 		if (modeUpdate == "Cortes") {gainModifier *= -1;}
 
 		gameFilter.gain.value = gainModifier;
+		gameFilter.frequency.value = gameControl.Guess;
 
 		gainText = new newText("Ganancia: " + gainModifier.toString() + " dB", textFont, "darkorange", stage, (25*28), (75*1.25));
 		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
@@ -678,6 +683,10 @@ function init()
 
 			gameFilter.gain.value = (gainModifier/gainModifier) * 6;
 
+			var actualGain = gameFilter.gain.value;
+			console.log(actualGain);
+			gainText.createText.text = ("Ganancia: " + actualGain.toString() + " dB");
+
 		}
 
 		if (newPlayer.level == "Avanzado" && !buttonActiveHard)
@@ -698,6 +707,10 @@ function init()
 			buttonActiveHard = true;
 
 			gameFilter.gain.value = (gainModifier/gainModifier) * 3;
+
+			var actualGain = gameFilter.gain.value;
+			console.log(actualGain);
+			gainText.createText.text = ("Ganancia: " + actualGain.toString() + " dB");
 		}
 	}
 
