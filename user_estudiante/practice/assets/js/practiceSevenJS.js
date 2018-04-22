@@ -24,8 +24,8 @@ player.prototype.rightAnswer = function() // Answer counter
 {	
 	this.subCounter++;
 	this.Correct++;
-	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 20}
-	else if (this.Correct >= 30){this.level = "Avanzado"; this.timer = 20}
+	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 20}
+	else if (this.Correct >= 40){this.level = "Avanzado"; this.timer = 20}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -530,6 +530,7 @@ function init()
 		{
 			activateButtons();
 			gainModifier = 10;
+			gameControl.generateIconigta("Fácil");
 		}
 		else if (startLevelUpdate == "Medium")
 		{
@@ -538,6 +539,7 @@ function init()
 			newPlayer.level = "Intermedio";
 			buttonActiveMedium = true;
 			gainModifier = 6;
+			gameControl.generateIconigta("Intermedio");
 		}
 		else
 		{
@@ -546,10 +548,12 @@ function init()
 			newPlayer.level = "Avanzado";
 			buttonActiveHard = true;
 			gainModifier = 3;
+			gameControl.generateIconigta("Avanzado");
 		}
 		if (modeUpdate == "Cortes") {gainModifier *= -1;}
 
 		gameFilter.gain.value = gainModifier;
+		gameFilter.frequency.value = gameControl.Guess;
 
 		gainText = new newText("Ganancia: " + gainModifier.toString() + " dB", textFont, "darkorange", stage, (25*28), (75*1.25));
 		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
