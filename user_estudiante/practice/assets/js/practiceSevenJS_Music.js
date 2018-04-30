@@ -60,9 +60,9 @@ var analyser = audioCtx.createAnalyser();
 var gameControlClass = function() // Game Object Constructor
 {	
 	// This will be the incognitas to use in game, they'll change according to the game
-	this.answerListA = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Easy Level
-	this.answerListB = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Medium Level
-	this.answerListC = [31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]; // Hard Level
+	this.answerListA = [63, 125, 250, 500, 1000, 2000, 4000, 8000]; // Easy Level
+	this.answerListB = [63, 125, 250, 500, 1000, 2000, 4000, 8000]; // Medium Level
+	this.answerListC = [63, 125, 250, 500, 1000, 2000, 4000, 8000]; // Hard Level
 	this.Guess = this.answerListA[Math.floor(Math.random() * 10)]; // Initialize an icongnita
 }
 
@@ -73,9 +73,9 @@ function activateAudio()
 
 gameControlClass.prototype.generateIconigta = function (level) 
 {	
-	if (level == "Fácil") { this.Guess = this.answerListA[Math.floor(Math.random() * 10)]}
-	else if (level == "Intermedio") { this.Guess = this.answerListB[Math.floor(Math.random() * 10)] }
-	else if (level = "Avanzado") { this.Guess = this.answerListC[Math.floor(Math.random() * 10)] }
+	if (level == "Fácil") { this.Guess = this.answerListA[Math.floor(Math.random() * 8)]}
+	else if (level == "Intermedio") { this.Guess = this.answerListB[Math.floor(Math.random() * 8)] }
+	else if (level = "Avanzado") { this.Guess = this.answerListC[Math.floor(Math.random() * 8)] }
 };
 
 gameControlClass.prototype.controlGain = function (change)
