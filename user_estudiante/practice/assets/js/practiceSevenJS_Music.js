@@ -14,9 +14,9 @@ var player = function() // player constructor
 	this.timer = 20;
 	this.subCounter = 0;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
-	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
+	this.urlList = ["https://freesound.org/data/previews/215/215048_2866962-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
-	"http://freesound.org/data/previews/273/273463_4548252-lq.mp3",
+	"https://freesound.org/data/previews/350/350473_1676145-lq.mp3",
 	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
 }
 
@@ -347,16 +347,14 @@ function init()
 	modeAButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Realces", textFont, "white");
 	modeBButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Cortes", textFont, "white");
 
-	aButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, 25, 325, stage, "31 Hz", buttonFont, "white");
-	bButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 90), 325, stage, "63 Hz",  buttonFont, "white");
-	cButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 180), 325, stage, "125 Hz",  buttonFont, "white");
-	dButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 270), 325, stage, "250 Hz",  buttonFont, "white");
-	eButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 360), 325, stage, "500 Hz",  buttonFont, "white");
-	fButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 450), 325, stage, "1 kHz",  buttonFont, "white");
-	gButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 540), 325, stage, "2 kHz",  buttonFont, "white");
-	hButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 630), 325, stage, "4 kHz",  buttonFont, "white");
-	iButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 720), 325, stage, "8 kHz",  buttonFont, "white");
-	jButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 810), 325, stage, "16 kHz",  buttonFont, "white");
+	bButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, 25, 325, stage, "63 Hz",  buttonFont, "white");
+	cButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 113), 325, stage, "125 Hz",  buttonFont, "white");
+	dButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 226), 325, stage, "250 Hz",  buttonFont, "white");
+	eButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 339), 325, stage, "500 Hz",  buttonFont, "white");
+	fButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 451), 325, stage, "1 kHz",  buttonFont, "white");
+	gButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 564), 325, stage, "2 kHz",  buttonFont, "white");
+	hButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 677), 325, stage, "4 kHz",  buttonFont, "white");
+	iButton = new newButton(buttonHeight + 27.5, buttonWidth, "gray", buttonStroke, (25 + 790), 325, stage, "8 kHz",  buttonFont, "white");
 
 	stage.enableMouseOver(); // Enable pointer over buttons
 	stage.update();
@@ -389,14 +387,6 @@ function init()
 // =====================================================================================================================================================
 	function activateButtons()
 	{ 	
-		// A Button
-		aButton.addListeners("rgba(64, 64, 64, 0.9)");
-		aButton.changeColor();
-
-		aButton.newContainer.addEventListener("click", function(event)
-		{
-			updateFrequencyText("31.5 Hz", compareFrequency(31.5));
-		});	
 
 		// B Button
 		bButton.addListeners("rgba(64, 64, 64, 0.9)");
@@ -469,15 +459,6 @@ function init()
 		{
 			updateFrequencyText("8000 Hz", compareFrequency(8000));
 		});
-
-		// J Button
-		jButton.addListeners("rgba(64, 64, 64, 0.9)");
-		jButton.changeColor();
-
-		jButton.newContainer.addEventListener("click", function(event)
-		{
-			updateFrequencyText("16000 Hz", compareFrequency(16000));
-		});	
 
 	}
 
