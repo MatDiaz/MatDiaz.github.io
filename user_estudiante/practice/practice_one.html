@@ -42,13 +42,13 @@
 						<strong>Avanzado: </strong> 31 Hz, 63 Hz, 125 Hz, 250 Hz, 500 Hz, 1 kHz, 2 kHz, 4 kHz, 8 kHz, 16 kHz.  10 segundos por ejercicio.</br>
 					</p>
 					<ul class="actions">
-						<li><a href="#one" class="button scrolly" onclick = "activateAudio()">Iniciar</a></li>
+						<li><a href="#one" class="button scrolly" onclick = "activateAudio(); showPractice()" >Iniciar</a></li>
 					</ul>
 				</div>
 			</section>
 
 		<!-- One -->
-			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlay6.jpg)">
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:cover ;background-image: url(images/overlay6.jpg)">
 				<div class="container"><script type="text/javascript" src="assets/js/phaser.min.js"></script>
 						<canvas id = "frequencyApp" width = "940" height = "385" style = "padding: 0; margin: auto; display: block;"></canvas>
 				</div>
@@ -63,7 +63,7 @@
 					<li><a href="mailto:sonido@usbmed.edu.co" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
 				</ul>
 				<ul class="copyright">
-					<li>&copy; Universidad de San Buenaventura Medellín 2018</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+					<li>&copy; Universidad de San Buenaventura Medellín 2018</li><li>Diseño: <a href="https://html5up.net">HTML5 UP</a></li>
 				</ul>		
 			</section>
 
@@ -75,6 +75,14 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
+			<script type="text/javascript">
+				SeccionPracticaId = document.getElementById("one");
+				SeccionPracticaId.style.display = "None";
+				function showPractice()
+				{
+					SeccionPracticaId.style.display = "Block";
+				}
+			</script>
 
 	</body>
 </html>

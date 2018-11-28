@@ -42,7 +42,7 @@
 						<strong>Avanzado: </strong> -1 dB, -2 dB, -4 dB, -6 dB, -10 dB, 0 db, + 10 dB, + 6dB, +4 dB, + 2dB, + 1 dB. 15 segundos por ejercicio.</br>
 					</p>
 					<ul class="actions">
-						<li><a href="#one" class="button scrolly" onclick = "activateAudio()">Iniciar</a></li>
+						<li><a href="#one" class="button scrolly" onclick = "activateAudio(); showPractice()">Iniciar</a></li>
 					</ul>
 				</div>
 			</section>
@@ -75,6 +75,14 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
+			<script type="text/javascript">
+				SeccionPracticaId = document.getElementById("one");
+				SeccionPracticaId.style.display = "None";
+				function showPractice()
+				{
+					SeccionPracticaId.style.display = "Block";
+				}
+			</script>
 
 	</body>
 </html>

@@ -36,18 +36,33 @@
 		<link rel="stylesheet" href="user_estudiante/theory/assets/css/main.css" />	
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<style type="text/css">
+			a.btn
+			{
+				box-shadow: 0px 0px 0px 1px white !important;
+				width:42% !important; 
+				padding-left: 0% !important;
+			}
+			a.btn:hover
+			{	
+				background:rgba(255,255,255, 0.3) !important;
+			}
+		</style>
 	</head>
 	<body style = "background-color: black;">
 	<script type="text/javascript">
 	alert("Este sitio tendrá mejor desempeño en Google Chrome o en Mozilla Firefox");
 	</script>
 		<!-- Header -->
-			<section id="header" style = "background-attachment:fixed;background-size:auto ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg); padding-top: 1em;">
-				<div class="inner" style = "height: 100vh;">
+			<section id="header" style = "background-attachment:fixed;background-size:cover ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg); padding-top: 1em; padding-bottom: 0%">
+				<div class="inner" style = "height: 100%;">
 					<h1 style = "font-size: 300%"><strong>¡Bienvenido!</strong></h1>
 					<h2 style = "font-size: 200%"><strong>Entrenamiento Auditivo Técnico</strong></h2> <span class="icon major fa fa-assistive-listening-systems" style="font-size: 1.2em; color:darkorange;"></span>
 					<h3>Universidad de San Buenaventura Medellín</h3>
 					<div style = "padding-left: 7%;padding-right: 7%; margin: 1%; display: block; text-align: justify;">
+						<p>
+							Definición de Escucha Crítica
+						</p>
 						<p>
 						La formación en entrenamiento auditivo técnico es esencial en los campos de sonido en vivo, producción y postproducción de audio, ya que es la herramienta principal que tienen los profesionales en estos campos para encontrar soluciones y tomar decisiones. Además, es fundamental para Ingenieros de sonido que se desempeñan en el área acústica, pues este será el referente que tendrán para identificar los diferentes fenómenos presentes en sus casos de análisis.
 						</p>
@@ -55,30 +70,17 @@
 						Es de vital importancia tener unas bases teóricas sólidas, pues esto permite relacionar y entender mejor los fenómenos de estudio. Además, un entrenamiento constante permitirá ver resultados de una forma más efectiva.
 						</p>
 					</div>
+					<div style = "padding: 2.5%; background-color: rgba(0, 0, 0, 0.7)">
+						<h1 style = "padding: 1%; font-size: 200%"> Ingresa a los Módulos </h1>
+					<a id ="TeoriaButton" href="#SeccionTeoria" class="btn button scrolly" onclick = "showTheory()">Teoría</a>
+					<a id ="TeoriaButton" href="#SeccionPractica" class="btn button scrolly" onclick = "showPractice()">Práctica</a>
+					<h1 style = "padding: 0.5%; color: darkgrey; font-size: 200%"> Conoce el EnginEar  </h1>
+					<a id ="TeoriaButton" href="#seccionEnginEar" class="btn button scrolly" onclick="showDownload()">EnginEar</a>
 				</div>
+					
 			</section>
 
-	<section id = "SeleccionUno" class = "main syle1" style  = "border: 1px solid darkorange; border-radius: 4px;">
-	<div class="row 100%">
-		<div class="6u 12u$(medium)">
-			<h2 style = "width: 100%; text-align: center; font-size: 275%; padding: 0 0 0 0;"> Teoría </h2>
-			<p style = "width: 100%; text-align: justify; padding-left:  10%;">Descubre nuevos conceptos y refuerza tus conocimientos previos con los módulos de teoría. Además, empieza a entrenar tu audición con los ejemplos interactivos de cada módulo.
-			</br>
-			</br>
-			<a id ="TeoriaButton" href="#SeccionTeoria" class="button scrolly" style = "width:100%; padding-left: 10%;" onclick = "showTheory()">Ingresar</a>
-			</p>
-		</div>
-		<div class="6u 12u$(medium)">
-			<h2 style = "width: 100%; text-align: center; font-size: 275%; padding: 0 0 0 0;"> Práctica </h2>
-			<p style = "width: 100%; text-align: justify; padding-right:  10%;">Pon a prueba tu capacidad de identificar y distinguir entre las diferentes características del sonido en cada uno de los ejercicios de práctica, con diferentes mecánicas y niveles de dificultad.
-			</br>
-			</br>
-			<a id ="TeoriaButton" href="#SeccionPractica" class="button scrolly" style = "width:100%; padding-left: 10%;" onclick = "showPractice()">Ingresar</a>
-			</p>
-		</div>
-	</section>
-
-	<section>
+	<section id = "seccionEnginEar">
 		<h2 style = "width: 100%; text-align: center; font-size: 275%; padding: 0 0 0 0;"> EnginEar </h2>
 		<img src="assets/logo.png" alt="EnginEar Logo" style = "display: block; margin-left: auto; margin-right: auto; width: 25%;height:50%;">
 			
@@ -101,6 +103,7 @@
 				utilizarlo.
 			</br>
 			</br>
+							
 			<a id ="TeoriaButton" class="button scrolly" style = "width:100%; padding: 0 0 0 0;" href="assets/prueba.pdf"  target= "_blank" download>Descargar Mac</a>
 
 			<a id ="TeoriaButton" class="button scrolly" style = "width:100%; padding: 0 0 0 0;">Descargar Windows</a>
@@ -117,7 +120,10 @@
 					<div class="row 150%">
 
 					<h1 style = "width: 100%; text-align: center; font-size: 375%; padding: 0 0 0 0; letter-spacing: 12px;">Teoría</h1>
-
+					<p style = "width: 100%; text-align: justify; padding-right:  10%;">Descubre nuevos conceptos y refuerza tus conocimientos previos con los módulos de teoría. Además, empieza a entrenar tu audición con los ejemplos interactivos de cada módulo.
+					</br>
+					</br>
+					</p>
 					<!-- Módulo 1: Frecuencia y Tonos Puros-->
 					<header class = "major" style = "width: 100%; margin: auto">
 						<h2 style = "margin: auto; text-align: justify;"> Módulo 1</h2>
@@ -177,12 +183,6 @@
 					</div>
 				</div>
 			</section>
-
-	<section id = "SeleccionDos" class = "main syle2" style = "background-attachment:fixed;background-size:auto ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg)">
-	<h1> Hola </h1>
-		
-	</section>
-
 	<!--
 	
 	 =============================================== SECCIÓN PRÁCTICA =============================================== 
@@ -190,12 +190,15 @@
 	 ================================================================================================================ 
 	
 	-->
-			<section id="SeccionPractica" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg)" >
+			<section id="SeccionPractica" class="main style2" style = "background-attachment:fixed;background-size:cover ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg)" >
 				<div class="container">
-					<h1 style = "width: 100%; text-align: center; font-size: 375%; padding: 0 0 0 0; letter-spacing: 12px;">Práctica</h1>
 					<div class="row 150%">
-
-					<!-- Práctica 1: Reconocimiento de Tonos-->
+					<h1 style = "width: 100%; text-align: center; font-size: 375%; padding: 0 0 0 0; letter-spacing: 12px;">Práctica</h1>
+					<p style = "width: 100%; text-align: justify; padding-right:  10%;">Pon a prueba tu capacidad de identificar y distinguir entre las diferentes características del sonido en cada uno de los ejercicios de práctica, con diferentes mecánicas y niveles de dificultad.
+					</br>
+					</br>
+					</p>
+										<!-- Práctica 1: Reconocimiento de Tonos-->
 					<header class = "major" style = "width: 100%; margin: auto">
 						<h2 style = "margin: auto; text-align: justify;"> Práctica 1</h2>
 						<h3 style = "margin: auto; text-align: justify;"> Reconocimiento de Tonos <span class="image"><img src="user_estudiante/theory/images/sine_small.png" alt="" /></span></h3>
@@ -276,7 +279,7 @@
 				</div>
 			</section>
 
-			<section id="SeccionDescarga" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg)">
+			<section id="SeccionDescarga" class="main style2" style = "background-attachment:fixed;background-size:cover ;background-image: url(user_estudiante/theory/images/Landing_bkg.jpg)">
 <div class="row 150%">
 			<div class="6u 12u$(medium)">
 			<p style = "width: 100%; text-align: justify; padding-left:  10%; padding-right: 10%">
@@ -289,9 +292,6 @@
 			</p>
 		</div>
 		</div>
-
-
-
 			</section>
 
 		<!-- Footer -->
@@ -326,26 +326,26 @@
 			seccionTeoriaId.style.display = "None";
 			seccionPracticaId.style.display = "None";
 			seccionDescargaId.style.display = "None";
-			SeleccionDosId.style.display = "None";
+			seccionEnginEar.style.display = "None";
 
 			function showPractice()
 			{	
 				seccionTeoriaId.style.display = "None";
-				seccionDescargaId.style.display = "None";
+				seccionEnginEar.style.display = "None";
 				seccionPracticaId.style.display = "Block";
 			}
 
 			function showTheory()
 			{	
 				seccionPracticaId.style.display = "None";
-				seccionDescargaId.style.display = "None";
+				seccionEnginEar.style.display = "None";
 				seccionTeoriaId.style.display = "Block";
 			}
 
 			function showDownload()
 			{
 				seccionPracticaId.style.display = "None";
-				seccionDescargaId.style.display = "Block";
+				seccionEnginEar.style.display = "Block";
 				seccionTeoriaId.style.display = "None";
 			}
 			</script>

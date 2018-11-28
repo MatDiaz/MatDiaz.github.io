@@ -15,6 +15,7 @@ var player = function()
 	this.level = "Fácil";
 	this.timer = 20;
 	this.subCounter = 0;
+	this.oneWrong = false;
 }
 
 player.prototype.rightAnswer = function() 
@@ -178,14 +179,14 @@ function init()
 	
 	// Background
 	var background = new createjs.Shape();
-		background.graphics.beginFill("rgba(0, 0, 0, 0.90)").drawRoundRect(0, 0, 940, 385, 10, 90, 10, 90);
+		background.graphics.beginStroke("orange").beginFill("rgba(0, 0, 0, 0.90)").drawRoundRect(0, 0, 940, 385, 10, 90, 10, 90);
 
 	// Second Rectangle Over
 	var actionCanvas = new createjs.Shape();
 		actionCanvas.graphics.beginStroke("darkorange").beginFill("rgba(32, 32, 32, 0.75)").drawRoundRect(25, 75, 890, 225, 10, 90, 10, 90);
 
 	// Title
-	var title = new createjs.Text("RECONOCIMIENTO DE TONOS", "300 24pt Source Sans Pro", "white");
+	var title = new createjs.Text("RECONOCIMIENTO DE TONOS", "400 24pt Source Sans Pro", "white");
 		title.x = stage.canvas.width / 2 - (title.getBounds().width / 2);
 		title.y = (title.getBounds().height / 2);
 
@@ -256,7 +257,7 @@ function init()
 		stage.update();
 	}
 
-	newButton.prototype.addListeners = function()
+	newButton.prototype.addListeners = function(fillColor)
 	{	
 		var childOne = this.newContainer.getChildAt(0);
 		var buttonHeight = this.buttonHeight;
@@ -266,7 +267,7 @@ function init()
 		this.newContainer.on("mouseover", function(event)
 		{
 			childOne.graphics.clear();
-			childOne.graphics.beginStroke("darkorange").beginFill("rgba(64, 64, 64, 0.9)").drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
+			childOne.graphics.beginStroke("darkorange").beginFill(fillColor).drawRoundRect(0, 0, buttonHeight, buttonWidth, 10, 90, 10, 90);
 			stage.update();		
 		});
 
@@ -307,9 +308,9 @@ function init()
 	iButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 720), 325, stage, "8 kHz",  buttonFont, "white");
 	jButton = new newButton(buttonHeight, buttonWidth, "gray", buttonStroke, (25 + 810), 325, stage, "16 kHz",  buttonFont, "white");
 
-	initAdvanced = new newButton((buttonHeight + 40), buttonWidth, "orange", "buttonStroke", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
-	initMedium = new newButton((buttonHeight + 40), buttonWidth, "orange", "buttonStroke", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
-	initEasy = new newButton((buttonHeight + 40), buttonWidth, "orange", "buttonStroke", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
+	initAdvanced = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) + 145, 170, stage, "Avanzado", textFont, "white");
+	initMedium = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 170, stage, "Intermedio", textFont, "white");
+	initEasy = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 265, 170, stage, "Fácil", textFont, "white");
 
 	stage.enableMouseOver();
 	stage.update();
@@ -326,7 +327,7 @@ function init()
 function activateButtonsEasy()
 {
 
-	fButton.addListeners();
+	fButton.addListeners("darkgray");
 	fButton.changeColor();
 	fButton.newContainer.addEventListener("click", function(event)
 	{
@@ -336,7 +337,7 @@ function activateButtonsEasy()
 // =====================================================================================================================================================
 // =====================================================================================================================================================
 	
-	gButton.addListeners();
+	gButton.addListeners("darkgray");
 	gButton.changeColor();
 	gButton.newContainer.addEventListener("click", function(event)
 	{
@@ -346,7 +347,7 @@ function activateButtonsEasy()
 // 															  		 BUTTON D
 // =====================================================================================================================================================
 // =====================================================================================================================================================
-	dButton.addListeners();
+	dButton.addListeners("darkgray");
 	dButton.changeColor();
 	dButton.newContainer.addEventListener("click", function(event)
 	{
@@ -354,7 +355,7 @@ function activateButtonsEasy()
 	});
 
 
-	eButton.addListeners();
+	eButton.addListeners("darkgray");
 	eButton.changeColor();
 	eButton.newContainer.addEventListener("click", function(event)
 	{
@@ -373,7 +374,7 @@ function activateButtonsEasy()
 	  //												    	  Button C
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		cButton.addListeners();
+		cButton.addListeners("darkgray");
 		cButton.changeColor();
 		cButton.newContainer.addEventListener("click", function(event)
 		{
@@ -382,7 +383,7 @@ function activateButtonsEasy()
 	//														  Button I
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		iButton.addListeners();
+		iButton.addListeners("darkgray");
 		iButton.changeColor();
 		iButton.newContainer.addEventListener("click", function(event)
 		{
@@ -392,7 +393,7 @@ function activateButtonsEasy()
 	//														  Button H
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		hButton.addListeners();
+		hButton.addListeners("darkgray");
 		hButton.changeColor();
 		hButton.newContainer.addEventListener("click", function(event)
 		{
@@ -406,7 +407,7 @@ function activateButtonsHardLevel()
 	//														  Button A
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		aButton.addListeners();
+		aButton.addListeners("darkgray");
 		aButton.changeColor();
 		aButton.newContainer.addEventListener("click", function(event)
 		{
@@ -416,7 +417,7 @@ function activateButtonsHardLevel()
 	//														  Button B
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		bButton.addListeners();
+		bButton.addListeners("darkgray");
 		bButton.changeColor();
 		bButton.newContainer.addEventListener("click", function(event)
 		{
@@ -426,7 +427,7 @@ function activateButtonsHardLevel()
 	//														  Button J
 	// =================================================================================================================================================
 	// =================================================================================================================================================
-		jButton.addListeners();
+		jButton.addListeners("darkgray");
 		jButton.changeColor();
 		jButton.newContainer.addEventListener("click", function(event)
 		{
@@ -439,9 +440,9 @@ function activateButtonsHardLevel()
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // =====================================================================================================================================================
 
-	initEasy.addListeners();
-	initMedium.addListeners();
-	initAdvanced.addListeners();
+	initEasy.addListeners("darkorange");
+	initMedium.addListeners("darkorange");
+	initAdvanced.addListeners("darkorange");
 
 	initEasy.newContainer.addEventListener("click", function(event)
 	{
@@ -464,7 +465,7 @@ function activateButtonsHardLevel()
 	function playButtonStart(startLevelUpdate)
 	{	
 		playButton = new newButton((buttonHeight + 40), buttonWidth, "orange", "orange", (940 / 2) - 60, 230, stage, "Iniciar", textFont, "white");
-		playButton.addListeners();
+		playButton.addListeners("darkorange");
 
 		playButton.newContainer.addEventListener("click", stopPlaying);
 

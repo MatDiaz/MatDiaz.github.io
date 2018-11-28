@@ -17,7 +17,13 @@ var player = function() // player constructor
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
 	"https://freesound.org/data/previews/350/350877_2305278-lq.mp3",
-	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
+	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3",
+	"https://freesound.org/data/previews/320/320563_4548252-lq.mp3",
+	"https://freesound.org/data/previews/239/239084_4101204-lq.mp3",
+	"https://freesound.org/data/previews/130/130491_1735491-lq.mp3",
+	"https://freesound.org/data/previews/38/38772_359043-lq.mp3",
+	"https://freesound.org/data/previews/69/69258_992244-lq.mp3" 
+	];
 }
 
 player.prototype.rightAnswer = function() // Answer counter
@@ -30,7 +36,7 @@ player.prototype.rightAnswer = function() // Answer counter
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
 
-player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Math.random () * 4)]};
+player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Math.random () * 9)]};
 
 // 									AudioCtx init
 // --------------------------------------------------------------------------------------------
@@ -212,14 +218,14 @@ function init()
 	
 	// Background
 	var background = new createjs.Shape();
-		background.graphics.beginFill("rgba(0, 0, 0, 0.90)").drawRoundRect(0, 0, 940, 385, 10, 90, 10, 90);
+		background.graphics.beginStroke("orange").beginFill("rgba(0, 0, 0, 0.90)").drawRoundRect(0, 0, 940, 385, 10, 90, 10, 90);
 
 	// Second Rectangle Over
 	var actionCanvas = new createjs.Shape();
 		actionCanvas.graphics.beginStroke("darkorange").beginFill("rgba(32, 32, 32, 0.75)").drawRoundRect(25, 75, 890, 225, 10, 90, 10, 90);
 
 	// Title
-	var title = new createjs.Text("CAMBIOS DE NIVEL", "300 24pt Source Sans Pro", "white");
+	var title = new createjs.Text("CAMBIOS DE NIVEL", "400 24pt Source Sans Pro", "white");
 		title.x = stage.canvas.width / 2 - (title.getBounds().width / 2);
 		title.y = (title.getBounds().height / 2);
 
