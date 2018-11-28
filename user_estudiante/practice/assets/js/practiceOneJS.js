@@ -291,7 +291,8 @@ function init()
 	// Create Text Objects
 	levelText = new newText("Nivel: Fácil", textFont, "darkorange", stage, (25*3), (75*1.25));
 	timeText = new newText("Tiempo: --", textFont, "darkorange", stage, (25*3) + 787, (75*1.25));
-	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195);
+	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 170);
+	porcentageText = new newText("Porcentaje: 0%", textFont, "darkorange", stage, (25*3)*1.23, (75*1.25) + 195);
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195);
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
 	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
@@ -623,6 +624,13 @@ function activateButtonsHardLevel()
 		if (newValue == gameControl.toneGuess) // If right answer
 		{	
 			newPlayer.rightAnswer();
+
+			if (newPlayer.oneWrong)
+			{
+				newPlayer.oneWrong = false;
+				newPlayer.subCounter--;
+			}
+
 			pause = false;
 			stopPlaying();
 
@@ -636,7 +644,9 @@ function activateButtonsHardLevel()
 			correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
 
 			rightStop = true; // Stop timer because of a right answer
-
+			var porcentajeBuenas = Math.round((newPlayer.subCounter/(newPlayer.subCounter + newPlayer.Wrong)) * 100);
+			porcentageText.createText.text = " Porcentaje: " + porcentajeBuenas.toString() + " %";
+			porcentageText.createText.x = (25) * 1.23 ;
 			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
 			levelText.createText.text = "Nivel: " + newPlayer.level;
 			gameControl.generateIconigta(newPlayer.level)
@@ -649,7 +659,11 @@ function activateButtonsHardLevel()
 		}
 		else
 		{	
-			newPlayer.wrongAnswer();
+			if (!newPlayer.oneWrong)
+			{
+				newPlayer.wrongAnswer();
+				newPlayer.oneWrong = true;
+			}
 
 			correctText.createText.text = "Incorrecto";
 			correctText.createText.color = "red";

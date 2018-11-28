@@ -22,8 +22,7 @@ var player = function() // player constructor
 	"https://freesound.org/data/previews/239/239084_4101204-lq.mp3",
 	"https://freesound.org/data/previews/130/130491_1735491-lq.mp3",
 	"https://freesound.org/data/previews/38/38772_359043-lq.mp3",
-	"https://freesound.org/data/previews/69/69258_992244-lq.mp3" 
-	];
+	"https://freesound.org/data/previews/69/69258_992244-lq.mp3" ];
 }
 
 player.prototype.rightAnswer = function() // Answer counter
@@ -177,6 +176,7 @@ function init()
 	var beep = true;
 	var rightStop = false;
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
+	var Ncounter = 0;
 
 	createjs.Ticker.addEventListener("tick", handleTick);
 	createjs.Ticker.setFPS(60); // Canvas update frequency
@@ -192,11 +192,20 @@ function init()
 			line.graphics.setStrokeStyle(1); // Set line width attribute
 			line.graphics.beginStroke('rgba(255, 255, 255, 0.15)'); // set line color
 			line.graphics.moveTo (25, 75 + (225 / 2)); // Place the line in some point of the canvas
-			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
-			{	
-				line.graphics.lineTo (i, ((225 / 2) + 75) + ((soundOne.dataArray[i])) - (128));
+			var controlArray = soundOne.dataArray.slice(0);
+			var copyArray = sound;
+			controlArray.fill(0);
+			console.log(controlArray);
+			++Ncounter;
+			if (Ncounter > 3)
+			{
+				for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
+				{	
+					line.graphics.lineTo (i, ((225 / 2) + 75) + ((soundOne.dataArray[i])) - (128));
+				}
+				stage.update();
+				Ncounter = 0;
 			}
-			stage.update();
 		}
 	}
 
@@ -337,7 +346,8 @@ function init()
 	// Create Text Objects
 	levelText = new newText("Nivel: Fácil", textFont, "darkorange", stage, (25*3), (75*1.25)); // Difficulty Level Text
 	timeText = new newText("Tiempo: --", textFont, "darkorange", stage, (25*3) + 787, (75*1.25)); // Time Text 
-	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195); // Right Answer count Text
+	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 170);
+	porcentageText = new newText("Porcentaje: 0%", textFont, "darkorange", stage, (25*3)*1.23, (75*1.25) + 195);
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
 	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
@@ -693,8 +703,12 @@ function init()
 			correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
 			correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
 
-			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString(); // update right answers
-			levelText.createText.text = "Nivel: " + newPlayer.level; // update difficulty text
+			var porcentajeBuenas = Math.round((newPlayer.subCounter/(newPlayer.subCounter + newPlayer.Wrong)) * 100);
+			porcentageText.createText.text = " Porcentaje: " + porcentajeBuenas.toString() + " %";
+			porcentageText.createText.x = (25) * 1.23 ;
+			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
+			levelText.createText.text = "Nivel: " + newPlayer.level;
+
 			gameControl.generateIconigta(newPlayer.level) // generate new incognita
 
 			newPlayer.generateURL();
