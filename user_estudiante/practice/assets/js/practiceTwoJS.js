@@ -10,6 +10,7 @@ var player = function() // player constructor
 {	// Variable Initialization
 	this.Correct = 0; 
 	this.Wrong = 0;
+	this.oneWrong = false;
 	this.level = "Fácil";
 	this.timer = 20;
 	this.subCounter = 0;
@@ -204,7 +205,7 @@ function init()
 				firstDraw = false;
 			}
 
-			if (Ncounter > 2)
+			if (Ncounter > 4)
 			{	
 				for (var i = 0; i < soundOne.dataArray.length; ++i)
 				{
@@ -219,7 +220,11 @@ function init()
 			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
 			{	
 				targetArray[i] += controlArray[i];
-				line.graphics.lineTo (i, ((225 / 2) + 75) + ((targetArray[i])) - (128));
+				var nValue = ((targetArray[i] - 128) * 1.3);
+				if (nValue > 113){nValue = 113;}
+				else if(nValue < -111){nValue = -111}
+
+				line.graphics.lineTo (i, ((225 / 2) + 75) + nValue);
 			}
 			stage.update();	
 		}
@@ -708,6 +713,13 @@ function init()
 		if (newValue == gameControl.Guess) // Right Answer!
 		{	
 			newPlayer.rightAnswer(); // Add to right answer counter
+
+			if (newPlayer.oneWrong)
+			{
+				newPlayer.oneWrong = false;
+				newPlayer.subCounter--;
+			}
+
 			stopPlaying(); // Call function to stop playing sound
 
 			soundOne.startSound(url2); // Play beep sound
@@ -741,7 +753,11 @@ function init()
 		}
 		else // Wrong Answer
 		{	
-			newPlayer.wrongAnswer(); // Add to the wrong answer text
+			if (!newPlayer.oneWrong)
+			{
+				newPlayer.wrongAnswer(); // Add to the wrong answer text
+				newPlayer.oneWrong = true;
+			}
 
 			correctText.createText.text = "Incorrecto";
 			correctText.createText.color = "red";
