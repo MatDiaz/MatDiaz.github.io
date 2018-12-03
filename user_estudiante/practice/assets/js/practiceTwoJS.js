@@ -176,10 +176,13 @@ function init()
 	var beep = true;
 	var rightStop = false;
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
-	var Ncounter = 0;
+	var Ncounter = 3;
+	var firstDraw = true;
+	var targetArray = new Array(2048);
+	var controlArray = new Array(2048);
 
 	createjs.Ticker.addEventListener("tick", handleTick);
-	createjs.Ticker.setFPS(60); // Canvas update frequency
+	createjs.Ticker.setFPS(120); // Canvas update frequency
 
 	// Animation
 	function handleTick() 
@@ -192,20 +195,33 @@ function init()
 			line.graphics.setStrokeStyle(1); // Set line width attribute
 			line.graphics.beginStroke('rgba(255, 255, 255, 0.15)'); // set line color
 			line.graphics.moveTo (25, 75 + (225 / 2)); // Place the line in some point of the canvas
-			var controlArray = soundOne.dataArray.slice(0);
-			var copyArray = sound;
-			controlArray.fill(0);
-			console.log(controlArray);
-			++Ncounter;
-			if (Ncounter > 3)
-			{
-				for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
-				{	
-					line.graphics.lineTo (i, ((225 / 2) + 75) + ((soundOne.dataArray[i])) - (128));
+
+			if (firstDraw)
+			{	
+				targetArray.fill(0);
+				controlArray.fill(0);
+
+				firstDraw = false;
+			}
+
+			if (Ncounter > 2)
+			{	
+				for (var i = 0; i < soundOne.dataArray.length; ++i)
+				{
+					controlArray[i] = (soundOne.dataArray[i] - targetArray[i]) / 5;
 				}
-				stage.update();
+
 				Ncounter = 0;
 			}
+
+			++Ncounter;
+
+			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
+			{	
+				targetArray[i] += controlArray[i];
+				line.graphics.lineTo (i, ((225 / 2) + 75) + ((targetArray[i])) - (128));
+			}
+			stage.update();	
 		}
 	}
 
