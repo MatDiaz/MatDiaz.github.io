@@ -11,13 +11,19 @@ var player = function() // player constructor
 	this.Correct = 0; 
 	this.subCounter = 0;
 	this.Wrong = 0;
+	this.oneWrong = false;
 	this.level = "Fácil";
 	this.timer = 20;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
 	"https://freesound.org/data/previews/350/350877_2305278-lq.mp3",
-	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
+	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3",
+	"https://freesound.org/data/previews/320/320563_4548252-lq.mp3",
+	"https://freesound.org/data/previews/239/239084_4101204-lq.mp3",
+	"https://freesound.org/data/previews/130/130491_1735491-lq.mp3",
+	"https://freesound.org/data/previews/38/38772_359043-lq.mp3",
+	"https://freesound.org/data/previews/69/69258_992244-lq.mp3" ];
 }
 
 player.prototype.rightAnswer = function() // Answer counter
@@ -30,7 +36,7 @@ player.prototype.rightAnswer = function() // Answer counter
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
 
-player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Math.random () * 4)]};
+player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Math.random () * 9)]};
 
 // 									AudioCtx init
 // --------------------------------------------------------------------------------------------
@@ -64,7 +70,7 @@ var gameControlClass = function() // Game Object Constructor
 	this.answerListA = ["PasaBajas", "PasaAltas", "PasaBandas"]; // Easy Level
 	this.answerListB = ["PasaBajas", "PasaAltas", "PasaBandas", "RechazaBandas", "Peaking", "Dip"]; // Medium Level
 	this.answerListC = ["PasaBajas", "PasaAltas", "PasaBandas", "RechazaBandas", "Peaking", "Dip", "HighShelf", "LowShelf"]; // Hard Level
-	this.Guess = this.answerListA[Math.floor(Math.random() * 2)]; // Initialize an icongnita
+	this.Guess = this.answerListA[Math.floor(Math.random() * 3)]; // Initialize an icongnita
 }
 
 gameControlClass.prototype.generateIconigta = function (level) 
@@ -174,10 +180,14 @@ function init()
 	var rightStop = false;
 	var buttonActiveMedium = false;
 	var buttonActiveHard = false;
+	var Ncounter = 3;
+	var firstDraw = true;
+	var targetArray = new Array(2048);
+	var controlArray = new Array(2048);
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
 
 	createjs.Ticker.addEventListener("tick", handleTick);
-	createjs.Ticker.setFPS(60); // Canvas update frequency
+	createjs.Ticker.setFPS(120); // Canvas update frequency
 
 	// Animation
 	function handleTick() 
@@ -190,11 +200,35 @@ function init()
 			line.graphics.setStrokeStyle(1); // Set line width attribute
 			line.graphics.beginStroke('rgba(255, 255, 255, 0.15)'); // set line color
 			line.graphics.moveTo (25, 75 + (225 / 2)); // Place the line in some point of the canvas
+
+			if (firstDraw)
+			{	
+				targetArray.fill(0);
+				controlArray.fill(0);
+
+				firstDraw = false;
+			}
+
+			if (++Ncounter > 4)
+			{	
+				for (var i = 0; i < soundOne.dataArray.length; ++i)
+				{
+					controlArray[i] = (soundOne.dataArray[i] - targetArray[i]) / 5;
+				}
+
+				Ncounter = 0;
+			}
+
 			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
 			{	
-				line.graphics.lineTo (i, ((225 / 2) + 75) + ((soundOne.dataArray[i])) - (128));
+				targetArray[i] += controlArray[i];
+				var nValue = ((targetArray[i] - 128) * 1.3);
+				if (nValue > 113){nValue = 113;}
+				else if(nValue < -111){nValue = -111}
+
+				line.graphics.lineTo (i, ((225 / 2) + 75) + nValue);
 			}
-			stage.update();
+			stage.update();	
 		}
 	}
 
@@ -335,7 +369,8 @@ function init()
 	// Create Text Objects
 	levelText = new newText("Nivel: Fácil", textFont, "darkorange", stage, (25*3), (75*1.25)); // Difficulty Level Text
 	timeText = new newText("Tiempo: --", textFont, "darkorange", stage, (25*3) + 787, (75*1.25)); // Time Text 
-	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195); // Right Answer count Text
+	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 170);
+	porcentageText = new newText("Porcentaje: 0%", textFont, "darkorange", stage, (25*3)*1.23, (75*1.25) + 195);
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
 	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
@@ -365,6 +400,82 @@ function init()
 // =====================================================================================================================================================
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+function updateFilter()
+	{	
+		var maximo;
+		var minimo;
+		var maxQ;
+		var minQ;
+		var maxGain = 0;
+		var minGain = 0;
+
+		if (gameControl.Guess == "PasaBajas")
+		{
+			gameFilter.type = "lowpass";
+			gameFilter.Q = 0.7;
+			maximo = 2000;
+			minimo = 60;
+		}
+		else if (gameControl.Guess == "PasaAltas")
+		{
+			gameFilter.type = "highpass";
+			gameFilter.Q = 0.7;
+			maximo = 10000;
+			minimo = 2000;
+		}
+		else if (gameControl.Guess == "PasaBandas")
+		{
+			gameFilter.type = "bandpass";
+			gameFilter.Q = 0.8;
+			maximo = 3000;
+			minimo = 1000;
+		}
+		else if (gameControl.Guess == "RechazaBandas")
+		{
+			gameFilter.type = "notch";
+			maximo = 8000;
+			minimo = 1000;
+		}
+		else if (gameControl.Guess == "Peaking" || gameControl.Guess == "Dip")
+		{
+			gameFilter.type = "peaking";
+			gameFilter.Q = 2.5;
+			maximo = 4000;
+			minimo = 500;
+			if (gameControl.Guess == "Peaking")
+			{
+				maxGain = 15;
+				minGain = 10;
+			}
+			else if (gameControl.Guess == "Dip")
+			{
+				maxGain = -10;
+				minGain = -15;
+			}
+		}
+		else if (gameControl.Guess = "HighShelf")
+		{
+			gameFilter.type = "highshelf";
+			maximo = 10000;
+			minimo = 5000;
+			maxGain = 12;
+			minGain = 3;
+		}
+		else if (gameControl.Guess = "LowShelf")
+		{
+			gameFilter.type = "lowshelf";
+			maximo = 400;
+			minimo = 40;
+			maxGain = 20;
+			minGain = 10;
+		}
+
+		gameFilter.frequency.value = Math.floor(Math.random() * (maximo - minimo) + minimo);
+		gameFilter.gain.value = Math.floor(Math.random() * (maxGain - minGain) + minGain);
+		console.log(gameFilter.type);
+		console.log(gameFilter.frequency);
+	}
 	
 	initEasy.addListeners("darkorange");
 	initMedium.addListeners("darkorange");
@@ -413,6 +524,8 @@ function init()
 		{
 			updateAnswerText("Pasa Bandas", compareAnswer("PasaBandas"));
 		});
+
+		updateFilter();
 	}
 
 	function activateButtonsMediumLevel()
@@ -519,8 +632,6 @@ function init()
 
 		rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
 		levelText.createText.text = "Nivel: " + newPlayer.level;
-		// gameControl.generateIconigta(newPlayer.level)
-		// gameOscillator.frequency.value = gameControl.toneGuess;
 
 		initEasy.newContainer.removeAllChildren();
 		initMedium.newContainer.removeAllChildren();
@@ -604,81 +715,6 @@ function init()
 // 														   Update Functions
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------------------------------------------------------- 
-	function updateFilter()
-	{	
-		var maximo;
-		var minimo;
-		var maxQ;
-		var minQ;
-		var maxGain = 0;
-		var minGain = 0;
-
-		if (gameControl.Guess == "PasaBajas")
-		{
-			gameFilter.type = "lowpass";
-			gameFilter.Q = 0.7;
-			maximo = 2000;
-			minimo = 60;
-		}
-		else if (gameControl.Guess == "PasaAltas")
-		{
-			gameFilter.type = "highpass";
-			gameFilter.Q = 0.7;
-			maximo = 10000;
-			minimo = 2000;
-		}
-		else if (gameControl.Guess == "PasaBandas")
-		{
-			gameFilter.type = "bandpass";
-			gameFilter.Q = 0.8;
-			maximo = 3000;
-			minimo = 1000;
-		}
-		else if (gameControl.Guess == "RechazaBandas")
-		{
-			gameFilter.type = "notch";
-			maximo = 8000;
-			minimo = 1000;
-		}
-		else if (gameControl.Guess == "Peaking" || gameControl.Guess == "Dip")
-		{
-			gameFilter.type = "peaking";
-			gameFilter.Q = 2.5;
-			maximo = 4000;
-			minimo = 500;
-			if (gameControl.Guess == "Peaking")
-			{
-				maxGain = 15;
-				minGain = 10;
-			}
-			else if (gameControl.Guess == "Dip")
-			{
-				maxGain = -10;
-				minGain = -15;
-			}
-		}
-		else if (gameControl.Guess = "HighShelf")
-		{
-			gameFilter.type = "highshelf";
-			maximo = 10000;
-			minimo = 5000;
-			maxGain = 12;
-			minGain = 3;
-		}
-		else if (gameControl.Guess = "LowShelf")
-		{
-			gameFilter.type = "lowshelf";
-			maximo = 400;
-			minimo = 40;
-			maxGain = 20;
-			minGain = 10;
-		}
-
-		gameFilter.frequency.value = Math.floor(Math.random() * (maximo - minimo) + minimo);
-		gameFilter.gain.value = Math.floor(Math.random() * (maxGain - minGain) + minGain);
-		console.log(gameFilter.type);
-		console.log(gameFilter.frequency);
-	}
 
 	function updateAnswerText(newFreq, newColor) // Called when the answer button is clicked 
 	{
@@ -738,6 +774,12 @@ function init()
 			newPlayer.rightAnswer(); // Add to right answer counter
 			stopPlaying(); // Call function to stop playing sound
 
+			if (newPlayer.oneWrong)
+			{
+				newPlayer.oneWrong = false;
+				newPlayer.subCounter--;
+			}
+
 			soundOne.startSound(url2); // Play beep sound
 			beep = true; // Beep is playing
 			setTimeout (function(){if(beep){soundOne.stopSound()} beep = false;}, 750); // Stop beep
@@ -749,6 +791,12 @@ function init()
 
 			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString(); // update right answers
 			levelText.createText.text = "Nivel: " + newPlayer.level; // update difficulty text
+			var porcentajeBuenas = Math.round((newPlayer.subCounter/(newPlayer.subCounter + newPlayer.Wrong)) * 100);
+			porcentageText.createText.text = " Porcentaje: " + porcentajeBuenas.toString() + " %";
+			porcentageText.createText.x = (25) * 1.23 ;
+			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString();
+			levelText.createText.text = "Nivel: " + newPlayer.level;
+
 			gameControl.generateIconigta(newPlayer.level) // generate new incognita
 
 			updateFilter(); // right answer was made, update new filter with random parameters
@@ -767,7 +815,11 @@ function init()
 		}
 		else // Wrong Answer
 		{	
-			newPlayer.wrongAnswer(); // Add to the wrong answer text
+			if (!newPlayer.oneWrong)
+			{
+				newPlayer.wrongAnswer(); // Add to the wrong answer text
+				newPlayer.oneWrong = true;
+			}
 
 			correctText.createText.text = "Incorrecto";
 			correctText.createText.color = "red";

@@ -205,7 +205,7 @@ function init()
 				firstDraw = false;
 			}
 
-			if (Ncounter > 4)
+			if (++Ncounter > 4)
 			{	
 				for (var i = 0; i < soundOne.dataArray.length; ++i)
 				{
@@ -214,8 +214,6 @@ function init()
 
 				Ncounter = 0;
 			}
-
-			++Ncounter;
 
 			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
 			{	

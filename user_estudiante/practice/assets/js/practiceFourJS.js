@@ -9,21 +9,28 @@
 var player = function() // player constructor
 {	// Variable Initialization
 	this.Correct = 0; 
+	this.subCounter = 0;
 	this.Wrong = 0;
+	this.oneWrong = false;
 	this.level = "Fácil";
 	this.timer = 20;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
 	"https://freesound.org/data/previews/350/350877_2305278-lq.mp3",
-	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
+	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3",
+	"https://freesound.org/data/previews/320/320563_4548252-lq.mp3",
+	"https://freesound.org/data/previews/239/239084_4101204-lq.mp3",
+	"https://freesound.org/data/previews/130/130491_1735491-lq.mp3",
+	"https://freesound.org/data/previews/38/38772_359043-lq.mp3",
+	"https://freesound.org/data/previews/69/69258_992244-lq.mp3" ];
 }
 
 player.prototype.rightAnswer = function() // Answer counter
 {	
 	this.Correct++;
-	if (this.Correct == 10){this.level = "Intermedio"; this.timer = 15}
-	else if (this.Correct >= 20){this.level = "Avanzado"; this.timer = 10}
+	if (this.Correct == 20){this.level = "Intermedio"; this.timer = 15}
+	else if (this.Correct >= 40){this.level = "Avanzado"; this.timer = 10}
 };
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
@@ -227,10 +234,14 @@ function init()
 	var playBarActive = false;
 	var buttonActiveMedium = false;
 	var buttonActiveHard = false;
+	var Ncounter = 3;
+	var firstDraw = true;
+	var targetArray = new Array(2048);
+	var controlArray = new Array(2048);
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
 
 	createjs.Ticker.addEventListener("tick", handleTick);
-	createjs.Ticker.setFPS(60); // Canvas update frequency
+	createjs.Ticker.setFPS(120); // Canvas update frequency
 
 	// Animation
 	function handleTick() 
@@ -243,11 +254,35 @@ function init()
 			line.graphics.setStrokeStyle(1); // Set line width attribute
 			line.graphics.beginStroke('rgba(255, 255, 255, 0.15)'); // set line color
 			line.graphics.moveTo (25, 75 + (225 / 2)); // Place the line in some point of the canvas
+
+			if (firstDraw)
+			{	
+				targetArray.fill(0);
+				controlArray.fill(0);
+
+				firstDraw = false;
+			}
+
+			if (++Ncounter > 4)
+			{	
+				for (var i = 0; i < soundOne.dataArray.length; ++i)
+				{
+					controlArray[i] = (soundOne.dataArray[i] - targetArray[i]) / 5;
+				}
+
+				Ncounter = 0;
+			}
+
 			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
 			{	
-				line.graphics.lineTo (i, ((225 / 2) + 75) + ((soundOne.dataArray[i])) - (128));
+				targetArray[i] += controlArray[i];
+				var nValue = ((targetArray[i] - 128) * 1.3);
+				if (nValue > 113){nValue = 113;}
+				else if(nValue < -111){nValue = -111}
+
+				line.graphics.lineTo (i, ((225 / 2) + 75) + nValue);
 			}
-			stage.update();
+			stage.update();	
 		}
 	}
 

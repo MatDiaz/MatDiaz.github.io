@@ -41,7 +41,7 @@
 						<strong>Avanzado: </strong> 3 dB de corte o realce . 10 segundos por ejercicio.</br>
 					</p>
 					<ul class="actions">
-						<li><a href="#one" class="button scrolly" onclick = "activateAudio()">Iniciar</a></li>
+						<li><a href="#one" class="button scrolly" onclick = "activateAudio(); showPractice()">Iniciar</a></li>
 					</ul>
 				</div>
 			</section>
@@ -74,6 +74,13 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
-
+			<script type="text/javascript">
+				SeccionPracticaId = document.getElementById("one");
+				SeccionPracticaId.style.display = "None";
+				function showPractice()
+				{
+					SeccionPracticaId.style.display = "Block";
+				}
+			</script>
 	</body>
 </html>
