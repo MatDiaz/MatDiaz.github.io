@@ -41,13 +41,13 @@
 						<strong>Avanzado: </strong> 10 bandas de octava - 3 dB ganancia/atenuación.</br>
 					</p>
 					<ul class="actions">
-						<li><a id="buttonStart" href="#one" class="button scrolly" onclick = "activateAudio()" >Iniciar</a></li>
+						<li><a id="buttonStart" href="#one" class="button scrolly" onclick = "activateAudio(); showPractice()" >Iniciar</a></li>
 					</ul>
 				</div>
 			</section>
 
 		<!-- One -->
-			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:auto ;background-image: url(images/overlaypract5.jpg)">
+			<section id="one" class="main style2" style = "background-attachment:fixed;background-size:cover ;background-image: url(images/overlaypract5.jpg)">
 				<div class="container"><script type="text/javascript" src="assets/js/phaser.min.js"></script>
 						<canvas id = "levelApp" width = "940" height = "425" style = "padding: 0; margin: auto; display: block;"></canvas>
 				</div>
@@ -74,6 +74,13 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
-
+			<script type="text/javascript">
+				SeccionPracticaId = document.getElementById("one");
+				SeccionPracticaId.style.display = "None";
+				function showPractice()
+				{
+					SeccionPracticaId.style.display = "Block";
+				}
+			</script>
 	</body>
 </html>

@@ -10,14 +10,21 @@ var player = function() // player constructor
 {	// Variable Initialization
 	this.Correct = 0; 
 	this.Wrong = 0;
+	this.oneWrong = false;
 	this.level = "Fácil";
 	this.timer = 20;
 	this.subCounter = 0;
 	this.url  = "https://freesound.org/data/previews/277/277325_4548252-lq.mp3";
 	this.urlList = ["https://freesound.org/data/previews/215/215048_2866962-lq.mp3", 
+	"https://freesound.org/data/previews/277/277325_4548252-lq.mp3", 
 	"https://freesound.org/data/previews/325/325407_4548252-lq.mp3",
-	"https://freesound.org/data/previews/350/350473_1676145-lq.mp3",
-	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3"];
+	"https://freesound.org/data/previews/350/350877_2305278-lq.mp3",
+	"https://freesound.org/data/previews/174/174589_2188371-lq.mp3",
+	"https://freesound.org/data/previews/320/320563_4548252-lq.mp3",
+	"https://freesound.org/data/previews/239/239084_4101204-lq.mp3",
+	"https://freesound.org/data/previews/130/130491_1735491-lq.mp3",
+	"https://freesound.org/data/previews/38/38772_359043-lq.mp3",
+	"https://freesound.org/data/previews/69/69258_992244-lq.mp3"];
 }
 
 player.prototype.rightAnswer = function() // Answer counter
@@ -30,7 +37,7 @@ player.prototype.rightAnswer = function() // Answer counter
 player.prototype.wrongAnswer = function() {this.Wrong++;};
 player.prototype.resetAnswer = function() {this.Correct = 0; this.Wrong = 0;};
 
-player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Math.random () * 4)]};
+player.prototype.generateURL = function() {this.url = this.urlList[Math.floor(Math.random () * 10)]};
 
 // 									AudioCtx init
 // --------------------------------------------------------------------------------------------
@@ -48,7 +55,7 @@ var controlLevel = audioCtx.createGain();
 var gameFilter = audioCtx.createBiquadFilter();
 	gameFilter.type = "peaking";
 	gameFilter.frequency.value = 1000;
-	gameFilter.gain.value = 10;
+	gameFilter.gain.value = 15;
 	gameFilter.connect(controlFilterLevel);
 
 var buttonActiveMedium = false;
@@ -173,9 +180,13 @@ function init()
 	var rightStop = false;
 	var url2 = "https://freesound.org/data/previews/352/352651_4019029-lq.mp3";
 	var gainModifier = 10;
+	var Ncounter = 3;
+	var firstDraw = true;
+	var targetArray = new Array(2048);
+	var controlArray = new Array(2048);
 
 	createjs.Ticker.addEventListener("tick", handleTick);
-	createjs.Ticker.setFPS(60); // Canvas update frequency
+	createjs.Ticker.setFPS(120); // Canvas update frequency
 
 	// Animation
 	function handleTick() 
@@ -188,11 +199,35 @@ function init()
 			line.graphics.setStrokeStyle(1); // Set line width attribute
 			line.graphics.beginStroke('rgba(255, 255, 255, 0.15)'); // set line color
 			line.graphics.moveTo (25, 75 + (225 / 2)); // Place the line in some point of the canvas
+
+			if (firstDraw)
+			{	
+				targetArray.fill(0);
+				controlArray.fill(0);
+
+				firstDraw = false;
+			}
+
+			if (++Ncounter > 4)
+			{	
+				for (var i = 0; i < soundOne.dataArray.length; ++i)
+				{
+					controlArray[i] = (soundOne.dataArray[i] - targetArray[i]) / 5;
+				}
+
+				Ncounter = 0;
+			}
+
 			for (var i = 25; i < (890 + 25); i ++) // Draw ponint to point
 			{	
-				line.graphics.lineTo (i, ((225 / 2) + 75) + ((soundOne.dataArray[i])) - (128));
+				targetArray[i] += controlArray[i];
+				var nValue = ((targetArray[i] - 128) * 1.3);
+				if (nValue > 113){nValue = 113;}
+				else if(nValue < -111){nValue = -111}
+
+				line.graphics.lineTo (i, ((225 / 2) + 75) + nValue);
 			}
-			stage.update();
+			stage.update();	
 		}
 	}
 
@@ -332,10 +367,11 @@ function init()
 	// Create Text Objects
 	levelText = new newText("Nivel: Fácil", textFont, "darkorange", stage, (25*3), (75*1.25)); // Difficulty Level Text
 	timeText = new newText("Tiempo: --", textFont, "darkorange", stage, (25*3) + 787, (75*1.25)); // Time Text 
-	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 195); // Right Answer count Text
+	rightText = new newText("Aciertos: 0", textFont, "darkorange", stage, (25*3), (75*1.25) + 170);
+	porcentageText = new newText("Porcentaje: 0%", textFont, "darkorange", stage, (25*3)*1.23, (75*1.25) + 195);
 	wrongText = new newText("Errores: 0", textFont, "darkorange", stage, (25*3) + 780, (75*1.25) + 195); // Wrong Answer count Text
 	correctText = new newText(" ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10); // Text state
-	initText = new newText(" Elige un modo ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
+	initText = new newText(" Elige un nivel ", "300 38pt Source Sans Pro", "darkorange", stage, (stage.canvas.width / 2), (225 / 2) + 10);
 
 	var modifier;
 	var separator;
