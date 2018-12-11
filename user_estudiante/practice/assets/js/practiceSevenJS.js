@@ -805,6 +805,9 @@ function init()
 			correctText.createText.x = (stage.canvas.width / 2) - (correctText.createText.getBounds().width / 2); // Update position
 			correctText.createText.y = ((225 / 2) + 10) - (correctText.createText.getBounds().height) // Update position
 
+			var porcentajeBuenas = Math.round((newPlayer.subCounter/(newPlayer.subCounter + newPlayer.Wrong)) * 100);
+			porcentageText.createText.text = " Porcentaje: " + porcentajeBuenas.toString() + " %";
+			porcentageText.createText.x = (25) * 1.23;
 			rightText.createText.text = "Aciertos: " + newPlayer.subCounter.toString(); // update right answers
 			levelText.createText.text = "Nivel: " + newPlayer.level; // update difficulty text
 			gameControl.generateIconigta(newPlayer.level) // generate new incognita
